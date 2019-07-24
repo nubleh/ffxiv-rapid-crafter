@@ -32,7 +32,7 @@ const testRecipe = {
   durability: 80,
   job: job_id,
   lvl: 80,
-  progress: Math.floor(3943 / 2),
+  progress: Math.floor(3943 / 2.5),
   quality: Math.floor(20287 / 2),
   rlvl: 430,
   materialQualityFactor: 75,
@@ -70,6 +70,7 @@ const JobButton = styled.div`
   box-sizing: border-box;
   margin: 4px;
   border: solid 1px transparent;
+  margin-top: 20px;
 
   ${({ active }: JobButtonProps) => active && css`
   border: solid 1px #ccc;
@@ -145,6 +146,7 @@ const ChartBar = styled.div`
     font-size: 8px;
     position: relative;
     padding: 0 4px;
+    transform: translateY(-50%);
   }
 
   & + & > svg {
@@ -295,7 +297,6 @@ const SimComponent = () => {
   };
   const OnActionDragStart = (index: number) => {
     return (e: React.DragEvent) => {
-      window.console.log('dragstart', index);
       set_draggingIndex(index);
     };
   };
@@ -369,7 +370,7 @@ const SimComponent = () => {
       <span style={{
         verticalAlign: 'bottom',
         bottom: `${Math.min(40, 40*latestState.progress/testRecipe.progress)}px`,
-      }}>{latestState.progress}/{testRecipe.progress}</span>
+      }}>{latestState.progress}/{testRecipe.progress} Progress</span>
     </ChartBar>
     <ChartBar>
       <svg style={{ verticalAlign: 'top', background: '#80d1ef' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
@@ -389,7 +390,7 @@ const SimComponent = () => {
       <span style={{
         verticalAlign: 'top',
         top: `${Math.min(40, 40*latestState.quality/testRecipe.quality)}px`,
-      }}>{latestState.quality}/{testRecipe.quality}</span>
+      }}>{latestState.quality}/{testRecipe.quality} Quality</span>
     </ChartBar>
     <ActionBar>
       {actions.map((action, index) => <img
@@ -408,6 +409,46 @@ const SimComponent = () => {
         }}
       />)}
     </ActionBar>
+    <ChartBar>
+      <svg style={{ verticalAlign: 'bottom', background: '#eee' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+        {states.slice(1).map((state, index, others) => {
+          const cpEnd = 40 - (40 * (state.durability / testRecipe.durability));
+          const cpStart = index < 1 ? 0 : 40 - (40 * (others[index - 1].durability / testRecipe.durability))
+          return <path key={index} d={`
+            M ${index * 40} 40
+            L ${index * 40} ${cpStart}
+            C ${index * 40 + 20} ${cpStart},
+            ${index * 40 + 20} ${cpEnd},
+            ${index * 40 + 40} ${cpEnd}
+            L ${index * 40 + 40} 40
+          `} fill="#ccc"/>;
+        })}
+      </svg>
+      <span style={{
+        verticalAlign: 'bottom',
+        bottom: `${Math.min(40, 40*latestState.durability/testRecipe.durability)}px`,
+      }}>{latestState.durability}/{testRecipe.durability} Durability</span>
+    </ChartBar>
+    <ChartBar>
+      <svg style={{ verticalAlign: 'top', background: '#efaeff' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+        {states.slice(1).map((state, index, others) => {
+          const cpEnd = (40 * (state.cp / testStats.cp));
+          const cpStart = index < 1 ? 40 : (40 * (others[index - 1].cp / testStats.cp))
+          return <path key={index} d={`
+            M ${index * 40} 0
+            L ${index * 40} ${cpStart}
+            C ${index * 40 + 20} ${cpStart},
+            ${index * 40 + 20} ${cpEnd},
+            ${index * 40 + 40} ${cpEnd}
+            L ${index * 40 + 40} 0
+          `} fill="#bf7ed9"/>;
+        })}
+      </svg>
+      <span style={{
+        verticalAlign: 'top',
+        top: `${Math.min(40, 40*latestState.cp/testStats.cp)}px`,
+      }}>{latestState.cp}/{testStats.cp} CP</span>
+    </ChartBar>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <div>
       {jobs.map((n, i) => n && <JobButton

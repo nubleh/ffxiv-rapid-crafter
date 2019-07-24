@@ -420,7 +420,6 @@ const SimComponent = (props: RouteComponentProps) => {
         durability: sim.durability,
         buffs: [...sim.buffs]
       };
-      window.console.log(sim);
     }
     set_statedActions(newStatedActions);
     set_states(newStates);

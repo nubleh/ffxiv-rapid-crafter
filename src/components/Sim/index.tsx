@@ -342,7 +342,6 @@ const SimComponent = (props: RouteComponentProps) => {
     if (!isNaN(jis)) {
       set_jobIsSpecialist(jis === 1);
     }
-
     if (values && values.zact) {
       const acts = (values.zact + '').split(',');
       const passedActions = CraftingActionsRegistry.createFromIds(acts.map(act => parseInt(act)));
@@ -513,11 +512,29 @@ const SimComponent = (props: RouteComponentProps) => {
       jis: jobIsSpecialist ? '1' : '0',
       zact: acts.join(',')
     })}`);
+
+    set_exportString('');
   };
 
   const focusShareField = (e: React.MouseEvent<HTMLInputElement>) => {
     if (e.currentTarget) {
       e.currentTarget.setSelectionRange(0, e.currentTarget.value.length);
+    }
+  };
+
+  const [exportString, set_exportString] = useState('');
+  const showExportString = () => {
+    const newExportString = CraftingActionsRegistry.exportToCraftOpt(CraftingActionsRegistry.serializeRotation(actions));
+    set_exportString(newExportString);
+
+    set_shareUrl('');
+  };
+
+  const requestImportString = () => {
+    const importString = prompt('Enter Teamcraft export string below:');
+    if (importString) {
+      const newActions = CraftingActionsRegistry.importFromCraftOpt(JSON.parse(importString) as string[]);
+      set_actions(newActions);
     }
   };
 
@@ -649,6 +666,9 @@ const SimComponent = (props: RouteComponentProps) => {
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
     {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
+    <JobButton onClick={showExportString} active={true}>Export</JobButton>
+    {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
+    <JobButton onClick={requestImportString} active={true}>Import</JobButton>
     <div>
       {jobs.map((n, i) => n && <JobButton
         active={jobId === i}

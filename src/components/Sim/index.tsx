@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import queryString, { ParsedQuery } from 'query-string'
 
 import styled, { css, keyframes } from 'styled-components/macro';
 
@@ -28,30 +30,6 @@ const jobs = [
 ];
 
 const job_id = 1;
-const testRecipe = {
-  durability: 80,
-  job: job_id,
-  lvl: 80,
-  progress: Math.floor(3943 / 2.5),
-  quality: Math.floor(20287 / 2),
-  rlvl: 430,
-  materialQualityFactor: 75,
-  id: '0',
-  suggestedControl: 1733,
-  suggestedCraftsmanship: 1866,
-  quickSynth: 1,
-  ingredients: [],
-  hq: 1,
-} as Craft;
-const testStats = new CrafterStats(
-  job_id,
-  1800,
-  1800,
-  489,
-  false,
-  80,
-  [80, 80, 80, 80, 80, 80, 80, 80]
-);
 const testActions: CraftingAction[] = [
 ];
 const actionsByType = [
@@ -84,6 +62,11 @@ const JobButton = styled.div`
 
   &:hover {
     background: #eee;
+  }
+
+  &:active {
+    transform: translateY(1px);
+    user-select: none;
   }
 `;
 
@@ -225,6 +208,13 @@ const ActionTypeSet = styled.div`
   }
 `;
 
+const ShareInput = styled.input`
+  width: 50vw;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: solid 1px #eee;
+`;
+
 interface CraftState {
   progress: number
   quality: number
@@ -232,25 +222,51 @@ interface CraftState {
   durability: number
   buffs: EffectiveBuff[]
 }
-const defaultState: CraftState = {
-  progress: 0,
-  quality: 0,
-  cp: testStats.cp,
-  durability: testRecipe.durability,
-  buffs: []
-};
 
-const SimComponent = () => {
-  const [actions, set_actions] = useState([] as CraftingAction[]);
+const SimComponent = (props: RouteComponentProps) => {
+  const { history, location } = props;
+
+  // recipe parameters
+  const [recipeRLvl, set_recipeRLvl] = useState(430);
+  const [recipeLvl, set_recipeLvl] = useState(80);
+  const [recipeProg, set_recipeProg] = useState(1900);
+  const [recipeQual, set_recipeQual] = useState(15000);
+  const [recipeDur, set_recipeDur] = useState(80);
+  const [recipeSugCraft, set_recipeSugCraft] = useState(1866);
+  const [recipeSugControl, set_recipeSugControl] = useState(1733);
+
+  // player parameters
   const [jobId, set_jobId] = useState(8);
+  const [jobCraftsmanship, set_jobCraftsmanship] = useState(1800);
+  const [jobControl, set_jobControl] = useState(1800);
+  const [jobCP, set_jobCP] = useState(489);
+  const [jobLvl, set_jobLvl] = useState(80);
+  const [jobIsSpecialist, set_jobIsSpecialist] = useState(false);
+  const testStats = new CrafterStats(
+    jobId,
+    jobCraftsmanship,
+    jobControl,
+    jobCP,
+    jobIsSpecialist,
+    jobLvl,
+    [jobLvl, jobLvl, jobLvl, jobLvl, jobLvl, jobLvl, jobLvl, jobLvl]
+  );
+
+  const [defaultState, set_defaultState] = useState({
+    progress: 0,
+    quality: 0,
+    cp: testStats.cp,
+    durability: 80,
+    buffs: [] as EffectiveBuff[]
+  });
+
+  const [queryValues, set_queryValues] = useState({} as ParsedQuery);
+  const [actions, set_actions] = useState([] as CraftingAction[]);
   const [craftsmanship, set_craftsmanship] = useState(1800);
   const [control, set_control] = useState(1800);
   const [cp, set_cp] = useState(defaultState.cp);
 
   const [sim, set_sim] = useState(undefined as Simulation | undefined);
-
-  const [states, set_states] = useState([defaultState]);
-  const [statedActions, set_statedActions] = useState([] as CraftingAction[]);
 
   const stats = new CrafterStats(
     jobId,
@@ -261,6 +277,117 @@ const SimComponent = () => {
     80,
     [80, 80, 80, 80, 80, 80, 80, 80]
   );
+
+  useEffect(() => {
+    const values = queryString.parse(location.search);
+
+    // recipe stuff
+    const rrl = parseInt(values.rrl + '');
+    if (!isNaN(rrl)) {
+      set_recipeRLvl(rrl);
+    }
+    const rl = parseInt(values.rl + '');
+    if (!isNaN(rl)) {
+      set_recipeLvl(rl);
+    }
+    const rp = parseInt(values.rp + '');
+    if (!isNaN(rp)) {
+      set_recipeProg(rp);
+    }
+    const rq = parseInt(values.rq + '');
+    if (!isNaN(rq)) {
+      set_recipeQual(rq);
+    }
+    const rd = parseInt(values.rd + '');
+    if (!isNaN(rd)) {
+      set_recipeDur(rd);
+      set_defaultState(df => {
+        return {
+          ...df,
+          durability: rd
+        };
+      });
+    }
+    const rscr = parseInt(values.rscr + '');
+    if (!isNaN(rscr)) {
+      set_recipeSugCraft(rscr);
+    }
+    const rsco = parseInt(values.rsco + '');
+    if (!isNaN(rsco)) {
+      set_recipeSugControl(rsco);
+    }
+
+    // player stuff
+    const ji = parseInt(values.ji + '');
+    if (!isNaN(ji)) {
+      set_jobId(ji);
+    }
+    const jcr = parseInt(values.jcr + '');
+    if (!isNaN(jcr)) {
+      set_jobCraftsmanship(jcr);
+    }
+    const jco = parseInt(values.jco + '');
+    if (!isNaN(jco)) {
+      set_jobControl(jco);
+    }
+    const jcp = parseInt(values.jcp + '');
+    if (!isNaN(jcp)) {
+      set_jobCP(jcp);
+    }
+    const jl = parseInt(values.jl + '');
+    if (!isNaN(jl)) {
+      set_jobLvl(jl);
+    }
+    const jis = parseInt(values.jis + '') ;
+    if (!isNaN(jis)) {
+      set_jobIsSpecialist(jis === 1);
+    }
+
+    if (values && values.zact) {
+      const acts = (values.zact + '').split(',');
+      const passedActions = CraftingActionsRegistry.createFromIds(acts.map(act => parseInt(act)));
+      set_actions(passedActions);
+    }
+  }, [location.search]);
+
+  const [testRecipe, set_testRecipe] = useState({
+    job: jobId,
+    lvl: jobLvl,
+    durability: recipeDur,
+    progress: recipeProg,
+    quality: recipeQual,
+    rlvl: recipeRLvl,
+    materialQualityFactor: 75,
+    id: '0',
+    suggestedControl: 1733,
+    suggestedCraftsmanship: 1866,
+    quickSynth: 1,
+    ingredients: [],
+    hq: 1,
+  } as Craft);
+  useEffect(() => {
+    set_testRecipe(tr => {
+      return {
+        ...tr,
+        job: jobId,
+        lvl: jobLvl,
+        durability: recipeDur,
+        progress: recipeProg,
+        quality: recipeQual,
+        rlvl: recipeRLvl,
+      };
+    });
+  }, [
+    recipeDur,
+    recipeProg,
+    recipeQual,
+    recipeLvl,
+    jobId,
+    jobLvl,
+  ])
+
+  const [states, set_states] = useState([defaultState]);
+  const [statedActions, set_statedActions] = useState([] as CraftingAction[]);
 
   useEffect(() => {
     if (actions.length < 1) {
@@ -293,11 +420,19 @@ const SimComponent = () => {
         durability: sim.durability,
         buffs: [...sim.buffs]
       };
+      window.console.log(sim);
     }
     set_statedActions(newStatedActions);
     set_states(newStates);
 
-  }, [actions]);
+  }, [
+    actions,
+    defaultState,
+    statedActions,
+    states,
+    stats,
+    testRecipe,
+  ]);
 
   const clickAction = (action: CraftingAction) => {
     return () => {
@@ -359,6 +494,32 @@ const SimComponent = () => {
       newActions.splice(targetIndex, 0, draggedAction);
       set_actions(newActions);
     };
+  };
+
+  const [shareUrl, set_shareUrl] = useState('');
+  const showShareUrl = () => {
+    const url = window.location.href.split('?')[0];
+    const acts = actions.map(a => a.getId(jobId));
+    set_shareUrl(`${url}?${queryString.stringify({
+      rl: recipeLvl,
+      rp: recipeProg,
+      rq: recipeQual,
+      rd: recipeDur,
+      rscr: recipeSugCraft,
+      rsco: recipeSugControl,
+      jcr: jobCraftsmanship,
+      jco: jobControl,
+      jcp: jobCP,
+      jl: jobLvl,
+      jis: jobIsSpecialist ? '1' : '0',
+      zact: acts.join(',')
+    })}`);
+  };
+
+  const focusShareField = (e: React.MouseEvent<HTMLInputElement>) => {
+    if (e.currentTarget) {
+      e.currentTarget.setSelectionRange(0, e.currentTarget.value.length);
+    }
   };
 
   return <div>
@@ -430,6 +591,7 @@ const SimComponent = () => {
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;
           return <DraggedImage
+            alt="Action"
             key={`${index} ${action.getId(jobId)}`}
             draggable={true}
             onDragStart={OnActionDragStart(index)}
@@ -486,6 +648,8 @@ const SimComponent = () => {
       </ChartBar>
     </ScrollingBar>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
+    <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
+    {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
     <div>
       {jobs.map((n, i) => n && <JobButton
         active={jobId === i}
@@ -497,6 +661,7 @@ const SimComponent = () => {
     <div>
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
         {someActions.map((i, index) => <img
+          alt="Action"
           key={index}
           src={process.env.PUBLIC_URL + (Icons as any)[i.getId(jobId)]}
           onClick={clickAction(i)}

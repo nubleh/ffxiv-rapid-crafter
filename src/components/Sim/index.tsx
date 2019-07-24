@@ -146,6 +146,10 @@ const ChartBar = styled.div`
     position: relative;
     padding: 0 4px;
   }
+
+  & + & > svg {
+    border-top: solid 1px #000;
+  }
 `;
 
 const SuccessBox = styled.div`
@@ -283,6 +287,40 @@ const SimComponent = () => {
 
   const latestState = states[states.length - 1];
 
+  const [draggingIndex, set_draggingIndex] = useState(undefined as undefined | number);
+  const [draggedOverIndex, set_draggedOverIndex] = useState(undefined as undefined | number);
+  const OnActionDragEnd = () => {
+    set_draggedOverIndex(undefined);
+    set_draggingIndex(undefined);
+  };
+  const OnActionDragStart = (index: number) => {
+    return (e: React.DragEvent) => {
+      window.console.log('dragstart', index);
+      set_draggingIndex(index);
+    };
+  };
+  const OnActionDragOver = (index: number) => {
+    return (e: React.DragEvent) => {
+      e.preventDefault();
+      set_draggedOverIndex(index);
+    };
+  };
+  const OnActionDrop = (index: number) => {
+    return (e: React.DragEvent) => {
+      e.preventDefault();
+      set_draggedOverIndex(undefined);
+      set_draggingIndex(undefined);
+      if (typeof draggingIndex === 'undefined' || draggingIndex === index) {
+        return;
+      }
+      const newActions = [...actions];
+      const draggedAction = newActions.splice(draggingIndex, 1)[0];
+      const targetIndex = index;
+      newActions.splice(targetIndex, 0, draggedAction);
+      set_actions(newActions);
+    };
+  };
+
   return <div>
     <div>
       <GenericBar color={'#9eca4b'}>
@@ -330,7 +368,7 @@ const SimComponent = () => {
       </svg>
       <span style={{
         verticalAlign: 'bottom',
-        bottom: `${40*latestState.progress/testRecipe.progress}px`,
+        bottom: `${Math.min(40, 40*latestState.progress/testRecipe.progress)}px`,
       }}>{latestState.progress}/{testRecipe.progress}</span>
     </ChartBar>
     <ChartBar>
@@ -350,14 +388,24 @@ const SimComponent = () => {
       </svg>
       <span style={{
         verticalAlign: 'top',
-        top: `${40*latestState.quality/testRecipe.quality}px`,
+        top: `${Math.min(40, 40*latestState.quality/testRecipe.quality)}px`,
       }}>{latestState.quality}/{testRecipe.quality}</span>
     </ChartBar>
     <ActionBar>
       {actions.map((action, index) => <img
         key={index}
+        draggable={true}
+        onDragStart={OnActionDragStart(index)}
+        onDragOver={OnActionDragOver(index)}
+        onDragEnd={OnActionDragEnd}
+        onDrop={OnActionDrop(index)}
         src={(Icons as any)[action.getId(jobId)]}
         onClick={clickJobAction(index)}
+        style={{
+          marginLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? '5px' : '',
+          marginRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? '5px' : '',
+          opacity: index === draggingIndex ? 0.5 : 1
+        }}
       />)}
     </ActionBar>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>

@@ -400,7 +400,7 @@ const SimComponent = () => {
         onDragOver={OnActionDragOver(index)}
         onDragEnd={OnActionDragEnd}
         onDrop={OnActionDrop(index)}
-        src={(Icons as any)[action.getId(jobId)]}
+        src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
         onClick={clickJobAction(index)}
         style={{
           marginLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? '5px' : '',
@@ -460,7 +460,7 @@ const SimComponent = () => {
     </div>
     {all.map((i, index) => <img
       key={index}
-      src={(Icons as any)[i.action.getId(jobId)]}
+      src={process.env.PUBLIC_URL + (Icons as any)[i.action.getId(jobId)]}
       onClick={clickAction(i.action)}
     />)}
     <pre>

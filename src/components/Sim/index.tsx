@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import styled, { css } from 'styled-components/macro';
+import styled, { css, keyframes } from 'styled-components/macro';
 
 import {
   ActionType,
@@ -54,9 +54,15 @@ const testStats = new CrafterStats(
 );
 const testActions: CraftingAction[] = [
 ];
-const all = CraftingActionsRegistry.ALL_ACTIONS;
-window.console.log(all);
-(window as any).derp = all;
+const actionsByType = [
+  ActionType.PROGRESSION,
+  ActionType.CP_RECOVERY,
+  ActionType.OTHER,
+  ActionType.QUALITY,
+  ActionType.REPAIR,
+  ActionType.BUFF,
+  ActionType.SPECIALTY,
+].map(type => CraftingActionsRegistry.getActionsByType(type));
 
 interface JobButtonProps {
   active?: boolean
@@ -116,10 +122,19 @@ const GenericBar = styled.div`
   `}
 `;
 
+const rotate = keyframes`
+  from {
+    transform: translateY(-5px) scale(1.15) rotate(-4deg);
+  }
+
+  to {
+    transform: translateY(-5px) scale(1.15) rotate(3deg);
+  }
+`;
 const ActionBar = styled.div`
-  background: #f0f0f0;
   padding: 10px 10px;
   height: 40px;
+  white-space: nowrap;
 
   > img, > div {
     vertical-align: middle;
@@ -131,12 +146,35 @@ const ActionBar = styled.div`
     vertical-align: middle;
     height: 40px;
   }
+
+  > img {
+    cursor: grab;
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+`;
+
+interface DraggedImageProps {
+  isDragged?: boolean
+}
+const DraggedImage = styled.img`
+  ${({ isDragged }: DraggedImageProps) => isDragged && css`
+    animation: ${rotate} 1s infinite alternate;
+  `}
 `;
 
 const ChartBar = styled.div`
   height: 40px;
   padding: 0 10px;
   position: relative;
+  white-space: nowrap;
 
   > svg {
     transition: width 0.2s;
@@ -154,9 +192,37 @@ const ChartBar = styled.div`
   }
 `;
 
+const ScrollingBar = styled.div`
+  overflow: auto;
+  padding: 45px;
+`;
+
 const SuccessBox = styled.div`
   padding: 10px;
   
+
+`;
+
+const ActionTypeSet = styled.div`
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 4px;
+  background: #f5f5f5;
+  border-radius: 4px;
+
+  > img {
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(0.95);
+    }
+
+    &:active {
+      transform: scale(0.9);
+      transition-duration: 0.1s;
+    }
+  }
 `;
 
 interface CraftState {
@@ -195,35 +261,6 @@ const SimComponent = () => {
     80,
     [80, 80, 80, 80, 80, 80, 80, 80]
   );
-
-  // useEffect(() => {
-  //   const stats = new CrafterStats(
-  //     jobId,
-  //     craftsmanship,
-  //     control,
-  //     cp,
-  //     false,
-  //     80,
-  //     [80, 80, 80, 80, 80, 80, 80, 80]
-  //   );
-  //   const sim = new Simulation(
-  //     testRecipe,
-  //     actions,
-  //     stats,
-  //   );
-  //   window.console.log(sim.availableCP);
-  //   sim.run(true);
-  //   window.console.log(sim.availableCP);
-  //   window.console.log('---');
-  //   set_sim(sim);
-  //   (window as any).derp2 = sim;
-  //   window.console.log(sim);
-  // }, [
-  //   actions,
-  //   craftsmanship,
-  //   control,
-  //   cp,
-  // ]);
 
   useEffect(() => {
     if (actions.length < 1) {
@@ -268,6 +305,10 @@ const SimComponent = () => {
     };
   };
 
+
+  const [draggingIndex, set_draggingIndex] = useState(undefined as undefined | number);
+  const [draggedOverIndex, set_draggedOverIndex] = useState(undefined as undefined | number);
+
   const clickJobAction = (index: number) => {
     return () => {
       set_actions([
@@ -289,8 +330,6 @@ const SimComponent = () => {
 
   const latestState = states[states.length - 1];
 
-  const [draggingIndex, set_draggingIndex] = useState(undefined as undefined | number);
-  const [draggedOverIndex, set_draggedOverIndex] = useState(undefined as undefined | number);
   const OnActionDragEnd = () => {
     set_draggedOverIndex(undefined);
     set_draggingIndex(undefined);
@@ -323,7 +362,7 @@ const SimComponent = () => {
   };
 
   return <div>
-    <div>
+    <div style={{display: 'none'}}>
       <GenericBar color={'#9eca4b'}>
         <div style={{width: `${Math.min(100, latestState.progress/testRecipe.progress*100)}%`}}/>
         <span>
@@ -352,103 +391,100 @@ const SimComponent = () => {
     {sim && <SuccessBox>
       {sim.getReliabilityReport().successPercent}% Success
     </SuccessBox>}
-    <ChartBar>
-      <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-        {states.slice(1).map((state, index, others) => {
-          const progressEnd = 40 - (40 * (state.progress / testRecipe.progress));
-          const progressStart = index < 1 ? 40 : 40 - (40 * (others[index - 1].progress / testRecipe.progress))
-          return <path key={index} d={`
-            M ${index * 40} 40
-            L ${index * 40} ${progressStart}
-            C ${index * 40 + 20} ${progressStart},
-            ${index * 40 + 20} ${progressEnd},
-            ${index * 40 + 40} ${progressEnd}
-            L ${index * 40 + 40} 40
-          `} fill="#6e9a1b"/>;
+    <ScrollingBar>
+      <ChartBar>
+        <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+          <path d={`
+            M 0 40
+            ${states.slice(1).map((state, index, others) => {
+              const progressEnd = 40 - (40 * (state.progress / testRecipe.progress));
+              const progressStart = index < 1 ? 40 : 40 - (40 * (others[index - 1].progress / testRecipe.progress));
+              return `C ${index * 40 + 20} ${progressStart} ${index * 40 + 20} ${progressEnd} ${index * 40 + 40} ${progressEnd}`;
+            }).join("\n")}
+            L ${(states.length - 1) * 40} 40
+          `} fill="#6e9a1b"/>
+        </svg>
+        <span style={{
+          verticalAlign: 'bottom',
+          bottom: `${Math.min(40, 40*latestState.progress/testRecipe.progress)}px`,
+        }}>{latestState.progress}/{testRecipe.progress} Progress</span>
+      </ChartBar>
+      <ChartBar>
+        <svg style={{ verticalAlign: 'top', background: '#80d1ef' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+          <path d={`
+            M 0 0
+            ${states.slice(1).map((state, index, others) => {
+              const qualityEnd = (40 * (state.quality / testRecipe.quality));
+              const qualityStart = index < 1 ? 0 : (40 * (others[index - 1].quality / testRecipe.quality))
+              return `C ${index * 40 + 20} ${qualityStart} ${index * 40 + 20} ${qualityEnd} ${index * 40 + 40} ${qualityEnd}`;
+            }).join("\n")}
+            L ${(states.length - 1) * 40} 0
+          `} fill="#50a1bf"/>
+        </svg>
+        <span style={{
+          verticalAlign: 'top',
+          top: `${Math.min(40, 40*latestState.quality/testRecipe.quality)}px`,
+        }}>{latestState.quality}/{testRecipe.quality} Quality</span>
+      </ChartBar>
+      <ActionBar>
+        {actions.map((action, index) => {
+          const isDragged = draggingIndex === index;
+          return <DraggedImage
+            key={`${index} ${action.getId(jobId)}`}
+            draggable={true}
+            onDragStart={OnActionDragStart(index)}
+            onDragOver={OnActionDragOver(index)}
+            onDragEnd={OnActionDragEnd}
+            onDrop={OnActionDrop(index)}
+            src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
+            onClick={clickJobAction(index)}
+            style={{
+              marginLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? '5px' : '',
+              marginRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? '5px' : '',
+              opacity: index === draggingIndex ? 0.5 : 1
+            }}
+            isDragged={isDragged}
+          />
         })}
-      </svg>
-      <span style={{
-        verticalAlign: 'bottom',
-        bottom: `${Math.min(40, 40*latestState.progress/testRecipe.progress)}px`,
-      }}>{latestState.progress}/{testRecipe.progress} Progress</span>
-    </ChartBar>
-    <ChartBar>
-      <svg style={{ verticalAlign: 'top', background: '#80d1ef' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-        {states.slice(1).map((state, index, others) => {
-          const qualityEnd = (40 * (state.quality / testRecipe.quality));
-          const qualityStart = index < 1 ? 0 : (40 * (others[index - 1].quality / testRecipe.quality))
-          return <path key={index} d={`
-            M ${index * 40} 0
-            L ${index * 40} ${qualityStart}
-            C ${index * 40 + 20} ${qualityStart},
-            ${index * 40 + 20} ${qualityEnd},
-            ${index * 40 + 40} ${qualityEnd}
-            L ${index * 40 + 40} 0
-          `} fill="#50a1bf"/>;
-        })}
-      </svg>
-      <span style={{
-        verticalAlign: 'top',
-        top: `${Math.min(40, 40*latestState.quality/testRecipe.quality)}px`,
-      }}>{latestState.quality}/{testRecipe.quality} Quality</span>
-    </ChartBar>
-    <ActionBar>
-      {actions.map((action, index) => <img
-        key={index}
-        draggable={true}
-        onDragStart={OnActionDragStart(index)}
-        onDragOver={OnActionDragOver(index)}
-        onDragEnd={OnActionDragEnd}
-        onDrop={OnActionDrop(index)}
-        src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
-        onClick={clickJobAction(index)}
-        style={{
-          marginLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? '5px' : '',
-          marginRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? '5px' : '',
-          opacity: index === draggingIndex ? 0.5 : 1
-        }}
-      />)}
-    </ActionBar>
-    <ChartBar>
-      <svg style={{ verticalAlign: 'bottom', background: '#eee' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-        {states.slice(1).map((state, index, others) => {
-          const cpEnd = 40 - (40 * (state.durability / testRecipe.durability));
-          const cpStart = index < 1 ? 0 : 40 - (40 * (others[index - 1].durability / testRecipe.durability))
-          return <path key={index} d={`
-            M ${index * 40} 40
-            L ${index * 40} ${cpStart}
-            C ${index * 40 + 20} ${cpStart},
-            ${index * 40 + 20} ${cpEnd},
-            ${index * 40 + 40} ${cpEnd}
-            L ${index * 40 + 40} 40
-          `} fill="#ccc"/>;
-        })}
-      </svg>
-      <span style={{
-        verticalAlign: 'bottom',
-        bottom: `${Math.min(40, 40*latestState.durability/testRecipe.durability)}px`,
-      }}>{latestState.durability}/{testRecipe.durability} Durability</span>
-    </ChartBar>
-    <ChartBar>
-      <svg style={{ verticalAlign: 'top', background: '#efaeff' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-        {states.slice(1).map((state, index, others) => {
-          const cpEnd = (40 * (state.cp / testStats.cp));
-          const cpStart = index < 1 ? 40 : (40 * (others[index - 1].cp / testStats.cp))
-          return <path key={index} d={`
-            M ${index * 40} 0
-            L ${index * 40} ${cpStart}
-            C ${index * 40 + 20} ${cpStart},
-            ${index * 40 + 20} ${cpEnd},
-            ${index * 40 + 40} ${cpEnd}
-            L ${index * 40 + 40} 0
-          `} fill="#bf7ed9"/>;
-        })}
-      </svg>
-      <span style={{
-        verticalAlign: 'top',
-        top: `${Math.min(40, 40*latestState.cp/testStats.cp)}px`,
-      }}>{latestState.cp}/{testStats.cp} CP</span>
-    </ChartBar>
+      </ActionBar>
+      <ChartBar>
+        <svg style={{ verticalAlign: 'bottom', background: '#eee' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+          <path d={`
+            M 0 40
+            L 0 0
+            ${states.slice(1).map((state, index, others) => {
+              const durEnd = 40 - (40 * (state.durability / testRecipe.durability));
+              const durStart = index < 1 ? 0 : 40 - (40 * (others[index - 1].durability / testRecipe.durability))
+              return `C ${index * 40 + 20} ${durStart} ${index * 40 + 20} ${durEnd} ${index * 40 + 40} ${durEnd}`;
+            }).join("\n")}
+            L ${(states.length - 1) * 40} 40
+          `} fill="#ccc"/>
+          })}
+        </svg>
+        <span style={{
+          verticalAlign: 'bottom',
+          bottom: `${Math.min(40, 40*latestState.durability/testRecipe.durability)}px`,
+        }}>{latestState.durability}/{testRecipe.durability} Durability</span>
+      </ChartBar>
+      <ChartBar>
+        <svg style={{ verticalAlign: 'top', background: '#efaeff' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+          <path d={`
+            M 0 0
+            L 0 40
+            ${states.slice(1).map((state, index, others) => {
+              const cpEnd = (40 * (state.cp / testStats.cp));
+              const cpStart = index < 1 ? 40 : (40 * (others[index - 1].cp / testStats.cp))
+              return `C ${index * 40 + 20} ${cpStart} ${index * 40 + 20} ${cpEnd} ${index * 40 + 40} ${cpEnd}`;
+            }).join("\n")}
+            L ${(states.length - 1) * 40} 0
+          `} fill="#bf7ed9"/>
+        </svg>
+        <span style={{
+          verticalAlign: 'top',
+          top: `${Math.min(40, 40*latestState.cp/testStats.cp)}px`,
+        }}>{latestState.cp}/{testStats.cp} CP</span>
+      </ChartBar>
+    </ScrollingBar>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <div>
       {jobs.map((n, i) => n && <JobButton
@@ -458,11 +494,15 @@ const SimComponent = () => {
         {n}
       </JobButton>)}
     </div>
-    {all.map((i, index) => <img
-      key={index}
-      src={process.env.PUBLIC_URL + (Icons as any)[i.action.getId(jobId)]}
-      onClick={clickAction(i.action)}
-    />)}
+    <div>
+      {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
+        {someActions.map((i, index) => <img
+          key={index}
+          src={process.env.PUBLIC_URL + (Icons as any)[i.getId(jobId)]}
+          onClick={clickAction(i)}
+        />)}
+      </ActionTypeSet>)}
+    </div>
     <pre>
       {JSON.stringify(sim, null, 2)}
     </pre>

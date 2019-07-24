@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components/macro';
 import Sim from './components/Sim';
 
 const Wrapper = styled.div`
-  padding: 40px 20px;
+  padding: 20px;
 `;
 const App: React.FC = () => {
   return (

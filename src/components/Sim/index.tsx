@@ -9,7 +9,8 @@ import {
   Simulation,
   Craft,
   CrafterStats,
-  CraftingJob
+  CraftingJob,
+  EffectiveBuff,
 } from '@ffxiv-teamcraft/simulator';
 
 import { Icons } from './Icons';
@@ -115,7 +116,7 @@ const GenericBar = styled.div`
 
 const ActionBar = styled.div`
   background: #f0f0f0;
-  padding: 10px 20px;
+  padding: 10px 10px;
   height: 40px;
 
   > img, > div {
@@ -130,40 +131,124 @@ const ActionBar = styled.div`
   }
 `;
 
+const ChartBar = styled.div`
+  height: 40px;
+  padding: 0 10px;
+
+  > svg {
+    transition: width 0.2s;
+  }
+`;
+
+const SuccessBox = styled.div`
+  padding: 10px;
+  
+`;
+
+interface CraftState {
+  progress: number
+  quality: number
+  cp: number
+  durability: number
+  buffs: EffectiveBuff[]
+}
+const defaultState: CraftState = {
+  progress: 0,
+  quality: 0,
+  cp: 400,
+  durability: testRecipe.durability,
+  buffs: []
+};
+
 const SimComponent = () => {
   const [actions, set_actions] = useState([] as CraftingAction[]);
   const [jobId, set_jobId] = useState(8);
   const [craftsmanship, set_craftsmanship] = useState(1800);
   const [control, set_control] = useState(1800);
-  const [cp, set_cp] = useState(400);
+  const [cp, set_cp] = useState(defaultState.cp);
 
   const [sim, set_sim] = useState(undefined as Simulation | undefined);
 
-  useEffect(() => {
-    const stats = new CrafterStats(
-      jobId,
-      craftsmanship,
-      control,
-      cp,
-      false,
-      80,
-      [80, 80, 80, 80, 80, 80, 80, 80]
-    );
-    const sim = new Simulation(
-      testRecipe,
-      actions,
-      stats,
-    );
-    sim.run();
-    set_sim(sim);
-    (window as any).derp2 = sim;
-    window.console.log(sim);
-  }, [
-    actions,
+  const [states, set_states] = useState([defaultState]);
+  const [statedActions, set_statedActions] = useState([] as CraftingAction[]);
+
+  const stats = new CrafterStats(
+    jobId,
     craftsmanship,
     control,
     cp,
-  ]);
+    false,
+    80,
+    [80, 80, 80, 80, 80, 80, 80, 80]
+  );
+
+  // useEffect(() => {
+  //   const stats = new CrafterStats(
+  //     jobId,
+  //     craftsmanship,
+  //     control,
+  //     cp,
+  //     false,
+  //     80,
+  //     [80, 80, 80, 80, 80, 80, 80, 80]
+  //   );
+  //   const sim = new Simulation(
+  //     testRecipe,
+  //     actions,
+  //     stats,
+  //   );
+  //   window.console.log(sim.availableCP);
+  //   sim.run(true);
+  //   window.console.log(sim.availableCP);
+  //   window.console.log('---');
+  //   set_sim(sim);
+  //   (window as any).derp2 = sim;
+  //   window.console.log(sim);
+  // }, [
+  //   actions,
+  //   craftsmanship,
+  //   control,
+  //   cp,
+  // ]);
+
+  useEffect(() => {
+    if (actions.length < 1) {
+      set_statedActions([]);
+      set_states([defaultState]);
+      return;
+    }
+    // find how many actions match the saved one
+    let x;
+    for (x = 0; x < Math.max(actions.length, statedActions.length); x++) {
+      window.console.log(actions[x] === statedActions[x], actions[x], statedActions[x]);
+      if (actions[x] !== statedActions[x]) {
+        break;
+      }
+    }
+    // fix simulated data starting from step x
+    const newStatedActions = statedActions.slice(0, x);
+    const newStates = states.slice(0, x + 1);
+    for (let y = x; y < actions.length; y++) {
+      newStatedActions[y] = actions[y];
+      const sim = new Simulation(
+        testRecipe,
+        newStatedActions,
+        stats,
+      );
+      sim.run(true);
+      newStates[y + 1] = {
+        progress: sim.progression,
+        quality: sim.quality,
+        cp: sim.availableCP,
+        durability: sim.durability,
+        buffs: [...sim.buffs]
+      };
+    }
+    set_statedActions(newStatedActions);
+    set_states(newStates);
+    window.console.log(actions.length, states.length)
+
+  }, [actions]);
 
   const clickAction = (action: CraftingAction) => {
     return () => {
@@ -190,35 +275,45 @@ const SimComponent = () => {
     set_actions([]);
   };
 
+  const latestState = states[states.length - 1];
+
   return <div>
-    {sim && <div>
+    <div>
       <GenericBar color={'#9eca4b'}>
-        <div style={{width: `${Math.min(100, sim.progression/sim.recipe.progress*100)}%`}}/>
+        <div style={{width: `${Math.min(100, latestState.progress/testRecipe.progress*100)}%`}}/>
         <span>
-          {sim.progression}/{sim.recipe.progress} Progress
+          {latestState.progress}/{testRecipe.progress} Progress
         </span>
       </GenericBar>
       <GenericBar color={'#50a1bf'}>
-        <div style={{width: `${Math.min(100, sim.quality/sim.recipe.quality*100)}%`}}/>
+        <div style={{width: `${Math.min(100, latestState.quality/testRecipe.quality*100)}%`}}/>
         <span>
-          {sim.quality}/{sim.recipe.quality} Quality
+          {latestState.quality}/{testRecipe.quality} Quality
         </span>
       </GenericBar>
       <GenericBar>
-        <div style={{width: `${Math.min(100, sim.durability/sim.recipe.durability*100)}%`}}/>
+        <div style={{width: `${Math.min(100, latestState.durability/testRecipe.durability*100)}%`}}/>
         <span>
-          {sim.durability}/{sim.recipe.durability} Durability
+          {latestState.durability}/{testRecipe.durability} Durability
         </span>
       </GenericBar>
       <GenericBar color={'#bf7ed9'}>
-        <div style={{width: `${Math.min(100, sim.availableCP/cp*100)}%`}}/>
+        <div style={{width: `${Math.min(100, latestState.cp/cp*100)}%`}}/>
         <span>
-          {sim.availableCP}/{cp} CP
+          {latestState.cp}/{cp} CP
         </span>
       </GenericBar>
-    </div>}
+    </div>
+    {sim && <SuccessBox>
+      {sim.getReliabilityReport().successPercent}% Success
+    </SuccessBox>}
+    <JobButton onClick={clearActions} active={true}>Clear</JobButton>
+    <ChartBar>
+      <svg width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent"/>
+      </svg>
+    </ChartBar>
     <ActionBar>
-      <JobButton onClick={clearActions} active={true}>Clear</JobButton>
       {actions.map((action, index) => <img
         key={index}
         src={(Icons as any)[action.getId(jobId)]}

@@ -32,8 +32,8 @@ const testRecipe = {
   durability: 80,
   job: job_id,
   lvl: 80,
-  progress: 3943,
-  quality: 20287,
+  progress: Math.floor(3943 / 2),
+  quality: Math.floor(20287 / 2),
   rlvl: 430,
   materialQualityFactor: 75,
   id: '0',
@@ -47,7 +47,7 @@ const testStats = new CrafterStats(
   job_id,
   1800,
   1800,
-  400,
+  489,
   false,
   80,
   [80, 80, 80, 80, 80, 80, 80, 80]
@@ -65,17 +65,18 @@ const JobButton = styled.div`
   padding: 4px 8px;
   display: inline-block;
   cursor: pointer;
-  background: f0f0f0;
+  background: #f7f7f7;
   border-radius: 4px;
   box-sizing: border-box;
   margin: 4px;
+  border: solid 1px transparent;
 
   ${({ active }: JobButtonProps) => active && css`
-    border: solid 1px #ccc;
+  border: solid 1px #ccc;
   `}
 
   &:hover {
-    background: #a0a0a0;
+    background: #eee;
   }
 `;
 
@@ -134,9 +135,16 @@ const ActionBar = styled.div`
 const ChartBar = styled.div`
   height: 40px;
   padding: 0 10px;
+  position: relative;
 
   > svg {
     transition: width 0.2s;
+  }
+
+  > span {
+    font-size: 8px;
+    position: relative;
+    padding: 0 4px;
   }
 `;
 
@@ -155,7 +163,7 @@ interface CraftState {
 const defaultState: CraftState = {
   progress: 0,
   quality: 0,
-  cp: 400,
+  cp: testStats.cp,
   durability: testRecipe.durability,
   buffs: []
 };
@@ -220,7 +228,6 @@ const SimComponent = () => {
     // find how many actions match the saved one
     let x;
     for (x = 0; x < Math.max(actions.length, statedActions.length); x++) {
-      window.console.log(actions[x] === statedActions[x], actions[x], statedActions[x]);
       if (actions[x] !== statedActions[x]) {
         break;
       }
@@ -246,7 +253,6 @@ const SimComponent = () => {
     }
     set_statedActions(newStatedActions);
     set_states(newStates);
-    window.console.log(actions.length, states.length)
 
   }, [actions]);
 
@@ -307,11 +313,45 @@ const SimComponent = () => {
     {sim && <SuccessBox>
       {sim.getReliabilityReport().successPercent}% Success
     </SuccessBox>}
-    <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <ChartBar>
-      <svg width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent"/>
+      <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+        {states.slice(1).map((state, index, others) => {
+          const progressEnd = 40 - (40 * (state.progress / testRecipe.progress));
+          const progressStart = index < 1 ? 40 : 40 - (40 * (others[index - 1].progress / testRecipe.progress))
+          return <path key={index} d={`
+            M ${index * 40} 40
+            L ${index * 40} ${progressStart}
+            C ${index * 40 + 20} ${progressStart},
+            ${index * 40 + 20} ${progressEnd},
+            ${index * 40 + 40} ${progressEnd}
+            L ${index * 40 + 40} 40
+          `} fill="#6e9a1b"/>;
+        })}
       </svg>
+      <span style={{
+        verticalAlign: 'bottom',
+        bottom: `${40*latestState.progress/testRecipe.progress}px`,
+      }}>{latestState.progress}/{testRecipe.progress}</span>
+    </ChartBar>
+    <ChartBar>
+      <svg style={{ verticalAlign: 'top', background: '#80d1ef' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
+        {states.slice(1).map((state, index, others) => {
+          const qualityEnd = (40 * (state.quality / testRecipe.quality));
+          const qualityStart = index < 1 ? 0 : (40 * (others[index - 1].quality / testRecipe.quality))
+          return <path key={index} d={`
+            M ${index * 40} 0
+            L ${index * 40} ${qualityStart}
+            C ${index * 40 + 20} ${qualityStart},
+            ${index * 40 + 20} ${qualityEnd},
+            ${index * 40 + 40} ${qualityEnd}
+            L ${index * 40 + 40} 0
+          `} fill="#50a1bf"/>;
+        })}
+      </svg>
+      <span style={{
+        verticalAlign: 'top',
+        top: `${40*latestState.quality/testRecipe.quality}px`,
+      }}>{latestState.quality}/{testRecipe.quality}</span>
     </ChartBar>
     <ActionBar>
       {actions.map((action, index) => <img
@@ -320,6 +360,7 @@ const SimComponent = () => {
         onClick={clickJobAction(index)}
       />)}
     </ActionBar>
+    <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <div>
       {jobs.map((n, i) => n && <JobButton
         active={jobId === i}

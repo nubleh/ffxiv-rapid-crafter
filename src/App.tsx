@@ -4,7 +4,7 @@ import {
   Route
 } from 'react-router-dom'
 
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 
 import Sim from './components/Sim';
 
@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <FootNote>
           This is a WIP thing made for fun.
           <br/>There are probably bugs everywhere, simulation is likely to be inaccurate.
-          <br/>This thing uses the crafting simulator library made by <a href="https://github.com/ffxiv-teamcraft/simulator/" target="_blank" rel="noreferrer">ffxiv-teamcraft</a>
+          <br/>This thing uses the crafting simulator library made by <a href="https://github.com/ffxiv-teamcraft/simulator/" target="_blank" rel="noopener noreferrer">ffxiv-teamcraft</a>
         </FootNote>
       </Wrapper>
     </Router>

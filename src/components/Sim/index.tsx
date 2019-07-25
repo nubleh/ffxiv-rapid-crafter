@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import queryString, { ParsedQuery } from 'query-string'
+import queryString from 'query-string'
 
 import styled, { css, keyframes } from 'styled-components/macro';
 
@@ -11,7 +11,6 @@ import {
   Simulation,
   Craft,
   CrafterStats,
-  CraftingJob,
   EffectiveBuff,
 } from '@ffxiv-teamcraft/simulator';
 
@@ -324,7 +323,7 @@ interface CraftState {
 }
 
 const SimComponent = (props: RouteComponentProps) => {
-  const { history, location } = props;
+  const { location } = props;
 
   // recipe parameters
   const [recipeRLvl, set_recipeRLvl] = useState(430);
@@ -360,13 +359,10 @@ const SimComponent = (props: RouteComponentProps) => {
     buffs: [] as EffectiveBuff[]
   });
 
-  const [queryValues, set_queryValues] = useState({} as ParsedQuery);
   const [actions, set_actions] = useState([] as CraftingAction[]);
   const [craftsmanship, set_craftsmanship] = useState(1800);
   const [control, set_control] = useState(1800);
   const [cp, set_cp] = useState(defaultState.cp);
-
-  const [sim, set_sim] = useState(undefined as Simulation | undefined);
 
   const stats = new CrafterStats(
     jobId,
@@ -481,6 +477,7 @@ const SimComponent = (props: RouteComponentProps) => {
     recipeProg,
     recipeQual,
     recipeLvl,
+    recipeRLvl,
     jobId,
     jobLvl,
   ])
@@ -745,9 +742,6 @@ const SimComponent = (props: RouteComponentProps) => {
         </span>
       </GenericBar>
     </div>
-    {sim && <SuccessBox>
-      {sim.getReliabilityReport().successPercent}% Success
-    </SuccessBox>}
     <ScrollingBar ref={scrollActionBarToRight}>
       <ChartBar>
         <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
@@ -914,9 +908,6 @@ const SimComponent = (props: RouteComponentProps) => {
         />)}
       </ActionTypeSet>)}
     </div>
-    <pre>
-      {JSON.stringify(sim, null, 2)}
-    </pre>
   </div>;
 };
 

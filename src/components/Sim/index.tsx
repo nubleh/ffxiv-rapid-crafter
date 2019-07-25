@@ -196,7 +196,7 @@ const ActionBar = styled.div`
 
   > img {
     cursor: grab;
-    transition: transform 0.1s;
+    transition: border 0.1s linear, transform 0.1s;
 
     &:hover {
       transform: translateY(-2px) scale(1.05);
@@ -239,6 +239,7 @@ interface DraggedImageProps {
   isDragged?: boolean
 }
 const DraggedImage = styled.img`
+  border: solid 0px transparent;
   ${({ isDragged }: DraggedImageProps) => isDragged && css`
     animation: ${rotate} 1s infinite alternate;
   `}
@@ -796,8 +797,8 @@ const SimComponent = (props: RouteComponentProps) => {
             src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
             onClick={clickJobAction(index)}
             style={{
-              marginLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? '5px' : '',
-              marginRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? '5px' : '',
+              borderLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? 'solid 10px transparent' : '',
+              borderRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? 'solid 10px transparent' : '',
               opacity: index === draggingIndex ? 0.5 : 1
             }}
             isDragged={isDragged}

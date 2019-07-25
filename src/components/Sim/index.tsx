@@ -378,7 +378,9 @@ const SimComponent = (props: RouteComponentProps) => {
   );
 
   useEffect(() => {
-    const values = queryString.parse(location.search);
+    const values = queryString.parse(location.search, {
+      arrayFormat: 'comma'
+    });
 
     // recipe stuff
     const rrl = parseInt(values.rrl + '');
@@ -641,7 +643,9 @@ const SimComponent = (props: RouteComponentProps) => {
       jl: jobLvl,
       jis: jobIsSpecialist ? '1' : '0',
       // zact: acts.join(','),
-      yact: yacts.join(','),
+      yact: yacts,
+    }, {
+      arrayFormat: 'comma'
     })}`
 
     if (newShareUrl === shareUrl) {

@@ -144,6 +144,15 @@ const ActionBar = styled.div`
   }
 `;
 
+const BuffLines = styled.div`
+  padding: 0 10px;
+
+  > svg {
+    height: 40px;
+    min-width: 3px;
+  }
+`;
+
 interface DraggedImageProps {
   isDragged?: boolean
 }
@@ -390,8 +399,12 @@ const SimComponent = (props: RouteComponentProps) => {
 
   useEffect(() => {
     if (actions.length < 1) {
-      set_statedActions([]);
-      set_states([defaultState]);
+      if (statedActions.length > 0) {
+        set_statedActions([]);
+      }
+      if (states.length !== 1 && states[0] !== defaultState) {
+        set_states([defaultState]);
+      }
       return;
     }
     // find how many actions match the saved one
@@ -404,6 +417,9 @@ const SimComponent = (props: RouteComponentProps) => {
     // fix simulated data starting from step x
     const newStatedActions = statedActions.slice(0, x);
     const newStates = states.slice(0, x + 1);
+    if (statedActions.length === x && states.length === x + 1) {
+      return;
+    }
     for (let y = x; y < actions.length; y++) {
       newStatedActions[y] = actions[y];
       const sim = new Simulation(
@@ -625,6 +641,12 @@ const SimComponent = (props: RouteComponentProps) => {
           />
         })}
       </ActionBar>
+      <BuffLines>
+        <svg style={{
+          width: `${(states.length - 1) * 40}px`
+        }}>
+        </svg>
+      </BuffLines>
       <ChartBar>
         <svg style={{ verticalAlign: 'bottom', background: '#eee' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
           <path d={`

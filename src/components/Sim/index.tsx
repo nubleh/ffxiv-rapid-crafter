@@ -539,19 +539,16 @@ const SimComponent = (props: RouteComponentProps) => {
     testRecipe,
   ]);
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      if (scrollingBarRef.current) {
-        scrollingBarRef.current.scrollTo({
-          behavior: 'smooth',
-          left: scrollingBarRef.current.scrollWidth
-        });
-      }
-    });
-  }, [actions]);
-
   const clickAction = (action: CraftingAction) => {
     return () => {
+      requestAnimationFrame(() => {
+        if (scrollingBarRef.current) {
+          scrollingBarRef.current.scrollTo({
+            behavior: 'smooth',
+            left: scrollingBarRef.current.scrollWidth
+          });
+        }
+      });
       set_actions([...actions, action]);
     };
   };

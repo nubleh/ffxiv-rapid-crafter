@@ -104,6 +104,7 @@ const actionsByType = [
   ActionType.BUFF,
   ActionType.SPECIALTY,
 ].map(type => CraftingActionsRegistry.getActionsByType(type));
+const allActions = CraftingActionsRegistry.ALL_ACTIONS.map(act => act.action);
 
 interface JobButtonProps {
   active?: boolean
@@ -440,7 +441,12 @@ const SimComponent = (props: RouteComponentProps) => {
     if (!isNaN(jis)) {
       set_jobIsSpecialist(jis === 1);
     }
-    if (values && values.zact) {
+    if (values && values.yact) {
+      const passedActions = (values.yact + '').split(',').map(actIndex => {
+        return allActions[parseInt(actIndex)];
+      });
+      set_actions(passedActions);
+    } else if (values && values.zact) {
       const acts = (values.zact + '').split(',');
       const passedActions = CraftingActionsRegistry.createFromIds(acts.map(act => parseInt(act)));
       set_actions(passedActions);
@@ -613,6 +619,15 @@ const SimComponent = (props: RouteComponentProps) => {
   const showShareUrl = () => {
     const url = window.location.href.split('?')[0];
     const acts = actions.map(a => a.getId(jobId));
+
+    // const yacts = actions.filter(a => !!a).map(a => allActions.indexOf(allActions.find(ac => ac.getId(jobId) === a.getId(jobId)))).filter(actIndex => actIndex !== -1);
+    const yacts = actions.filter(a => a).map(a => {
+      const matchingAction = allActions.find(ac => {
+        return a.getId(jobId) === ac.getId(jobId);
+      })
+      return matchingAction ? allActions.indexOf(matchingAction) : -1;
+    });
+
     const newShareUrl = `${url}?${queryString.stringify({
       rl: recipeLvl,
       rp: recipeProg,
@@ -625,7 +640,8 @@ const SimComponent = (props: RouteComponentProps) => {
       jcp: jobCP,
       jl: jobLvl,
       jis: jobIsSpecialist ? '1' : '0',
-      zact: acts.join(',')
+      // zact: acts.join(','),
+      yact: yacts.join(','),
     })}`
 
     if (newShareUrl === shareUrl) {

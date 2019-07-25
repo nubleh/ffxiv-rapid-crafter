@@ -216,7 +216,6 @@ const BuffLines = styled.div`
 
   > svg {
     height: 40px;
-    min-width: 3px;
 
     path {
       cursor: pointer;
@@ -691,6 +690,15 @@ const SimComponent = (props: RouteComponentProps) => {
     set_buffLineTooltipPosition([clientX - left + 5, clientY - top + 5]);
   };
 
+  const scrollActionBarToRight = (el: HTMLDivElement) => {
+    if (el) {
+      el.scrollTo({
+        behavior: 'smooth',
+        left: el.scrollWidth
+      });
+    }
+  };
+
   return <div>
     <div style={{display: 'none'}}>
       <GenericBar color={'#9eca4b'}>
@@ -721,7 +729,7 @@ const SimComponent = (props: RouteComponentProps) => {
     {sim && <SuccessBox>
       {sim.getReliabilityReport().successPercent}% Success
     </SuccessBox>}
-    <ScrollingBar>
+    <ScrollingBar ref={scrollActionBarToRight}>
       <ChartBar>
         <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
           <path d={`

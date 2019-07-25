@@ -215,7 +215,7 @@ const BuffLines = styled.div`
   top: -10px;
 
   > svg {
-    height: 40px;
+    min-height: 15px;
 
     path {
       cursor: pointer;

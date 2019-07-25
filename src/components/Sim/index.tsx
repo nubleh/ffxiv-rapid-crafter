@@ -268,7 +268,13 @@ const ChartBar = styled.div`
 
 const ScrollingBar = styled.div`
   overflow: auto;
-  padding: 45px;
+  padding: 1vw;
+  padding-top: 12px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+  z-index: 3;
 `;
 
 const SuccessBox = styled.div`
@@ -598,7 +604,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const showShareUrl = () => {
     const url = window.location.href.split('?')[0];
     const acts = actions.map(a => a.getId(jobId));
-    set_shareUrl(`${url}?${queryString.stringify({
+    const newShareUrl = `${url}?${queryString.stringify({
       rl: recipeLvl,
       rp: recipeProg,
       rq: recipeQual,
@@ -611,7 +617,13 @@ const SimComponent = (props: RouteComponentProps) => {
       jl: jobLvl,
       jis: jobIsSpecialist ? '1' : '0',
       zact: acts.join(',')
-    })}`);
+    })}`
+
+    if (newShareUrl === shareUrl) {
+      set_shareUrl('');
+    } else {
+      set_shareUrl(newShareUrl);
+    }
 
     set_exportString('');
   };
@@ -625,7 +637,11 @@ const SimComponent = (props: RouteComponentProps) => {
   const [exportString, set_exportString] = useState('');
   const showExportString = () => {
     const newExportString = CraftingActionsRegistry.exportToCraftOpt(CraftingActionsRegistry.serializeRotation(actions));
-    set_exportString(newExportString);
+    if (newExportString === exportString) {
+      set_exportString('');
+    } else {
+      set_exportString(newExportString);
+    }
 
     set_shareUrl('');
   };

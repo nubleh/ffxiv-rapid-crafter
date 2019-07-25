@@ -9,7 +9,7 @@ import styled, { css } from 'styled-components/macro';
 import Sim from './components/Sim';
 
 const Wrapper = styled.div`
-  padding: 20px;
+  padding-bottom: 30vh;
 `;
 const FootNote = styled.div`
   font-size: 10px;

@@ -29,9 +29,51 @@ const jobs = [
   'CUL'
 ];
 
-const job_id = 1;
-const testActions: CraftingAction[] = [
-];
+const buffLineColors: { [key: number]: string } = {
+  /*
+    INNER_QUIET = 0,
+    STEADY_HAND = 1,
+    STEADY_HAND_II = 2,
+    WASTE_NOT = 3,
+    WASTE_NOT_II = 4,
+    STROKE_OF_GENIUS = 5,
+    INITIAL_PREPARATIONS = 6,
+    COMFORT_ZONE = 7,
+    WHISTLE_WHILE_YOU_WORK = 8,
+    HEART_OF_CRAFTER = 9,
+    MANIPULATION = 10,
+    MANIPULATION_II = 11,
+    GREAT_STRIDES = 12,
+    INNOVATION = 13,
+    INGENUITY = 14,
+    INGENUITY_II = 15,
+    MAKERS_MARK = 16,
+    NAME_OF_THE_ELEMENTS = 17,
+    RECLAIM = 18,
+    REUSE = 19
+  */
+  0: '#deae6d',
+  1: '#ab6e59', 
+  2: '#ab6e59', 
+  3: '#6a6a69',
+  4: '#6a6a69',
+  5: '#6d7d69',
+  6: '#1777da',
+  7: '#db75ed',
+  8: '#e1be4d',
+  9: '#6ee626',
+  10: '#68ccac',
+  11: '#68ccac',
+  12: '#c35289',
+  13: '#2675c5',
+  14: '#c5a666',
+  15: '#c5a666',
+  16: '#2b7d5c',
+  17: '#3bac4a',
+  18: '#72aae7',
+  19: '#f7de63',
+};
+
 const actionsByType = [
   ActionType.PROGRESSION,
   ActionType.CP_RECOVERY,
@@ -146,6 +188,9 @@ const ActionBar = styled.div`
 
 const BuffLines = styled.div`
   padding: 0 10px;
+  position: relative;
+  left: 20px;
+  top: -10px;
 
   > svg {
     height: 40px;
@@ -250,7 +295,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const [jobControl, set_jobControl] = useState(1800);
   const [jobCP, set_jobCP] = useState(489);
   const [jobLvl, set_jobLvl] = useState(80);
-  const [jobIsSpecialist, set_jobIsSpecialist] = useState(false);
+  const [jobIsSpecialist, set_jobIsSpecialist] = useState(true);
   const testStats = new CrafterStats(
     jobId,
     jobCraftsmanship,
@@ -282,7 +327,7 @@ const SimComponent = (props: RouteComponentProps) => {
     craftsmanship,
     control,
     cp,
-    false,
+    jobIsSpecialist,
     80,
     [80, 80, 80, 80, 80, 80, 80, 80]
   );
@@ -409,15 +454,17 @@ const SimComponent = (props: RouteComponentProps) => {
     }
     // find how many actions match the saved one
     let x;
+    let allGood = true;
     for (x = 0; x < Math.max(actions.length, statedActions.length); x++) {
       if (actions[x] !== statedActions[x]) {
+        allGood = false;
         break;
       }
     }
     // fix simulated data starting from step x
     const newStatedActions = statedActions.slice(0, x);
     const newStates = states.slice(0, x + 1);
-    if (statedActions.length === x && states.length === x + 1) {
+    if (allGood) {
       return;
     }
     for (let y = x; y < actions.length; y++) {
@@ -554,6 +601,55 @@ const SimComponent = (props: RouteComponentProps) => {
     }
   };
 
+  const buffLines: Array<{
+    d: string
+    buffId: number
+    points: Array<number[] | null | undefined>
+  }> = [];
+  const buffLineThickness = 3;
+  const buffLineGap = 3;
+  const buffLineTopGap = 5;
+  const buffLineSpacing = buffLineThickness + buffLineGap;
+  states.slice(1).forEach((state, stateIndex) => {
+    const { buffs } = state;
+    buffs.forEach((buff, buffIndex) => {
+      const existingBuff = buffLines.find(b => b.buffId === buff.buff);
+      let thisBuff: {
+        d: string
+        buffId: number
+        points: Array<number[] | null | undefined>
+      };
+      if (existingBuff) {
+        thisBuff = existingBuff;
+      } else {
+        thisBuff = {
+          buffId: buff.buff,
+          d: '',
+          points: []
+        };
+        buffLines.push(thisBuff);
+      }
+      if (thisBuff.d === '') {
+        thisBuff.d += `
+          M ${stateIndex * 40 + buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
+          L ${(stateIndex * 40) + 40 - buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
+        `;
+      } else {
+        thisBuff.d += `
+          L ${stateIndex * 40 + buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
+          L ${(stateIndex * 40) + 40 - buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
+        `;
+      }
+      const startX = stateIndex * 40 + buffLineSpacing;
+      const startY = buffLineTopGap + ((buffs.length - 1) * buffLineSpacing + (buffLineThickness)) - (buffIndex * buffLineSpacing);
+      const endX = (stateIndex * 40) + 40 - buffLineSpacing;
+      const endY = startY;
+      thisBuff.points[stateIndex] = [startX, startY, endX, endY];
+
+    });
+  });
+  const maxBuffHeight = Math.max(...states.map(st => st.buffs.length));
+
   return <div>
     <div style={{display: 'none'}}>
       <GenericBar color={'#9eca4b'}>
@@ -643,8 +739,42 @@ const SimComponent = (props: RouteComponentProps) => {
       </ActionBar>
       <BuffLines>
         <svg style={{
-          width: `${(states.length - 1) * 40}px`
+          width: `${(actions.length) * 40}px`,
+          height: `${(maxBuffHeight * buffLineSpacing) + buffLineTopGap}px`
         }}>
+          {buffLines.map(buffLine => {
+            window.console.log(buffLine.points);
+            const d = buffLine.points.map((point, pointIndex, points) => {
+              let pointD = '';
+              const prevPoint = points[pointIndex - 1];
+              if (point && !prevPoint) {
+                pointD += `
+                  M ${point[0] - (buffLineSpacing / 2)} 0
+                  C ${point[0] - (buffLineSpacing / 2)} ${point[1] / 2}
+                    ${point[0] - (buffLineSpacing / 4)} ${point[1]}
+                    ${point[0]} ${point[1]}
+                  L ${point[2]} ${point[3]}
+                `;
+              }
+              if (point && prevPoint) {
+                pointD += `
+                  M ${prevPoint[2]} ${prevPoint[3]}
+                  C ${point[0] - (point[0] - prevPoint[2]) / 2} ${prevPoint[3]}
+                    ${point[0] - (point[0] - prevPoint[2]) / 2} ${point[1]}
+                    ${point[0]} ${point[1]}
+                  L ${point[2]} ${point[3]}
+                `;
+              }
+              return pointD;
+            }).join(' ');
+            return <path
+              key={buffLine.buffId}
+              d={d}
+              fill="transparent"
+              strokeWidth="3"
+              stroke={buffLineColors[buffLine.buffId] || '#ccc'}
+            />;
+          })}
         </svg>
       </BuffLines>
       <ChartBar>

@@ -268,6 +268,8 @@ const ChartBar = styled.div`
 
 const ScrollingBar = styled.div`
   overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
   padding: 1vw;
   padding-top: 12px;
   position: sticky;

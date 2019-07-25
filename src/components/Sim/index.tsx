@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string'
 
@@ -364,6 +364,8 @@ const SimComponent = (props: RouteComponentProps) => {
   const [control, set_control] = useState(1800);
   const [cp, set_cp] = useState(defaultState.cp);
 
+  const scrollingBarRef = useRef(undefined as undefined | HTMLDivElement);
+
   const stats = new CrafterStats(
     jobId,
     craftsmanship,
@@ -528,7 +530,6 @@ const SimComponent = (props: RouteComponentProps) => {
     }
     set_statedActions(newStatedActions);
     set_states(newStates);
-
   }, [
     actions,
     defaultState,
@@ -537,6 +538,17 @@ const SimComponent = (props: RouteComponentProps) => {
     stats,
     testRecipe,
   ]);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      if (scrollingBarRef.current) {
+        scrollingBarRef.current.scrollTo({
+          behavior: 'smooth',
+          left: scrollingBarRef.current.scrollWidth
+        });
+      }
+    });
+  }, [actions]);
 
   const clickAction = (action: CraftingAction) => {
     return () => {
@@ -706,12 +718,9 @@ const SimComponent = (props: RouteComponentProps) => {
     set_buffLineTooltipPosition([clientX - left + 5, clientY - top + 5]);
   };
 
-  const scrollActionBarToRight = (el: HTMLDivElement) => {
+  const setScrollingBarRef = (el: HTMLDivElement) => {
     if (el) {
-      el.scrollTo({
-        behavior: 'smooth',
-        left: el.scrollWidth
-      });
+      scrollingBarRef.current = el;
     }
   };
 
@@ -742,7 +751,7 @@ const SimComponent = (props: RouteComponentProps) => {
         </span>
       </GenericBar>
     </div>
-    <ScrollingBar ref={scrollActionBarToRight}>
+    <ScrollingBar ref={setScrollingBarRef}>
       <ChartBar>
         <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
           <path d={`

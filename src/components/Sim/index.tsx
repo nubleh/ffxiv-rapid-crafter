@@ -229,7 +229,7 @@ const BuffLineTooltip = styled.div`
   background: #fff;
   padding: 10px 20px;
   border-radius: 4px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   position: absolute;
   pointer-events: none;
   z-index: 2;

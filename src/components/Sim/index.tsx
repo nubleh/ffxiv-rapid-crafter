@@ -73,6 +73,28 @@ const buffLineColors: { [key: number]: string } = {
   18: '#72aae7',
   19: '#f7de63',
 };
+const buffLineNames: { [key: number]: string } = {
+  0: 'Inner Quiet',
+  1: 'Steady Hand', 
+  2: 'Steady Hand II', 
+  3: 'Waste Not',
+  4: 'Waste Not II',
+  5: 'Stroke Of Genius',
+  6: 'Initial Preparations',
+  7: 'Comfort Zone',
+  8: 'Whistle While You Work',
+  9: 'Heart Of Crafter',
+  10: 'Manipulation',
+  11: 'Manipulation II',
+  12: 'Great Strides',
+  13: 'Innovation',
+  14: 'Ingenuity',
+  15: 'Ingenuity II',
+  16: 'Maker\'s Mark',
+  17: 'Name Of The Elements',
+  18: 'Reclaim',
+  19: 'Reuse',
+};
 
 const actionsByType = [
   ActionType.PROGRESSION,
@@ -195,7 +217,23 @@ const BuffLines = styled.div`
   > svg {
     height: 40px;
     min-width: 3px;
+
+    path {
+      cursor: pointer;
+      &:hover {
+        stroke: black;
+      }
+    }
   }
+`;
+const BuffLineTooltip = styled.div`
+  background: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.03);
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
 `;
 
 interface DraggedImageProps {
@@ -602,7 +640,6 @@ const SimComponent = (props: RouteComponentProps) => {
   };
 
   const buffLines: Array<{
-    d: string
     buffId: number
     points: Array<number[] | null | undefined>
   }> = [];
@@ -615,7 +652,6 @@ const SimComponent = (props: RouteComponentProps) => {
     buffs.forEach((buff, buffIndex) => {
       const existingBuff = buffLines.find(b => b.buffId === buff.buff);
       let thisBuff: {
-        d: string
         buffId: number
         points: Array<number[] | null | undefined>
       };
@@ -624,31 +660,36 @@ const SimComponent = (props: RouteComponentProps) => {
       } else {
         thisBuff = {
           buffId: buff.buff,
-          d: '',
           points: []
         };
         buffLines.push(thisBuff);
-      }
-      if (thisBuff.d === '') {
-        thisBuff.d += `
-          M ${stateIndex * 40 + buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
-          L ${(stateIndex * 40) + 40 - buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
-        `;
-      } else {
-        thisBuff.d += `
-          L ${stateIndex * 40 + buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
-          L ${(stateIndex * 40) + 40 - buffLineSpacing} ${((buffs.length - 1) * buffLineSpacing + (buffLineThickness / 2)) - (buffIndex * buffLineSpacing)}
-        `;
       }
       const startX = stateIndex * 40 + buffLineSpacing;
       const startY = buffLineTopGap + ((buffs.length - 1) * buffLineSpacing + (buffLineThickness)) - (buffIndex * buffLineSpacing);
       const endX = (stateIndex * 40) + 40 - buffLineSpacing;
       const endY = startY;
       thisBuff.points[stateIndex] = [startX, startY, endX, endY];
-
     });
   });
   const maxBuffHeight = Math.max(...states.map(st => st.buffs.length));
+
+  const [buffLineTooltip, set_buffLineTooltip] = useState('');
+  const [buffLineTooltipPosition, set_buffLineTooltipPosition] = useState([0, 0]);
+  const showBuffLineTooltip = (buffId: number) => {
+    return () => {
+      set_buffLineTooltip(buffLineNames[buffId] || '');
+    };
+  };
+  const hideBuffLineTooltip = () => {
+    set_buffLineTooltip('');
+  };
+  const updateBuffLineTooltipPosition = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { clientX, clientY } = e;
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const { left, top } = rect;
+    set_buffLineTooltipPosition([clientX - left + 5, clientY - top + 5]);
+  };
 
   return <div>
     <div style={{display: 'none'}}>
@@ -737,13 +778,18 @@ const SimComponent = (props: RouteComponentProps) => {
           />
         })}
       </ActionBar>
-      <BuffLines>
+      <BuffLines onMouseMove={updateBuffLineTooltipPosition}>
+        {buffLineTooltip && <BuffLineTooltip
+          style={{
+            top: `${buffLineTooltipPosition[1]}px`,
+            left: `${buffLineTooltipPosition[0]}px`,
+          }}
+        >{buffLineTooltip}</BuffLineTooltip>}
         <svg style={{
           width: `${(actions.length) * 40}px`,
           height: `${(maxBuffHeight * buffLineSpacing) + buffLineTopGap}px`
         }}>
           {buffLines.map(buffLine => {
-            window.console.log(buffLine.points);
             const d = buffLine.points.map((point, pointIndex, points) => {
               let pointD = '';
               const prevPoint = points[pointIndex - 1];
@@ -768,6 +814,8 @@ const SimComponent = (props: RouteComponentProps) => {
               return pointD;
             }).join(' ');
             return <path
+              onMouseOver={showBuffLineTooltip(buffLine.buffId)}
+              onMouseOut={hideBuffLineTooltip}
               key={buffLine.buffId}
               d={d}
               fill="transparent"

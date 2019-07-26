@@ -313,19 +313,29 @@ const ActionTypeSet = styled.div`
   margin: 4px;
   background: #f5f5f5;
   border-radius: 4px;
+`;
 
-  > img {
-    cursor: pointer;
-    transition: transform 0.2s;
-
-    &:hover {
-      transform: scale(0.95);
+interface ActionPalletteImage {
+  isDragged?: boolean
+}
+const ActionPalletteImage = styled.img`
+  transition: transform 0.5s;
+  cursor: pointer;
+  transition: transform 0.2s;
+  ${({ isDragged }: DraggedImageProps) => isDragged && css`
+    &, &:active {
+      transition: transform 0.1s;
+      transform: scale(0) !important;
     }
+  `}
 
-    &:active {
-      transform: scale(0.9);
-      transition-duration: 0.1s;
-    }
+  &:hover {
+    transform: scale(0.95);
+  }
+
+  &:active {
+    transform: scale(0.9);
+    transition-duration: 0.1s;
   }
 `;
 
@@ -953,7 +963,8 @@ const SimComponent = (props: RouteComponentProps) => {
           const isFailed = successStates[index] === false;
           const hasBorderLeft = (index === draggedOverIndex) && ((newActionDrag !== undefined) || (draggingIndex !== undefined && draggedOverIndex < draggingIndex));
           return <DraggedImage
-            alt="Action"
+            alt={CraftingActionsRegistry.serializeRotation([action]).join('')}
+            title={CraftingActionsRegistry.serializeRotation([action]).join('')}
             key={`${index} ${action.getId(jobId)}`}
             draggable={true}
             onDragStart={OnActionDragStart(index)}
@@ -1072,14 +1083,16 @@ const SimComponent = (props: RouteComponentProps) => {
     </div>
     <div>
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
-        {someActions.map((i, index) => <img
-          alt="Action"
+        {someActions.map((i, index) => <ActionPalletteImage
+          alt={CraftingActionsRegistry.serializeRotation([i]).join('')}
+          title={CraftingActionsRegistry.serializeRotation([i]).join('')}
           key={index}
           draggable={true}
           onDragStart={OnNewActionDragStart(i)}
           onDragEnd={OnNewActionDragEnd}
           src={process.env.PUBLIC_URL + (Icons as any)[i.getId(jobId)]}
           onClick={clickAction(i)}
+          isDragged={i === newActionDrag}
         />)}
       </ActionTypeSet>)}
     </div>

@@ -237,9 +237,7 @@ const IQLine = styled.div`
 
     > path {
       cursor: pointer;
-      &:hover {
-        stroke: #6e9a1b;
-      }
+      stroke: #6e9a1b;
     }
   }
 `;
@@ -890,7 +888,7 @@ const SimComponent = (props: RouteComponentProps) => {
             for (let x = 0; x < IQStack; x++) {
               leaves.push(1);
             }
-            const leafColor = leaves.length >= 11 ? '#dcac2a' : '#6e9a1b';
+            const leafColor = leaves.length >= 11 ? '#dcac2a' : '#3e6a00';
             return <g
               key={IQStackIndex}
             >
@@ -905,7 +903,21 @@ const SimComponent = (props: RouteComponentProps) => {
               {leaves.map((leaf, leafIndex) => {
                 const xx = x + (leafIndex % 2) * leafWidth;
                 const yy = (y - leafHeight * 1.5) - (leafIndex * leafHeight * 0.5);
-                const d = `
+                const d = leafIndex >= 10 ? `
+                  M ${xx + 0.5 * leafWidth} ${yy + 0.75 * leafHeight}
+                  C ${xx + 0.75 * leafWidth} ${yy + 0.75 * leafHeight}
+                    ${xx + leafWidth} ${yy + 0.9 * leafHeight}
+                    ${xx + leafWidth} ${yy + leafHeight}
+                  C ${xx + leafWidth} ${yy + 0.5 * leafHeight}
+                    ${xx + 0.75 * leafWidth} ${yy}
+                    ${xx + 0.5 * leafWidth} ${yy}
+                  C ${xx + 0.25 * leafWidth} ${yy}
+                    ${xx} ${yy - 0.15 * leafHeight}
+                    ${xx} ${yy - 0.25 * leafHeight}
+                  C ${xx} ${yy + 0.25 * leafHeight}
+                    ${xx + 0.25 * leafWidth} ${yy + 0.75 * leafHeight}
+                    ${xx + 0.5 * leafWidth} ${yy + 0.75 * leafHeight}
+                ` : `
                   M ${xx} ${yy + leafHeight}
                   C ${xx} ${yy + 0.9 * leafHeight}
                     ${xx + 0.25 * leafWidth} ${yy + 0.75 * leafHeight}

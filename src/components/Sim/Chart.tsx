@@ -39,6 +39,7 @@ interface ChartProps {
   label: string
   bgColor: string
 }
+
 const Chart = (props: ChartProps) => {
   const {
     colWidth,

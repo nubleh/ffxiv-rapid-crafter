@@ -31,51 +31,6 @@ const jobs = [
   'ALC',
   'CUL'
 ];
-
-const buffLineColors: { [key: number]: string } = {
-  /*
-    INNER_QUIET = 0,
-    STEADY_HAND = 1,
-    STEADY_HAND_II = 2,
-    WASTE_NOT = 3,
-    WASTE_NOT_II = 4,
-    STROKE_OF_GENIUS = 5,
-    INITIAL_PREPARATIONS = 6,
-    COMFORT_ZONE = 7,
-    WHISTLE_WHILE_YOU_WORK = 8,
-    HEART_OF_CRAFTER = 9,
-    MANIPULATION = 10,
-    MANIPULATION_II = 11,
-    GREAT_STRIDES = 12,
-    INNOVATION = 13,
-    INGENUITY = 14,
-    INGENUITY_II = 15,
-    MAKERS_MARK = 16,
-    NAME_OF_THE_ELEMENTS = 17,
-    RECLAIM = 18,
-    REUSE = 19
-  */
-  0: '#deae6d',
-  1: '#ab6e59', 
-  2: '#ab6e59', 
-  3: '#6a6a69',
-  4: '#6a6a69',
-  5: '#6d7d69',
-  6: '#1777da',
-  7: '#db75ed',
-  8: '#e1be4d',
-  9: '#6ee626',
-  10: '#68ccac',
-  11: '#68ccac',
-  12: '#c35289',
-  13: '#2675c5',
-  14: '#c5a666',
-  15: '#c5a666',
-  16: '#2b7d5c',
-  17: '#3bac4a',
-  18: '#72aae7',
-  19: '#f7de63',
-};
 const buffLineNames: { [key: number]: string } = {
   0: 'Inner Quiet',
   1: 'Steady Hand', 

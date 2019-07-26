@@ -18,6 +18,7 @@ import { Icons } from './Icons';
 import Bars from './Bars';
 import Chart, { ChartMode } from './Chart';
 import IQBed from './IQBed';
+import BuffTimeline from './BuffTimeline';
 
 const jobs = [
   '', '', '', '', '', '', '', '',
@@ -649,40 +650,6 @@ const SimComponent = (props: RouteComponentProps) => {
     }
   };
 
-  const buffLines: Array<{
-    buffId: number
-    points: Array<number[] | null | undefined>
-  }> = [];
-  const buffLineThickness = 3;
-  const buffLineGap = 3;
-  const buffLineTopGap = 5;
-  const buffLineSpacing = buffLineThickness + buffLineGap;
-  states.slice(1).forEach((state, stateIndex) => {
-    const { buffs } = state;
-    buffs.filter(buff => buff.buff !== 0).forEach((buff, buffIndex, filteredBuffs) => {
-      const existingBuff = buffLines.find(b => b.buffId === buff.buff);
-      let thisBuff: {
-        buffId: number
-        points: Array<number[] | null | undefined>
-      };
-      if (existingBuff) {
-        thisBuff = existingBuff;
-      } else {
-        thisBuff = {
-          buffId: buff.buff,
-          points: []
-        };
-        buffLines.push(thisBuff);
-      }
-      const startX = 20 + stateIndex * 40 + buffLineSpacing;
-      const startY = buffLineTopGap + ((filteredBuffs.length - 1) * buffLineSpacing + (buffLineThickness)) - (buffIndex * buffLineSpacing);
-      const endX = 20 + (stateIndex * 40) + 40 - buffLineSpacing;
-      const endY = startY;
-      thisBuff.points[stateIndex] = [startX, startY, endX, endY];
-    });
-  });
-  const maxBuffHeight = Math.max(...states.map(st => st.buffs.length));
-
   const [buffLineTooltip, set_buffLineTooltip] = useState('');
   const [buffLineTooltipPosition, set_buffLineTooltipPosition] = useState([0, 0]);
   const showBuffLineTooltip = (buffId: number) => {
@@ -778,45 +745,12 @@ const SimComponent = (props: RouteComponentProps) => {
             left: `${buffLineTooltipPosition[0]}px`,
           }}
         >{buffLineTooltip}</BuffLineTooltip>}
-        <svg style={{
-          width: `${(actions.length) * 40}px`,
-          height: `${(maxBuffHeight * buffLineSpacing) + buffLineTopGap}px`
-        }}>
-          {buffLines.map(buffLine => {
-            const d = buffLine.points.map((point, pointIndex, points) => {
-              let pointD = '';
-              const prevPoint = points[pointIndex - 1];
-              if (point && !prevPoint) {
-                pointD += `
-                  M ${point[0] - (buffLineSpacing / 2)} 0
-                  C ${point[0] - (buffLineSpacing / 2)} ${point[1] / 2}
-                    ${point[0] - (buffLineSpacing / 4)} ${point[1]}
-                    ${point[0]} ${point[1]}
-                  L ${point[2]} ${point[3]}
-                `;
-              }
-              if (point && prevPoint) {
-                pointD += `
-                  M ${prevPoint[2]} ${prevPoint[3]}
-                  C ${point[0] - (point[0] - prevPoint[2]) / 2} ${prevPoint[3]}
-                    ${point[0] - (point[0] - prevPoint[2]) / 2} ${point[1]}
-                    ${point[0]} ${point[1]}
-                  L ${point[2]} ${point[3]}
-                `;
-              }
-              return pointD;
-            }).join(' ');
-            return <path
-              onMouseOver={showBuffLineTooltip(buffLine.buffId)}
-              onMouseOut={hideBuffLineTooltip}
-              key={buffLine.buffId}
-              d={d}
-              fill="transparent"
-              strokeWidth="3"
-              stroke={buffLineColors[buffLine.buffId] || '#ccc'}
-            />;
-          })}
-        </svg>
+        <BuffTimeline
+          states={states}
+          colWidth={colWidth}
+          showBuffLineTooltip={showBuffLineTooltip}
+          hideBuffLineTooltip={hideBuffLineTooltip}
+        />
       </BuffLines>
       <Chart
         colWidth={colWidth}

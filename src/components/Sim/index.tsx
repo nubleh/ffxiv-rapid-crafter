@@ -225,13 +225,21 @@ const BuffLines = styled.div`
     }
   }
 `;
-const IQLine = styled(BuffLines)`
-  top: auto;
+const IQLine = styled.div`
+  padding: 0 10px;
+  position: relative;
+  left: 20px;
   bottom: -10px;
 
   > svg {
     height: 40px;
     display: block;
+
+    > path {
+      &:hover {
+        stroke: #50a1bf;
+      }
+    }
   }
 `;
 const BuffLineTooltip = styled.div`
@@ -349,7 +357,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const [jobCP, set_jobCP] = useState(489);
   const [jobLvl, set_jobLvl] = useState(80);
   const [jobIsSpecialist, set_jobIsSpecialist] = useState(true);
-  const testStats = new CrafterStats(
+  const stats = new CrafterStats(
     jobId,
     jobCraftsmanship,
     jobControl,
@@ -362,7 +370,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const [defaultState, set_defaultState] = useState({
     progress: 0,
     quality: 0,
-    cp: testStats.cp,
+    cp: stats.cp,
     durability: 80,
     buffs: [] as EffectiveBuff[]
   });
@@ -373,16 +381,6 @@ const SimComponent = (props: RouteComponentProps) => {
   const [cp, set_cp] = useState(defaultState.cp);
 
   const scrollingBarRef = useRef(undefined as undefined | HTMLDivElement);
-
-  const stats = new CrafterStats(
-    jobId,
-    craftsmanship,
-    control,
-    cp,
-    jobIsSpecialist,
-    80,
-    [80, 80, 80, 80, 80, 80, 80, 80]
-  );
 
   useEffect(() => {
     const values = queryString.parse(location.search, {
@@ -836,16 +834,63 @@ const SimComponent = (props: RouteComponentProps) => {
       </ChartBar>
 
       <IQLine>
-        {JSON.stringify(IQStacks)}
-        {JSON.stringify(IQLines)}
         <svg style={{
           width: `${(actions.length) * 40}px`,
         }}>
-          {IQLines.map(IQLine => {
+          {IQStacks.map((IQStack, IQStackIndex) => {
+            const leaves: number[] = [];
+            const leafWidth = 6;
+            const leafHeight = 4;
+            const x = IQStackIndex * 40;
+            const y = 40 - buffLineSpacing;
+            for (let x = 0; x < IQStack; x++) {
+              leaves.push(1);
+            }
+            const leafColor = leaves.length >= 11 ? '#dcac2a' : '#6e9a1b';
+            return <g
+              key={IQStackIndex}
+            >
+              <path
+                d={`
+                  M ${x + leafWidth} ${y}
+                  L ${x + leafWidth} ${y - IQStack * leafHeight * 0.5}
+                `}
+                stroke="#6e9a1b"
+                fill="transparent"
+              />;
+              {leaves.map((leaf, leafIndex) => {
+                const xx = x + (leafIndex % 2) * leafWidth;
+                const yy = (y - leafHeight * 1.5) - (leafIndex * leafHeight * 0.5);
+                const d = `
+                  M ${xx} ${yy + leafHeight}
+                  C ${xx} ${yy + 0.9 * leafHeight}
+                    ${xx + 0.25 * leafWidth} ${yy + 0.75 * leafHeight}
+                    ${xx + 0.5 * leafWidth} ${yy + 0.75 * leafHeight}
+                  C ${xx + 0.75 * leafWidth} ${yy + 0.75 * leafHeight}
+                    ${xx + leafWidth} ${yy + 0.9 * leafHeight}
+                    ${xx + leafWidth} ${yy + leafHeight}
+                  C ${xx + leafWidth} ${yy + 0.5 * leafHeight}
+                    ${xx + 0.75 * leafWidth} ${yy}
+                    ${xx + 0.5 * leafWidth} ${yy}
+                  C ${xx + 0.25 * leafWidth} ${yy}
+                    ${xx} ${yy + 0.5 * leafHeight}
+                    ${xx} ${yy + leafHeight}
+                `;
+                return <path
+                  d={d}
+                  key={leafIndex}
+                  stroke="transparent"
+                  fill={leafColor}
+                />;
+              })}
+            </g>;
+          })}
+          {IQLines.map((IQLine, IQLineIndex) => {
             const start = IQLine.start * 40 + buffLineThickness / 2;
             const end = IQLine.end < 0 ? actions.length * 40 : IQLine.end * 40;
-            const gap = buffLineSpacing + buffLineThickness;
+            const gap = buffLineSpacing;
             return <path
+              key={IQLineIndex}
               d={`
                 M ${start} 40
                 C ${start} ${40 - gap / 2}
@@ -962,8 +1007,8 @@ const SimComponent = (props: RouteComponentProps) => {
             M 0 0
             L 0 40
             ${states.slice(1).map((state, index, others) => {
-              const cpEnd = (40 * (state.cp / testStats.cp));
-              const cpStart = index < 1 ? 40 : (40 * (others[index - 1].cp / testStats.cp))
+              const cpEnd = (40 * (state.cp / stats.cp));
+              const cpStart = index < 1 ? 40 : (40 * (others[index - 1].cp / stats.cp))
               return `C ${index * 40 + 20} ${cpStart} ${index * 40 + 20} ${cpEnd} ${index * 40 + 40} ${cpEnd}`;
             }).join("\n")}
             L ${(states.length - 1) * 40} 0
@@ -971,8 +1016,8 @@ const SimComponent = (props: RouteComponentProps) => {
         </svg>
         <span style={{
           verticalAlign: 'top',
-          top: `${Math.min(40, 40*latestState.cp/testStats.cp)}px`,
-        }}>{latestState.cp}/{testStats.cp} CP</span>
+          top: `${Math.min(40, 40*latestState.cp/stats.cp)}px`,
+        }}>{latestState.cp}/{stats.cp} CP</span>
       </ChartBar>
     </ScrollingBar>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>

@@ -17,6 +17,7 @@ import {
 import { Icons } from './Icons';
 import Bars from './Bars';
 import Chart, { ChartMode } from './Chart';
+import IQBed from './IQBed';
 
 const jobs = [
   '', '', '', '', '', '', '', '',
@@ -287,7 +288,7 @@ const ShareInput = styled.input`
   border: solid 1px #eee;
 `;
 
-interface CraftState {
+export interface CraftState {
   progress: number
   quality: number
   cp: number
@@ -330,7 +331,7 @@ const SimComponent = (props: RouteComponentProps) => {
     cp: stats.cp,
     durability: recipeDur,
     buffs: [] as EffectiveBuff[]
-  });
+  } as CraftState);
 
   const [actions, set_actions] = useState([] as CraftingAction[]);
 
@@ -722,35 +723,13 @@ const SimComponent = (props: RouteComponentProps) => {
     set_buffLineTooltipPosition([clientX - left + 5, clientY - top + 5]);
   };
 
-  const IQStacks = states.slice(1).map(st => {
-    const { buffs } = st;
-    const IQ = buffs.find(buff => buff.buff === 0);
-    return IQ ? IQ.stacks : 0;
-  });
-  const IQLines: Array<{
-    start: number
-    end: number
-  }> = [];
-  let start = -1;
-  IQStacks.forEach((stack, stackIndex) => {
-    if (stack > 0 && start < 0) {
-      start = stackIndex;
-      IQLines.push({
-        start,
-        end: -1
-      });
-    }
-    if (start > -1 && stack < 1) {
-      IQLines[IQLines.length - 1].end = stackIndex;
-      start = -1;
-    }
-  });
-
   const setScrollingBarRef = (el: HTMLDivElement) => {
     if (el) {
       scrollingBarRef.current = el;
     }
   };
+
+  const colWidth = 40;
 
   return <div>
     {/* <Bars
@@ -766,7 +745,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
     <ScrollingBar ref={setScrollingBarRef}>
       <Chart
-        colWidth={40}
+        colWidth={colWidth}
         rowHeight={40}
         domain={[0, testRecipe.progress]}
         data={states.map(state => state.progress)}
@@ -776,7 +755,7 @@ const SimComponent = (props: RouteComponentProps) => {
         label="Progress"
       />
       <Chart
-        colWidth={40}
+        colWidth={colWidth}
         rowHeight={40}
         domain={[0, testRecipe.quality]}
         data={states.map(state => state.quality)}
@@ -786,99 +765,7 @@ const SimComponent = (props: RouteComponentProps) => {
         label="Quality"
       />
 
-      <IQLine>
-        <svg style={{
-          width: `${(actions.length) * 40}px`,
-        }}>
-          {IQStacks.map((IQStack, IQStackIndex) => {
-            const leaves: number[] = [];
-            const leafWidth = 6;
-            const leafHeight = 4;
-            const x = 20 + IQStackIndex * 40;
-            const y = 40 - buffLineSpacing;
-            for (let j = 0; j < IQStack; j++) {
-              leaves.push(1);
-            }
-            const leafColor = leaves.length >= 11 ? '#dcac2a' : '#3e6a00';
-            return <g
-              key={IQStackIndex}
-            >
-              <path
-                d={`
-                  M ${x + leafWidth} ${y}
-                  L ${x + leafWidth} ${y - IQStack * leafHeight * 0.5}
-                `}
-                stroke="#6e9a1b"
-                fill="transparent"
-              />;
-              {leaves.map((leaf, leafIndex) => {
-                const xx = x + (leafIndex % 2) * leafWidth;
-                const yy = (y - leafHeight * 1.5) - (leafIndex * leafHeight * 0.5);
-                const d = leafIndex >= 10 ? `
-                  M ${xx + 0.5 * leafWidth} ${yy + 0.75 * leafHeight}
-                  C ${xx + 0.75 * leafWidth} ${yy + 0.75 * leafHeight}
-                    ${xx + leafWidth} ${yy + 0.9 * leafHeight}
-                    ${xx + leafWidth} ${yy + leafHeight}
-                  C ${xx + leafWidth} ${yy + 0.5 * leafHeight}
-                    ${xx + 0.75 * leafWidth} ${yy}
-                    ${xx + 0.5 * leafWidth} ${yy}
-                  C ${xx + 0.25 * leafWidth} ${yy}
-                    ${xx} ${yy - 0.15 * leafHeight}
-                    ${xx} ${yy - 0.25 * leafHeight}
-                  C ${xx} ${yy + 0.25 * leafHeight}
-                    ${xx + 0.25 * leafWidth} ${yy + 0.75 * leafHeight}
-                    ${xx + 0.5 * leafWidth} ${yy + 0.75 * leafHeight}
-                ` : `
-                  M ${xx} ${yy + leafHeight}
-                  C ${xx} ${yy + 0.9 * leafHeight}
-                    ${xx + 0.25 * leafWidth} ${yy + 0.75 * leafHeight}
-                    ${xx + 0.5 * leafWidth} ${yy + 0.75 * leafHeight}
-                  C ${xx + 0.75 * leafWidth} ${yy + 0.75 * leafHeight}
-                    ${xx + leafWidth} ${yy + 0.9 * leafHeight}
-                    ${xx + leafWidth} ${yy + leafHeight}
-                  C ${xx + leafWidth} ${yy + 0.5 * leafHeight}
-                    ${xx + 0.75 * leafWidth} ${yy}
-                    ${xx + 0.5 * leafWidth} ${yy}
-                  C ${xx + 0.25 * leafWidth} ${yy}
-                    ${xx} ${yy + 0.5 * leafHeight}
-                    ${xx} ${yy + leafHeight}
-                `;
-                return <path
-                  d={d}
-                  key={leafIndex}
-                  stroke="transparent"
-                  fill={leafColor}
-                />;
-              })}
-            </g>;
-          })}
-          {IQLines.map((IQLine, IQLineIndex) => {
-            const start = 20 + IQLine.start * 40 + buffLineThickness / 2;
-            const end = IQLine.end < 0 ? actions.length * 40 : IQLine.end * 40;
-            const gap = buffLineSpacing;
-            return <path
-              key={IQLineIndex}
-              d={`
-                M ${start} 40
-                C ${start} ${40 - gap / 2}
-                  ${start + gap / 2} ${40 - gap}
-                  ${start + gap} ${40 - gap}
-                ${IQLine.end < 0 ? `
-                  L ${end} ${40 - gap}
-                ` : `
-                  L ${end - gap} ${40 - gap}
-                  C ${end - gap / 2} ${40 - gap}
-                    ${end} ${40 - gap / 2}
-                    ${end} 40
-                `}
-              `}
-              fill="transparent"
-              strokeWidth="3"
-              stroke={'#ccc'}
-            />
-          })}
-        </svg>
-      </IQLine>
+      <IQBed states={states} colWidth={colWidth}/>
 
       <ActionBar>
         {actions.map((action, index) => {
@@ -897,6 +784,7 @@ const SimComponent = (props: RouteComponentProps) => {
             src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
             onClick={clickJobAction(index)}
             style={{
+              width: `${colWidth}px`,
               borderLeft: hasBorderLeft ? 'solid 10px transparent' : '',
               borderRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? 'solid 10px transparent' : '',
             }}
@@ -953,7 +841,7 @@ const SimComponent = (props: RouteComponentProps) => {
         </svg>
       </BuffLines>
       <Chart
-        colWidth={40}
+        colWidth={colWidth}
         rowHeight={40}
         domain={[0, testRecipe.durability]}
         data={states.map(state => state.durability)}
@@ -963,7 +851,7 @@ const SimComponent = (props: RouteComponentProps) => {
         label="Durability"
       />
       <Chart
-        colWidth={40}
+        colWidth={colWidth}
         rowHeight={40}
         domain={[0, jobCP]}
         data={states.map(state => state.cp)}

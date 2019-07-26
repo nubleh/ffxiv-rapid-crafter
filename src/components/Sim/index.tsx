@@ -16,6 +16,7 @@ import {
 
 import { Icons } from './Icons';
 import Bars from './Bars';
+import Chart, { ChartMode } from './Chart';
 
 const jobs = [
   '', '', '', '', '', '', '', '',
@@ -230,28 +231,6 @@ const DraggedImage = styled.img`
   `}
 `;
 
-const ChartBar = styled.div`
-  height: 40px;
-  padding: 0 10px;
-  position: relative;
-  white-space: nowrap;
-
-  > svg {
-    transition: width 0.2s;
-  }
-
-  > span {
-    font-size: 8px;
-    position: relative;
-    padding: 0 4px;
-    transform: translateY(-50%);
-  }
-
-  & + & > svg {
-    border-top: solid 1px #000;
-  }
-`;
-
 const ScrollingBar = styled.div`
   overflow: auto;
   overflow-y: hidden;
@@ -349,14 +328,11 @@ const SimComponent = (props: RouteComponentProps) => {
     progress: 0,
     quality: 0,
     cp: stats.cp,
-    durability: 80,
+    durability: recipeDur,
     buffs: [] as EffectiveBuff[]
   });
 
   const [actions, set_actions] = useState([] as CraftingAction[]);
-  const [craftsmanship, set_craftsmanship] = useState(1800);
-  const [control, set_control] = useState(1800);
-  const [cp, set_cp] = useState(defaultState.cp);
 
   const scrollingBarRef = useRef(undefined as undefined | HTMLDivElement);
 
@@ -789,40 +765,26 @@ const SimComponent = (props: RouteComponentProps) => {
     /> */}
 
     <ScrollingBar ref={setScrollingBarRef}>
-      <ChartBar>
-        <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-          <path d={`
-            M 0 40
-            ${states.slice(1).map((state, index, others) => {
-              const progressEnd = 40 - (40 * (state.progress / testRecipe.progress));
-              const progressStart = index < 1 ? 40 : 40 - (40 * (others[index - 1].progress / testRecipe.progress));
-              return `C ${index * 40 + 20} ${progressStart} ${index * 40 + 20} ${progressEnd} ${index * 40 + 40} ${progressEnd}`;
-            }).join("\n")}
-            L ${(states.length - 1) * 40} 40
-          `} fill="#6e9a1b"/>
-        </svg>
-        <span style={{
-          verticalAlign: 'bottom',
-          bottom: `${Math.min(40, 40*latestState.progress/testRecipe.progress)}px`,
-        }}>{latestState.progress}/{testRecipe.progress} Progress</span>
-      </ChartBar>
-      <ChartBar>
-        <svg style={{ verticalAlign: 'top', background: '#80d1ef' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-          <path d={`
-            M 0 0
-            ${states.slice(1).map((state, index, others) => {
-              const qualityEnd = (40 * (state.quality / testRecipe.quality));
-              const qualityStart = index < 1 ? 0 : (40 * (others[index - 1].quality / testRecipe.quality))
-              return `C ${index * 40 + 20} ${qualityStart} ${index * 40 + 20} ${qualityEnd} ${index * 40 + 40} ${qualityEnd}`;
-            }).join("\n")}
-            L ${(states.length - 1) * 40} 0
-          `} fill="#50a1bf"/>
-        </svg>
-        <span style={{
-          verticalAlign: 'top',
-          top: `${Math.min(40, 40*latestState.quality/testRecipe.quality)}px`,
-        }}>{latestState.quality}/{testRecipe.quality} Quality</span>
-      </ChartBar>
+      <Chart
+        colWidth={40}
+        rowHeight={40}
+        domain={[0, testRecipe.progress]}
+        data={states.map(state => state.progress)}
+        mode={ChartMode.UPWARDS}
+        color="#6e9a1b"
+        bgColor="#9eca4b"
+        label="Progress"
+      />
+      <Chart
+        colWidth={40}
+        rowHeight={40}
+        domain={[0, testRecipe.quality]}
+        data={states.map(state => state.quality)}
+        mode={ChartMode.DOWNWARDS}
+        color="#50a1bf"
+        bgColor="#80d1ef"
+        label="Quality"
+      />
 
       <IQLine>
         <svg style={{
@@ -990,43 +952,26 @@ const SimComponent = (props: RouteComponentProps) => {
           })}
         </svg>
       </BuffLines>
-      <ChartBar>
-        <svg style={{ verticalAlign: 'bottom', background: '#eee' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-          <path d={`
-            M 0 40
-            L 0 0
-            ${states.slice(1).map((state, index, others) => {
-              const durEnd = 40 - (40 * (state.durability / testRecipe.durability));
-              const durStart = index < 1 ? 0 : 40 - (40 * (others[index - 1].durability / testRecipe.durability))
-              return `C ${index * 40 + 20} ${durStart} ${index * 40 + 20} ${durEnd} ${index * 40 + 40} ${durEnd}`;
-            }).join("\n")}
-            L ${(states.length - 1) * 40} 40
-          `} fill="#ccc"/>
-          })}
-        </svg>
-        <span style={{
-          verticalAlign: 'bottom',
-          bottom: `${Math.min(40, 40*latestState.durability/testRecipe.durability)}px`,
-        }}>{latestState.durability}/{testRecipe.durability} Durability</span>
-      </ChartBar>
-      <ChartBar>
-        <svg style={{ verticalAlign: 'top', background: '#efaeff' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
-          <path d={`
-            M 0 0
-            L 0 40
-            ${states.slice(1).map((state, index, others) => {
-              const cpEnd = (40 * (state.cp / stats.cp));
-              const cpStart = index < 1 ? 40 : (40 * (others[index - 1].cp / stats.cp))
-              return `C ${index * 40 + 20} ${cpStart} ${index * 40 + 20} ${cpEnd} ${index * 40 + 40} ${cpEnd}`;
-            }).join("\n")}
-            L ${(states.length - 1) * 40} 0
-          `} fill="#bf7ed9"/>
-        </svg>
-        <span style={{
-          verticalAlign: 'top',
-          top: `${Math.min(40, 40*latestState.cp/stats.cp)}px`,
-        }}>{latestState.cp}/{stats.cp} CP</span>
-      </ChartBar>
+      <Chart
+        colWidth={40}
+        rowHeight={40}
+        domain={[0, testRecipe.durability]}
+        data={states.map(state => state.durability)}
+        mode={ChartMode.UPWARDS}
+        color="#ccc"
+        bgColor="#eee"
+        label="Durability"
+      />
+      <Chart
+        colWidth={40}
+        rowHeight={40}
+        domain={[0, jobCP]}
+        data={states.map(state => state.cp)}
+        mode={ChartMode.DOWNWARDS}
+        color="#bf7ed9"
+        bgColor="#efaeff"
+        label="CP"
+      />
     </ScrollingBar>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <JobButton onClick={showShareUrl} active={true}>Share</JobButton>

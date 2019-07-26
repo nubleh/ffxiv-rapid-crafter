@@ -236,8 +236,9 @@ const IQLine = styled.div`
     display: block;
 
     > path {
+      cursor: pointer;
       &:hover {
-        stroke: #50a1bf;
+        stroke: #6e9a1b;
       }
     }
   }

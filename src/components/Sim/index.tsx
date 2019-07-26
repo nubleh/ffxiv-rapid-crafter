@@ -225,6 +225,15 @@ const BuffLines = styled.div`
     }
   }
 `;
+const IQLine = styled(BuffLines)`
+  top: auto;
+  bottom: -10px;
+
+  > svg {
+    height: 40px;
+    display: block;
+  }
+`;
 const BuffLineTooltip = styled.div`
   background: #fff;
   padding: 10px 20px;
@@ -282,8 +291,6 @@ const ScrollingBar = styled.div`
 
 const SuccessBox = styled.div`
   padding: 10px;
-  
-
 `;
 
 const ActionTypeSet = styled.div`
@@ -693,7 +700,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const buffLineSpacing = buffLineThickness + buffLineGap;
   states.slice(1).forEach((state, stateIndex) => {
     const { buffs } = state;
-    buffs.forEach((buff, buffIndex) => {
+    buffs.filter(buff => buff.buff !== 0).forEach((buff, buffIndex, filteredBuffs) => {
       const existingBuff = buffLines.find(b => b.buffId === buff.buff);
       let thisBuff: {
         buffId: number
@@ -709,7 +716,7 @@ const SimComponent = (props: RouteComponentProps) => {
         buffLines.push(thisBuff);
       }
       const startX = stateIndex * 40 + buffLineSpacing;
-      const startY = buffLineTopGap + ((buffs.length - 1) * buffLineSpacing + (buffLineThickness)) - (buffIndex * buffLineSpacing);
+      const startY = buffLineTopGap + ((filteredBuffs.length - 1) * buffLineSpacing + (buffLineThickness)) - (buffIndex * buffLineSpacing);
       const endX = (stateIndex * 40) + 40 - buffLineSpacing;
       const endY = startY;
       thisBuff.points[stateIndex] = [startX, startY, endX, endY];
@@ -734,6 +741,30 @@ const SimComponent = (props: RouteComponentProps) => {
     const { left, top } = rect;
     set_buffLineTooltipPosition([clientX - left + 5, clientY - top + 5]);
   };
+
+  const IQStacks = states.slice(1).map(st => {
+    const { buffs } = st;
+    const IQ = buffs.find(buff => buff.buff === 0);
+    return IQ ? IQ.stacks : 0;
+  });
+  const IQLines: Array<{
+    start: number
+    end: number
+  }> = [];
+  let start = -1;
+  IQStacks.forEach((stack, stackIndex) => {
+    if (stack > 0 && start < 0) {
+      start = stackIndex;
+      IQLines.push({
+        start,
+        end: -1
+      });
+    }
+    if (start > -1 && stack < 1) {
+      IQLines[IQLines.length - 1].end = stackIndex;
+      start = -1;
+    }
+  });
 
   const setScrollingBarRef = (el: HTMLDivElement) => {
     if (el) {
@@ -803,6 +834,40 @@ const SimComponent = (props: RouteComponentProps) => {
           top: `${Math.min(40, 40*latestState.quality/testRecipe.quality)}px`,
         }}>{latestState.quality}/{testRecipe.quality} Quality</span>
       </ChartBar>
+
+      <IQLine>
+        {JSON.stringify(IQStacks)}
+        {JSON.stringify(IQLines)}
+        <svg style={{
+          width: `${(actions.length) * 40}px`,
+        }}>
+          {IQLines.map(IQLine => {
+            const start = IQLine.start * 40 + buffLineThickness / 2;
+            const end = IQLine.end < 0 ? actions.length * 40 : IQLine.end * 40;
+            const gap = buffLineSpacing + buffLineThickness;
+            return <path
+              d={`
+                M ${start} 40
+                C ${start} ${40 - gap / 2}
+                  ${start + gap / 2} ${40 - gap}
+                  ${start + gap} ${40 - gap}
+                ${IQLine.end < 0 ? `
+                  L ${end} ${40 - gap}
+                ` : `
+                  L ${end - gap} ${40 - gap}
+                  C ${end - gap / 2} ${40 - gap}
+                    ${end} ${40 - gap / 2}
+                    ${end} 40
+                `}
+              `}
+              fill="transparent"
+              strokeWidth="3"
+              stroke={'#ccc'}
+            />
+          })}
+        </svg>
+      </IQLine>
+
       <ActionBar>
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;

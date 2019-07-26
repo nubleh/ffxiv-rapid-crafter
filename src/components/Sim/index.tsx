@@ -15,6 +15,7 @@ import {
 } from '@ffxiv-teamcraft/simulator';
 
 import { Icons } from './Icons';
+import Bars from './Bars';
 
 const jobs = [
   '', '', '', '', '', '', '', '',
@@ -132,41 +133,6 @@ const JobButton = styled.div`
     transform: translateY(1px);
     user-select: none;
   }
-`;
-
-interface GenericBarProps {
-  color?: string
-}
-const GenericBar = styled.div`
-  width: 300px;
-  height: 20px;
-  background: #eee;
-  margin: 10px;
-  font-size: 10px;
-  line-height: 20px;
-  white-space: nowrap;
-
-  > div, span {
-    vertical-align: middle;
-  }
-
-  > span {
-    margin: 0 4px;
-  }
-
-  > div {
-    height: 100%;
-    width: 100%;
-    transition: width 0.3s;
-    background: #ccc;
-    display: inline-block;
-  }
-
-  ${({ color }: GenericBarProps) => color && css`
-    > div {
-      background: ${color};
-    }
-  `}
 `;
 
 const rotate = keyframes`
@@ -811,32 +777,16 @@ const SimComponent = (props: RouteComponentProps) => {
   };
 
   return <div>
-    <div style={{display: 'none'}}>
-      <GenericBar color={'#9eca4b'}>
-        <div style={{width: `${Math.min(100, latestState.progress/testRecipe.progress*100)}%`}}/>
-        <span>
-          {latestState.progress}/{testRecipe.progress} Progress
-        </span>
-      </GenericBar>
-      <GenericBar color={'#50a1bf'}>
-        <div style={{width: `${Math.min(100, latestState.quality/testRecipe.quality*100)}%`}}/>
-        <span>
-          {latestState.quality}/{testRecipe.quality} Quality
-        </span>
-      </GenericBar>
-      <GenericBar>
-        <div style={{width: `${Math.min(100, latestState.durability/testRecipe.durability*100)}%`}}/>
-        <span>
-          {latestState.durability}/{testRecipe.durability} Durability
-        </span>
-      </GenericBar>
-      <GenericBar color={'#bf7ed9'}>
-        <div style={{width: `${Math.min(100, latestState.cp/cp*100)}%`}}/>
-        <span>
-          {latestState.cp}/{cp} CP
-        </span>
-      </GenericBar>
-    </div>
+    {/* <Bars
+      currentProgress={latestState.progress}
+      maxProgress={testRecipe.progress}
+      currentQuality={latestState.quality}
+      maxQuality={testRecipe.quality}
+      currentDurability={latestState.durability}
+      maxDurability={testRecipe.durability}
+      currentCP={latestState.cp}
+      maxCP={jobCP}
+    /> */}
 
     <ScrollingBar ref={setScrollingBarRef}>
       <ChartBar>

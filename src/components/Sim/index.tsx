@@ -227,6 +227,7 @@ const ScrollingBar = styled.div`
   background: #fff;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
   z-index: 3;
+  margin-bottom: 20px;
 `;
 
 const ActionTypeSet = styled.div`
@@ -838,20 +839,6 @@ const SimComponent = (props: RouteComponentProps) => {
         label="CP"
       />
     </ScrollingBar>
-    <JobButton onClick={clearActions} active={true}>Clear</JobButton>
-    <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
-    {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
-    <JobButton onClick={showExportString} active={true}>Export</JobButton>
-    {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
-    <JobButton onClick={requestImportString} active={true}>Import</JobButton>
-    <div>
-      {jobs.map((n, i) => n && <JobButton
-        active={jobId === i}
-        key={i}
-        onClick={clickJobButton(i)}>
-        {n}
-      </JobButton>)}
-    </div>
     <div>
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
         {someActions.map((i, index) => <ActionPalletteImage
@@ -867,6 +854,20 @@ const SimComponent = (props: RouteComponentProps) => {
         />)}
       </ActionTypeSet>)}
     </div>
+    <div>
+      {jobs.map((n, i) => n && <JobButton
+        active={jobId === i}
+        key={i}
+        onClick={clickJobButton(i)}>
+        {n}
+      </JobButton>)}
+    </div>
+    <JobButton onClick={clearActions} active={true}>Clear</JobButton>
+    <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
+    {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
+    <JobButton onClick={showExportString} active={true}>Export</JobButton>
+    {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
+    <JobButton onClick={requestImportString} active={true}>Import</JobButton>
   </div>;
 };
 

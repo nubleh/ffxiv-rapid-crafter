@@ -180,17 +180,6 @@ const BuffLines = styled.div`
   padding: 0 10px;
   position: relative;
   top: -10px;
-
-  > svg {
-    min-height: 15px;
-
-    path {
-      cursor: pointer;
-      &:hover {
-        stroke: black;
-      }
-    }
-  }
 `;
 const BuffLineTooltip = styled.div`
   background: #fff;
@@ -270,12 +259,30 @@ const ShareInput = styled.input`
   border: solid 1px #eee;
 `;
 
+const LazyStats = styled.div`
+  padding: 20px;
+  font-size: 12px;
+  label {
+    display: block;
+    padding: 4px;
+
+    input {
+      margin-right: 8px;
+      padding: 4px 8px;
+      border: solid 1px #999;
+      border-radius: 2px;
+    }
+  }
+`;
+
 export interface CraftState {
   progress: number
   quality: number
   cp: number
   durability: number
   buffs: EffectiveBuff[]
+  stats: CrafterStats
+  recipe: Craft
 }
 
 const SimComponent = (props: RouteComponentProps) => {
@@ -307,12 +314,30 @@ const SimComponent = (props: RouteComponentProps) => {
     [jobLvl, jobLvl, jobLvl, jobLvl, jobLvl, jobLvl, jobLvl, jobLvl]
   );
 
+  const [testRecipe, set_testRecipe] = useState({
+    job: jobId,
+    lvl: jobLvl,
+    durability: recipeDur,
+    progress: recipeProg,
+    quality: recipeQual,
+    rlvl: recipeRLvl,
+    materialQualityFactor: 75,
+    id: '0',
+    suggestedControl: 1733,
+    suggestedCraftsmanship: 1866,
+    quickSynth: 1,
+    ingredients: [],
+    hq: 1,
+  } as Craft);
+
   const [defaultState, set_defaultState] = useState({
     progress: 0,
     quality: 0,
-    cp: stats.cp,
+    cp: jobCP,
     durability: recipeDur,
-    buffs: [] as EffectiveBuff[]
+    buffs: [] as EffectiveBuff[],
+    stats: stats,
+    recipe: testRecipe
   } as CraftState);
 
   const [actions, set_actions] = useState([] as CraftingAction[]);
@@ -396,22 +421,6 @@ const SimComponent = (props: RouteComponentProps) => {
       set_actions(passedActions);
     }
   }, [location.search]);
-
-  const [testRecipe, set_testRecipe] = useState({
-    job: jobId,
-    lvl: jobLvl,
-    durability: recipeDur,
-    progress: recipeProg,
-    quality: recipeQual,
-    rlvl: recipeRLvl,
-    materialQualityFactor: 75,
-    id: '0',
-    suggestedControl: 1733,
-    suggestedCraftsmanship: 1866,
-    quickSynth: 1,
-    ingredients: [],
-    hq: 1,
-  } as Craft);
   useEffect(() => {
     set_testRecipe(tr => {
       return {
@@ -457,9 +466,21 @@ const SimComponent = (props: RouteComponentProps) => {
         break;
       }
     }
+
+    if (didStatsChange(stats, states[states.length - 1].stats) || didRecipeChange(testRecipe, states[states.length - 1].recipe)) {
+      x = 0;
+      allGood = false;
+    }
+
     // fix simulated data starting from step x
     const newStatedActions = statedActions.slice(0, x);
     const newStates = states.slice(0, x + 1);
+    newStates[0] = {
+      ...defaultState,
+      cp: jobCP,
+      stats,
+      recipe: testRecipe
+    };
     if (allGood) {
       return;
     }
@@ -476,7 +497,9 @@ const SimComponent = (props: RouteComponentProps) => {
         quality: sim.quality,
         cp: sim.availableCP,
         durability: sim.durability,
-        buffs: [...sim.buffs]
+        buffs: [...sim.buffs],
+        stats,
+        recipe: testRecipe
       };
 
       if (y === actions.length - 1) {
@@ -796,6 +819,40 @@ const SimComponent = (props: RouteComponentProps) => {
         {n}
       </JobButton>)}
     </div>
+    <LazyStats>
+      <label>
+        <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}/>
+        Craftsmanship
+      </label>
+      <label>
+        <input type="text" value={jobControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobControl(parseInt(e.currentTarget.value) || 0)}/>
+        Control
+      </label>
+      <label>
+        <input type="text" value={jobCP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobCP(parseInt(e.currentTarget.value) || 0)}/>
+        CP
+      </label>
+      <label>
+        <input type="checkbox" checked={jobIsSpecialist} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobIsSpecialist(e.currentTarget.checked)}/>
+        Specialist
+      </label>
+      <label>
+        <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeProg(parseInt(e.currentTarget.value) || 0)}/>
+        Recipe progress
+      </label>
+      <label>
+        <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeQual(parseInt(e.currentTarget.value) || 0)}/>
+        Recipe Quality
+      </label>
+      <label>
+        <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeDur(parseInt(e.currentTarget.value) || 0)}/>
+        Recipe Durability
+      </label>
+      <label>
+        <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}/>
+        Recipe Level
+      </label>
+    </LazyStats>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
     {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
@@ -806,3 +863,18 @@ const SimComponent = (props: RouteComponentProps) => {
 };
 
 export default SimComponent;
+
+const didStatsChange = (stats1: CrafterStats, stats2: CrafterStats) => {
+  return stats1.cp !== stats2.cp
+    || stats1.craftsmanship !== stats2.craftsmanship
+    || stats1._control !== stats2._control
+    || stats1.level !== stats2.level
+    || stats1.specialist !== stats2.specialist
+};
+
+const didRecipeChange = (recipe1: Craft, recipe2: Craft) => {
+  return recipe1.progress !== recipe2.progress
+    || recipe1.quality !== recipe2.quality
+    || recipe1.rlvl !== recipe2.rlvl
+    || recipe1.durability !== recipe2.durability;
+};

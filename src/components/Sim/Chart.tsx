@@ -51,6 +51,8 @@ const Chart = (props: ChartProps) => {
     bgColor
   } = props;
 
+  const maxValue = domain[1] === 0 ? 1 : domain[1];
+
   return <ChartBar>
     <svg style={{
       verticalAlign: mode === ChartMode.DOWNWARDS ? 'bottom' : 'top',
@@ -58,13 +60,13 @@ const Chart = (props: ChartProps) => {
     }} width={(data.length - 1) * colWidth} height={rowHeight} xmlns="http://www.w3.org/2000/svg">
       {mode === ChartMode.UPWARDS && <path d={`
         M 0 40
-        L 0 ${rowHeight - (rowHeight * data[0] / domain[1])}
+        L 0 ${rowHeight - (rowHeight * data[0] / maxValue)}
         ${data.map((value, index, others) => {
           if (index < 1) {
             return '';
           }
-          const progressEnd = rowHeight - (rowHeight * (value / domain[1]));
-          const progressStart = rowHeight - (rowHeight * (others[index - 1] / domain[1]));
+          const progressEnd = rowHeight - (rowHeight * (value / maxValue));
+          const progressStart = rowHeight - (rowHeight * (others[index - 1] / maxValue));
           return `C ${(index - 1) * colWidth + colWidth / 2} ${progressStart}
                     ${(index - 1) * colWidth + colWidth / 2} ${progressEnd}
                     ${(index - 1) * colWidth + colWidth} ${progressEnd}`;
@@ -73,13 +75,13 @@ const Chart = (props: ChartProps) => {
       `} fill={color}/>}
       {mode === ChartMode.DOWNWARDS && <path d={`
         M 0 0
-        L 0 ${(rowHeight * data[0] / domain[1])}
+        L 0 ${(rowHeight * data[0] / maxValue)}
         ${data.map((value, index, others) => {
           if (index < 1) {
             return '';
           }
-          const qualityEnd = (rowHeight * (value / domain[1]));
-          const qualityStart = (rowHeight * (others[index - 1] / domain[1]))
+          const qualityEnd = (rowHeight * (value / maxValue));
+          const qualityStart = (rowHeight * (others[index - 1] / maxValue))
           return `C ${(index - 1) * colWidth + colWidth / 2} ${qualityStart}
                     ${(index - 1) * colWidth + colWidth / 2} ${qualityEnd}
                     ${(index - 1) * colWidth + colWidth} ${qualityEnd}`;
@@ -89,12 +91,12 @@ const Chart = (props: ChartProps) => {
     </svg>
     {mode === ChartMode.UPWARDS && <span style={{
       verticalAlign: 'bottom',
-      bottom: `${Math.min(rowHeight, rowHeight*data[data.length - 1]/domain[1])}px`,
-    }}>{data[data.length - 1]}/{domain[1]} {label}</span>}
+      bottom: `${Math.min(rowHeight, rowHeight*data[data.length - 1]/maxValue)}px`,
+    }}>{data[data.length - 1]}/{maxValue} {label}</span>}
     {mode === ChartMode.DOWNWARDS && <span style={{
       verticalAlign: 'top',
-      top: `${Math.min(40, 40*data[data.length - 1]/domain[1])}px`,
-    }}>{data[data.length - 1]}/{domain[1]} {label}</span>}
+      top: `${Math.min(40, 40*data[data.length - 1]/maxValue)}px`,
+    }}>{data[data.length - 1]}/{maxValue} {label}</span>}
   </ChartBar>;
 };
 

@@ -148,7 +148,6 @@ const rotate = keyframes`
 `;
 const ActionBar = styled.div`
   padding: 10px 10px;
-  height: 40px;
   white-space: nowrap;
 
   > img, > div {
@@ -192,21 +191,6 @@ const BuffLines = styled.div`
     }
   }
 `;
-const IQLine = styled.div`
-  padding: 0 10px;
-  position: relative;
-  bottom: -10px;
-
-  > svg {
-    height: 40px;
-    display: block;
-
-    > path {
-      cursor: pointer;
-      stroke: #6e9a1b;
-    }
-  }
-`;
 const BuffLineTooltip = styled.div`
   background: #fff;
   padding: 10px 20px;
@@ -243,10 +227,6 @@ const ScrollingBar = styled.div`
   background: #fff;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
   z-index: 3;
-`;
-
-const SuccessBox = styled.div`
-  padding: 10px;
 `;
 
 const ActionTypeSet = styled.div`
@@ -607,9 +587,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const [shareUrl, set_shareUrl] = useState('');
   const showShareUrl = () => {
     const url = window.location.href.split('?')[0];
-    const acts = actions.map(a => a.getId(jobId));
 
-    // const yacts = actions.filter(a => !!a).map(a => allActions.indexOf(allActions.find(ac => ac.getId(jobId) === a.getId(jobId)))).filter(actIndex => actIndex !== -1);
     const yacts = actions.filter(a => a).map(a => {
       const matchingAction = allActions.find(ac => {
         return a.getId(jobId) === ac.getId(jobId);
@@ -630,7 +608,6 @@ const SimComponent = (props: RouteComponentProps) => {
       jcp: jobCP,
       jl: jobLvl,
       jis: jobIsSpecialist ? '1' : '0',
-      // zact: acts.join(','),
       yact: yacts,
     }, {
       arrayFormat: 'comma'

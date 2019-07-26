@@ -20,6 +20,20 @@ const IQLine = styled.div`
   }
 `;
 
+interface StackNumberProps {
+  full?: boolean
+}
+const StackNumber = styled.div`
+  position: absolute;
+  color: #666;
+  font-size: 10px;
+  transform: translateX(-50%);
+
+  ${({ full }: StackNumberProps) => full && css`
+    color: #000;
+  `}
+`;
+
 interface IQBedProps {
   states: CraftState[]
   colWidth: number
@@ -51,14 +65,24 @@ const IQBed = (props: IQBedProps) => {
       start = -1;
     }
   });
+  const leafWidth = 6;
+  const leafHeight = 4;
+
   return <IQLine>
+    {IQStacks.map((IQStack, IQStackIndex) => {
+      return IQStack > 0 && <StackNumber
+        style={{
+          top: 20 - IQStack * (leafHeight / 2),
+          left: colWidth + IQStackIndex * colWidth
+        }}
+        full={IQStack >= 11}
+      >{IQStack}</StackNumber>;
+    })}
     <svg style={{
       width: `${(states.length - 1) * colWidth}px`,
     }}>
       {IQStacks.map((IQStack, IQStackIndex) => {
         const leaves: number[] = [];
-        const leafWidth = 6;
-        const leafHeight = 4;
         const x = 20 + IQStackIndex * colWidth;
         const y = 40 - lineSpacing;
         for (let j = 0; j < IQStack; j++) {

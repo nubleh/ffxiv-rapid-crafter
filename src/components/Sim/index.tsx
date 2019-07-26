@@ -211,7 +211,6 @@ const ActionBar = styled.div`
 const BuffLines = styled.div`
   padding: 0 10px;
   position: relative;
-  left: 20px;
   top: -10px;
 
   > svg {
@@ -228,7 +227,6 @@ const BuffLines = styled.div`
 const IQLine = styled.div`
   padding: 0 10px;
   position: relative;
-  left: 20px;
   bottom: -10px;
 
   > svg {
@@ -542,6 +540,7 @@ const SimComponent = (props: RouteComponentProps) => {
     }
     for (let y = x; y < actions.length; y++) {
       newStatedActions[y] = actions[y];
+      window.console.log(testRecipe);
       const sim = new Simulation(
         testRecipe,
         newStatedActions,
@@ -678,6 +677,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
     const newShareUrl = `${url}?${queryString.stringify({
       rl: recipeLvl,
+      rrl: recipeRLvl,
       rp: recipeProg,
       rq: recipeQual,
       rd: recipeDur,
@@ -754,9 +754,9 @@ const SimComponent = (props: RouteComponentProps) => {
         };
         buffLines.push(thisBuff);
       }
-      const startX = stateIndex * 40 + buffLineSpacing;
+      const startX = 20 + stateIndex * 40 + buffLineSpacing;
       const startY = buffLineTopGap + ((filteredBuffs.length - 1) * buffLineSpacing + (buffLineThickness)) - (buffIndex * buffLineSpacing);
-      const endX = (stateIndex * 40) + 40 - buffLineSpacing;
+      const endX = 20 + (stateIndex * 40) + 40 - buffLineSpacing;
       const endY = startY;
       thisBuff.points[stateIndex] = [startX, startY, endX, endY];
     });
@@ -883,9 +883,9 @@ const SimComponent = (props: RouteComponentProps) => {
             const leaves: number[] = [];
             const leafWidth = 6;
             const leafHeight = 4;
-            const x = IQStackIndex * 40;
+            const x = 20 + IQStackIndex * 40;
             const y = 40 - buffLineSpacing;
-            for (let x = 0; x < IQStack; x++) {
+            for (let j = 0; j < IQStack; j++) {
               leaves.push(1);
             }
             const leafColor = leaves.length >= 11 ? '#dcac2a' : '#3e6a00';
@@ -942,7 +942,7 @@ const SimComponent = (props: RouteComponentProps) => {
             </g>;
           })}
           {IQLines.map((IQLine, IQLineIndex) => {
-            const start = IQLine.start * 40 + buffLineThickness / 2;
+            const start = 20 + IQLine.start * 40 + buffLineThickness / 2;
             const end = IQLine.end < 0 ? actions.length * 40 : IQLine.end * 40;
             const gap = buffLineSpacing;
             return <path

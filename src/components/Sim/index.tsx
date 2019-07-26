@@ -255,11 +255,16 @@ const BuffLineTooltip = styled.div`
 
 interface DraggedImageProps {
   isDragged?: boolean
+  isFailed?: boolean
 }
 const DraggedImage = styled.img`
   border: solid 0px transparent;
   ${({ isDragged }: DraggedImageProps) => isDragged && css`
     animation: ${rotate} 1s infinite alternate;
+    opacity: 0.6;
+  `}
+  ${({ isFailed }: DraggedImageProps) => isFailed && css`
+    opacity: 0.2;
   `}
 `;
 
@@ -500,6 +505,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
   const [states, set_states] = useState([defaultState]);
   const [statedActions, set_statedActions] = useState([] as CraftingAction[]);
+  const [successStates, set_successStates] = useState([] as boolean[]);
 
   useEffect(() => {
     if (actions.length < 1) {
@@ -541,6 +547,11 @@ const SimComponent = (props: RouteComponentProps) => {
         durability: sim.durability,
         buffs: [...sim.buffs]
       };
+
+      if (y === actions.length - 1) {
+        const newSuccessStates = sim.steps.map(step => step.success === true);
+        set_successStates(newSuccessStates);
+      }
     }
     set_statedActions(newStatedActions);
     set_states(newStates);
@@ -594,6 +605,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
   const [newActionDrag, set_newActionDrag] = useState(undefined as undefined | CraftingAction);
   const OnActionDragEnd = () => {
+    set_newActionDrag(undefined);
     set_draggedOverIndex(undefined);
     set_draggingIndex(undefined);
   };
@@ -611,6 +623,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const OnActionDrop = (index: number) => {
     return (e: React.DragEvent) => {
       e.preventDefault();
+      set_newActionDrag(undefined);
       set_draggedOverIndex(undefined);
       set_draggingIndex(undefined);
       if (newActionDrag) {
@@ -638,6 +651,8 @@ const SimComponent = (props: RouteComponentProps) => {
   };
   const OnNewActionDragEnd = () => {
     set_newActionDrag(undefined);
+    set_draggedOverIndex(undefined);
+    set_draggingIndex(undefined);
   };
 
   const [shareUrl, set_shareUrl] = useState('');
@@ -815,6 +830,7 @@ const SimComponent = (props: RouteComponentProps) => {
         </span>
       </GenericBar>
     </div>
+
     <ScrollingBar ref={setScrollingBarRef}>
       <ChartBar>
         <svg style={{ verticalAlign: 'bottom', background: '#9eca4b' }} width={actions.length * 40} height="40" xmlns="http://www.w3.org/2000/svg">
@@ -934,6 +950,7 @@ const SimComponent = (props: RouteComponentProps) => {
       <ActionBar>
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;
+          const isFailed = successStates[index] === false;
           const hasBorderLeft = (index === draggedOverIndex) && ((newActionDrag !== undefined) || (draggingIndex !== undefined && draggedOverIndex < draggingIndex));
           return <DraggedImage
             alt="Action"
@@ -948,9 +965,9 @@ const SimComponent = (props: RouteComponentProps) => {
             style={{
               borderLeft: hasBorderLeft ? 'solid 10px transparent' : '',
               borderRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? 'solid 10px transparent' : '',
-              opacity: index === draggingIndex ? 0.5 : 1
             }}
             isDragged={isDragged}
+            isFailed={isFailed}
           />
         })}
       </ActionBar>

@@ -540,7 +540,6 @@ const SimComponent = (props: RouteComponentProps) => {
     }
     for (let y = x; y < actions.length; y++) {
       newStatedActions[y] = actions[y];
-      window.console.log(testRecipe);
       const sim = new Simulation(
         testRecipe,
         newStatedActions,

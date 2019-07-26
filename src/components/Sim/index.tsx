@@ -592,6 +592,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
   const latestState = states[states.length - 1];
 
+  const [newActionDrag, set_newActionDrag] = useState(undefined as undefined | CraftingAction);
   const OnActionDragEnd = () => {
     set_draggedOverIndex(undefined);
     set_draggingIndex(undefined);
@@ -612,6 +613,13 @@ const SimComponent = (props: RouteComponentProps) => {
       e.preventDefault();
       set_draggedOverIndex(undefined);
       set_draggingIndex(undefined);
+      if (newActionDrag) {
+        const newActions = [...actions];
+        const targetIndex = index;
+        newActions.splice(targetIndex, 0, newActionDrag);
+        set_actions(newActions);
+        return;
+      }
       if (typeof draggingIndex === 'undefined' || draggingIndex === index) {
         return;
       }
@@ -621,6 +629,15 @@ const SimComponent = (props: RouteComponentProps) => {
       newActions.splice(targetIndex, 0, draggedAction);
       set_actions(newActions);
     };
+  };
+
+  const OnNewActionDragStart = (act: CraftingAction) => {
+    return (e: React.DragEvent) => {
+      set_newActionDrag(act);
+    };
+  };
+  const OnNewActionDragEnd = () => {
+    set_newActionDrag(undefined);
   };
 
   const [shareUrl, set_shareUrl] = useState('');
@@ -917,6 +934,7 @@ const SimComponent = (props: RouteComponentProps) => {
       <ActionBar>
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;
+          const hasBorderLeft = (index === draggedOverIndex) && ((newActionDrag !== undefined) || (draggingIndex !== undefined && draggedOverIndex < draggingIndex));
           return <DraggedImage
             alt="Action"
             key={`${index} ${action.getId(jobId)}`}
@@ -928,7 +946,7 @@ const SimComponent = (props: RouteComponentProps) => {
             src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
             onClick={clickJobAction(index)}
             style={{
-              borderLeft: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex < draggingIndex ? 'solid 10px transparent' : '',
+              borderLeft: hasBorderLeft ? 'solid 10px transparent' : '',
               borderRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? 'solid 10px transparent' : '',
               opacity: index === draggingIndex ? 0.5 : 1
             }}
@@ -1040,6 +1058,9 @@ const SimComponent = (props: RouteComponentProps) => {
         {someActions.map((i, index) => <img
           alt="Action"
           key={index}
+          draggable={true}
+          onDragStart={OnNewActionDragStart(i)}
+          onDragEnd={OnNewActionDragEnd}
           src={process.env.PUBLIC_URL + (Icons as any)[i.getId(jobId)]}
           onClick={clickAction(i)}
         />)}

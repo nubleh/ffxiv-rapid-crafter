@@ -417,7 +417,7 @@ const SimComponent = (props: RouteComponentProps) => {
       const passedActions = CraftingActionsRegistry.createFromIds(acts.map(act => parseInt(act)));
       set_actions(passedActions);
     }
-  }, []);
+  }, [location.search]);
 
   // store these in localStorage... good idea?
   useEffect(() => {
@@ -553,6 +553,7 @@ const SimComponent = (props: RouteComponentProps) => {
     states,
     stats,
     testRecipe,
+    jobCP,
   ]);
 
   const clickAction = (action: CraftingAction) => {

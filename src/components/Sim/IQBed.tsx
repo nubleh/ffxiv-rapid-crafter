@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 
-import styled, { css, keyframes } from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 
 import { CraftState } from './index';
 

@@ -19,6 +19,7 @@ import Bars from './Bars';
 import Chart, { ChartMode, ChartIcon } from './Chart';
 import IQBed from './IQBed';
 import BuffTimeline from './BuffTimeline';
+import RecipeBook from './RecipeBook';
 
 const LOCALSTORAGECACHE_KEY = 'rapidCraftCache';
 const jobs = [
@@ -866,6 +867,27 @@ const SimComponent = (props: RouteComponentProps) => {
     }
   };
 
+  const updateRecipe = (newRecipe: Craft) => {
+    const {
+      durability,
+      job,
+      lvl,
+      progress,
+      quality,
+      rlvl,
+      suggestedControl,
+      suggestedCraftsmanship,
+    } = newRecipe;
+    set_recipeDur(durability);
+    set_recipeLvl(lvl);
+    set_recipeProg(progress);
+    set_recipeQual(quality);
+    set_recipeRLvl(rlvl);
+    set_recipeSugControl(suggestedControl);
+    set_recipeSugCraft(suggestedCraftsmanship)
+    set_jobId(job);
+  };
+
   const latestState = states[states.length - 1];
   const showTraditionalBars = false;
 
@@ -1059,6 +1081,9 @@ const SimComponent = (props: RouteComponentProps) => {
       src={touchGhost}
       ref={touchGhostRef}
       hidden={touchGhost === ''}
+    />
+    <RecipeBook
+      onRecipeChosen={updateRecipe}
     />
   </div>;
 };

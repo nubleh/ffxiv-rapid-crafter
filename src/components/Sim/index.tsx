@@ -301,7 +301,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
   const [testRecipe, set_testRecipe] = useState({
     job: jobId,
-    lvl: jobLvl,
+    lvl: recipeLvl,
     durability: recipeDur,
     progress: recipeProg,
     quality: recipeQual,
@@ -461,7 +461,7 @@ const SimComponent = (props: RouteComponentProps) => {
       return {
         ...tr,
         job: jobId,
-        lvl: jobLvl,
+        lvl: recipeLvl,
         durability: recipeDur,
         progress: recipeProg,
         quality: recipeQual,
@@ -980,6 +980,10 @@ const SimComponent = (props: RouteComponentProps) => {
       <label>
         <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}/>
         Recipe Level
+      </label>
+      <label>
+        <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeLvl(parseInt(e.currentTarget.value) || 0)}/>
+        Craft Level
       </label>
       <label>
         <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}/>

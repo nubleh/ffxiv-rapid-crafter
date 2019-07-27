@@ -1016,6 +1016,7 @@ const didStatsChange = (stats1: CrafterStats, stats2: CrafterStats) => {
 const didRecipeChange = (recipe1: Craft, recipe2: Craft) => {
   return recipe1.progress !== recipe2.progress
     || recipe1.quality !== recipe2.quality
+    || recipe1.lvl !== recipe2.lvl
     || recipe1.rlvl !== recipe2.rlvl
     || recipe1.durability !== recipe2.durability
     || recipe1.suggestedControl !== recipe2.suggestedControl

@@ -232,6 +232,22 @@ const LazyStats = styled.div`
   }
 `;
 
+interface TouchGhostProps {
+  hidden?: boolean
+}
+const TouchGhost = styled.img`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-150%);
+
+  ${({ hidden }: TouchGhostProps) => hidden && css`
+    opacity: 0;
+  `}
+`;
+
 export interface CraftState {
   progress: number
   quality: number
@@ -655,14 +671,23 @@ const SimComponent = (props: RouteComponentProps) => {
   const colWidth = 40;
 
   // mobile stuff
+  const actionBarRef = useRef(null as null | HTMLDivElement);
+  const [touchGhost, set_touchGhost] = useState('');
+  const touchGhostRef = useRef(null as null | HTMLImageElement);
   const OnActionTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     if (e.touches.length < 1) {
       return;
     }
-    const x = e.touches[0].clientX - rect.left;
+    const { clientX, clientY } = e.touches[0];
+    if (touchGhostRef.current) {
+      touchGhostRef.current.style.left = `${clientX}px`;
+      touchGhostRef.current.style.top = `${clientY}px`;
+    }
+    const x = clientX - rect.left;
     const actionIndex = Math.floor(x / colWidth);
     set_draggingIndex(actionIndex);
+    set_touchGhost(process.env.PUBLIC_URL + Icons[actions[actionIndex].getId(jobId)]);
 
     e.preventDefault();
     return false;
@@ -675,9 +700,6 @@ const SimComponent = (props: RouteComponentProps) => {
     const x = e.touches[0].clientX - rect.left;
     const actionIndex = Math.floor(x / colWidth);
     set_draggedOverIndex(actionIndex);
-
-    e.preventDefault();
-    return false;
   };
   const OnActionTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     const indexFrom = draggingIndex;
@@ -693,12 +715,19 @@ const SimComponent = (props: RouteComponentProps) => {
     e.preventDefault();
   };
 
-  const actionBarRef = useRef(null as null | HTMLDivElement);
   const onAllTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (e.touches.length < 1 || !actionBarRef.current || !newActionDrag) {
+    if (e.touches.length < 1) {
       return;
     }
     const { clientX, clientY } = e.touches[0];
+    if (touchGhostRef.current) {
+      touchGhostRef.current.style.left = `${clientX}px`;
+      touchGhostRef.current.style.top = `${clientY}px`;
+    }
+    if (!actionBarRef.current || !newActionDrag) {
+      return;
+    }
+
     const rect = actionBarRef.current.getBoundingClientRect();
     if (clientY < rect.top || clientY > rect.top + rect.height) {
       return;
@@ -707,16 +736,29 @@ const SimComponent = (props: RouteComponentProps) => {
     const actionIndex = Math.floor(x / colWidth);
     set_draggedOverIndex(actionIndex);
   };
+  const newActionButtonTouched = useRef(null as null | HTMLImageElement);
+  const newActionButtonTouchTime = useRef(0);
   const OnNewActionTouchStart = (act: CraftingAction) => {
-    return (e: React.TouchEvent<HTMLDivElement>) => {
+    return (e: React.TouchEvent<HTMLImageElement>) => {
       set_newActionDrag(act);
+      set_touchGhost(process.env.PUBLIC_URL + Icons[act.getId(jobId)]);
+      newActionButtonTouchTime.current = Date.now();
+      if (e.touches.length < 1) {
+        return;
+      }
+      newActionButtonTouched.current = e.currentTarget;
+      const { clientX, clientY } = e.touches[0];
+      if (touchGhostRef.current) {
+        touchGhostRef.current.style.left = `${clientX}px`;
+        touchGhostRef.current.style.top = `${clientY}px`;
+      }
     };
   };
   const OnNewActionTouchEnd = (e: React.TouchEvent<HTMLImageElement>) => {
     if (newActionDrag) {
       if (draggedOverIndex !== undefined) {
         addNewActionAtIndex(newActionDrag, draggedOverIndex);
-      } else {
+      } else if (Date.now() - newActionButtonTouchTime.current < 500) {
         addNewActionAtIndex(newActionDrag, actions.length);
       }
     }
@@ -726,6 +768,14 @@ const SimComponent = (props: RouteComponentProps) => {
     e.preventDefault();
     return false;
   }
+  useEffect(() => {
+    if (newActionDrag === undefined && draggingIndex === undefined) {
+      set_touchGhost('');
+    }
+  }, [
+    newActionDrag,
+    draggingIndex
+  ]);
 
   // share stuff
   const [shareUrl, set_shareUrl] = useState('');
@@ -874,7 +924,7 @@ const SimComponent = (props: RouteComponentProps) => {
             onDragOver={OnActionDragOver(index)}
             onDragEnd={OnActionDragEnd}
             onDrop={OnActionDrop(index)}
-            src={process.env.PUBLIC_URL + (Icons as any)[action.getId(jobId)]}
+            src={process.env.PUBLIC_URL + Icons[action.getId(jobId)]}
             onClick={clickJobAction(index)}
             style={{
               width: `${colWidth}px`,
@@ -931,7 +981,7 @@ const SimComponent = (props: RouteComponentProps) => {
           draggable={true}
           onDragStart={OnNewActionDragStart(i)}
           onDragEnd={OnNewActionDragEnd}
-          src={process.env.PUBLIC_URL + (Icons as any)[i.getId(jobId)]}
+          src={process.env.PUBLIC_URL + Icons[i.getId(jobId)]}
           onClick={clickAction(i)}
           isDragged={i === newActionDrag}
           onContextMenu={OnActionContextMenu}
@@ -1000,6 +1050,12 @@ const SimComponent = (props: RouteComponentProps) => {
     <JobButton onClick={showExportString} active={true}>Export</JobButton>
     {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
     <JobButton onClick={requestImportString} active={true}>Import</JobButton>
+
+    <TouchGhost
+      src={touchGhost}
+      ref={touchGhostRef}
+      hidden={touchGhost === ''}
+    />
   </div>;
 };
 

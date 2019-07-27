@@ -1,4 +1,4 @@
-export const Icons = {
+export const Icons: { [key:string]: string } = {
   "244": "/i/001000/001953.png",
   "245": "/i/001000/001953.png",
   "246": "/i/001000/001953.png",

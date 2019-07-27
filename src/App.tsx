@@ -25,8 +25,10 @@ const App: React.FC = () => {
         <Route path="/" component={Sim}/>
         <FootNote>
           This is a WIP thing made for fun.
-          <br/>There are probably bugs everywhere, simulation is likely to be inaccurate.
-          <br/>This thing uses the crafting simulator library made by <a href="https://github.com/ffxiv-teamcraft/simulator/" target="_blank" rel="noopener noreferrer">ffxiv-teamcraft</a>
+          <br/>There are probably bugs everywhere, simulation may be inaccurate.
+          <br/>This thing uses the crafting simulator library made by <a href="https://github.com/ffxiv-teamcraft/simulator/" target="_blank" rel="noopener noreferrer">ffxiv-teamcraft</a>.
+          <br/>Crafting recipe data came from <a href="https://garlandtools.org/" target="_blank" rel="noopener noreferrer">Garland Tools</a>.
+          <br/>Source code is <a href="https://github.com/nubleh/ffxiv-rapid-crafter" target="_blank" rel="noopener noreferrer">over this way</a>.
         </FootNote>
       </Wrapper>
     </Router>

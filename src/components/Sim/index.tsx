@@ -104,8 +104,9 @@ const rotate = keyframes`
   }
 `;
 const ActionBar = styled.div`
-  padding: 10px 10px;
+  margin: 10px;
   white-space: nowrap;
+  touch-action: none;
 
   > img, > div {
     vertical-align: middle;
@@ -593,6 +594,13 @@ const SimComponent = (props: RouteComponentProps) => {
     set_actions([]);
   };
 
+  const moveActionFromTo = (indexFrom: number, indexTo: number) => {
+    const newActions = [...actions];
+    const draggedAction = newActions.splice(indexFrom, 1)[0];
+    newActions.splice(indexTo, 0, draggedAction);
+    set_actions(newActions);
+  };
+
   const [newActionDrag, set_newActionDrag] = useState(undefined as undefined | CraftingAction);
   const OnActionDragEnd = () => {
     set_newActionDrag(undefined);
@@ -626,11 +634,7 @@ const SimComponent = (props: RouteComponentProps) => {
       if (typeof draggingIndex === 'undefined' || draggingIndex === index) {
         return;
       }
-      const newActions = [...actions];
-      const draggedAction = newActions.splice(draggingIndex, 1)[0];
-      const targetIndex = index;
-      newActions.splice(targetIndex, 0, draggedAction);
-      set_actions(newActions);
+      moveActionFromTo(draggingIndex, index);
     };
   };
 
@@ -643,6 +647,48 @@ const SimComponent = (props: RouteComponentProps) => {
     set_newActionDrag(undefined);
     set_draggedOverIndex(undefined);
     set_draggingIndex(undefined);
+  };
+
+  const colWidth = 40;
+
+  // mobile stuff
+  const [touchDragAction, set_touchDragAction] = useState(-1);
+  const OnActionTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (e.touches.length < 1) {
+      return;
+    }
+    const x = e.touches[0].clientX - rect.left;
+    const actionIndex = Math.floor(x / colWidth);
+    set_draggingIndex(actionIndex);
+
+    e.preventDefault();
+    return false;
+  };
+  const OnActionTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (e.touches.length < 1) {
+      return;
+    }
+    const x = e.touches[0].clientX - rect.left;
+    const actionIndex = Math.floor(x / colWidth);
+    set_draggedOverIndex(actionIndex);
+
+    e.preventDefault();
+    return false;
+  };
+  const OnActionTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    const indexFrom = draggingIndex;
+    const indexTo = draggedOverIndex;
+    if (typeof indexFrom === 'number' && typeof indexTo === 'number') {
+      moveActionFromTo(indexFrom, indexTo);
+    }
+    set_newActionDrag(undefined);
+    set_draggedOverIndex(undefined);
+    set_draggingIndex(undefined);
+  };
+  const OnActionContextMenu = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.preventDefault();
   };
 
   const [shareUrl, set_shareUrl] = useState('');
@@ -733,8 +779,6 @@ const SimComponent = (props: RouteComponentProps) => {
     }
   };
 
-  const colWidth = 40;
-
   const latestState = states[states.length - 1];
   const showTraditionalBars = false;
 
@@ -774,7 +818,11 @@ const SimComponent = (props: RouteComponentProps) => {
 
       <IQBed states={states} colWidth={colWidth}/>
 
-      <ActionBar>
+      <ActionBar
+        onTouchStart={OnActionTouchStart}
+        onTouchMove={OnActionTouchMove}
+        onTouchEnd={OnActionTouchEnd}
+      >
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;
           const isFailed = successStates[index] === false;
@@ -797,6 +845,7 @@ const SimComponent = (props: RouteComponentProps) => {
             }}
             isDragged={isDragged}
             isFailed={isFailed}
+            onContextMenu={OnActionContextMenu}
           />
         })}
       </ActionBar>

@@ -1,10 +1,15 @@
 import React from 'react';
 
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 
 export enum ChartMode {
   UPWARDS = 0,
   DOWNWARDS = 1,
+}
+
+export enum ChartIcon {
+  CHECKMARK = 0,
+  EXCLAMATION_MARK = 1
 }
 
 const ChartBar = styled.div`
@@ -29,6 +34,70 @@ const ChartBar = styled.div`
   }
 `;
 
+interface IconProps {
+  icon?: ChartIcon
+  color?: string
+  direction?: ChartMode
+}
+const Icon = styled.div`
+  display: inline-block;
+  position: absolute;
+
+  &::before, &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+
+    ${({ color }: IconProps) => color && css`
+      background: ${color};
+    `}
+  }
+
+  ${({ icon }: IconProps) => icon === ChartIcon.CHECKMARK && css`
+      &::before {
+        width: 40%;
+        height: 10%;
+        transform: rotateZ(45deg);
+        transform-origin: right center;
+        top: 80%;
+      }
+      &::after {
+        width: 80%;
+        height: 10%;
+        transform: rotateZ(-45deg);
+        transform-origin: left center;
+        top: 80%;
+        left: 32%;
+      }
+  `}
+
+  ${({ icon }: IconProps) => icon === ChartIcon.EXCLAMATION_MARK && css`
+      &::before, &::after {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10%;
+      }
+      &::before {
+        height: 40%;
+        top: 0%;
+      }
+      &::after {
+        height: 10%;
+        top: 50%;
+      }
+      ${({ direction }: IconProps) => direction === ChartMode.DOWNWARDS && css`
+        &::before {
+          top: 40%;
+        }
+        &::after {
+          top: 90%;
+        }
+      `}
+  `}
+`;
+
 interface ChartProps {
   colWidth: number
   rowHeight: number
@@ -38,6 +107,8 @@ interface ChartProps {
   color: string
   label: string
   bgColor: string
+  fullIcon?: ChartIcon
+  emptyIcon?: ChartIcon
 }
 
 const Chart = (props: ChartProps) => {
@@ -49,7 +120,9 @@ const Chart = (props: ChartProps) => {
     mode,
     color,
     label,
-    bgColor
+    bgColor,
+    fullIcon,
+    emptyIcon,
   } = props;
 
   const maxValue = domain[1] === 0 ? 1 : domain[1];
@@ -90,6 +163,24 @@ const Chart = (props: ChartProps) => {
         L ${(data.length) * colWidth} 0
       `} fill={color}/>}
     </svg>
+    {fullIcon !== undefined && data[data.length - 1] >= maxValue && <Icon
+      style={{
+        width: `${rowHeight}px`,
+        height: `${rowHeight}px`
+      }}
+      icon={fullIcon}
+      color={color}
+      direction={mode}
+    />}
+    {emptyIcon !== undefined && data[data.length - 1] <= 0 && <Icon
+      style={{
+        width: `${rowHeight}px`,
+        height: `${rowHeight}px`
+      }}
+      icon={emptyIcon}
+      color={color}
+      direction={mode}
+    />}
     {mode === ChartMode.UPWARDS && <span style={{
       verticalAlign: 'bottom',
       bottom: `${Math.min(rowHeight, rowHeight*data[data.length - 1]/maxValue)}px`,

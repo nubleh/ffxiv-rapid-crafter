@@ -16,7 +16,7 @@ import {
 
 import { Icons } from './Icons';
 import Bars from './Bars';
-import Chart, { ChartMode } from './Chart';
+import Chart, { ChartMode, ChartIcon } from './Chart';
 import IQBed from './IQBed';
 import BuffTimeline from './BuffTimeline';
 
@@ -891,6 +891,7 @@ const SimComponent = (props: RouteComponentProps) => {
         color="#6e9a1b"
         bgColor="#9eca4b"
         label="Progress"
+        fullIcon={ChartIcon.CHECKMARK}
       />
       <Chart
         colWidth={colWidth}
@@ -901,6 +902,7 @@ const SimComponent = (props: RouteComponentProps) => {
         color="#50a1bf"
         bgColor="#80d1ef"
         label="Quality"
+        fullIcon={ChartIcon.CHECKMARK}
       />
 
       <IQBed states={states} colWidth={colWidth}/>
@@ -960,6 +962,7 @@ const SimComponent = (props: RouteComponentProps) => {
         color="#ccc"
         bgColor="#eee"
         label="Durability"
+        emptyIcon={ChartIcon.EXCLAMATION_MARK}
       />
       <Chart
         colWidth={colWidth}
@@ -970,6 +973,7 @@ const SimComponent = (props: RouteComponentProps) => {
         color="#bf7ed9"
         bgColor="#efaeff"
         label="CP"
+        emptyIcon={ChartIcon.EXCLAMATION_MARK}
       />
     </ScrollingBar>
     <div>

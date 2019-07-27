@@ -50,7 +50,10 @@ const RecipeItem = styled.li`
 
   ${({ selected }: RecipeItemProps) => selected && css`
     display: block;
-    background: #e6e6e6;
+    color: #333;
+    &, &:hover {
+      background: #ddd;
+    }
   `}
 `;
 
@@ -120,7 +123,7 @@ const RecipeBook = (props: RecipeBookProps) => {
       }
       return true;
     });
-    set_results(newResults);
+    set_results(newResults.sort((r1, r2) => r1.name.length > r2.name.length ? 1 : -1));
   }, [searchQuery]);
 
   const [chosenItem, set_chosenItem] = useState(-1);

@@ -74,12 +74,11 @@ const JobButton = styled.div`
   padding: 4px 8px;
   display: inline-block;
   cursor: pointer;
-  background: #f7f7f7;
+  background: #fafafa;
   border-radius: 4px;
   box-sizing: border-box;
   margin: 4px;
   border: solid 1px transparent;
-  margin-top: 20px;
 
   ${({ active }: JobButtonProps) => active && css`
   border: solid 1px #ccc;
@@ -184,6 +183,7 @@ const ActionTypeSet = styled.div`
   margin: 4px;
   background: #f5f5f5;
   border-radius: 4px;
+  vertical-align: middle;
 `;
 
 interface ActionPalletteImage {
@@ -1015,6 +1015,9 @@ const SimComponent = (props: RouteComponentProps) => {
           onTouchEnd={OnNewActionTouchEnd}
         />)}
       </ActionTypeSet>)}
+      <ActionTypeSet>
+        <JobButton onClick={clearActions} active={true}>Clear</JobButton>
+      </ActionTypeSet>
     </div>
     <div>
       {jobs.map((n, i) => n && <JobButton
@@ -1070,7 +1073,6 @@ const SimComponent = (props: RouteComponentProps) => {
         Control Recommended
       </label>
     </LazyStats>
-    <JobButton onClick={clearActions} active={true}>Clear</JobButton>
     <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
     {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
     <JobButton onClick={showExportString} active={true}>Export</JobButton>

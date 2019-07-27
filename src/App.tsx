@@ -13,6 +13,7 @@ const Wrapper = styled.div`
 `;
 const FootNote = styled.div`
   font-size: 10px;
+  padding: 0 10px;
 `;
 
 // https://nubleh.github.io/ffxiv/craft/?jco=1800&jcp=489&jcr=1800&jis=0&jl=80&rd=80&rl=80&rp=3943&rq=20287&rsco=0&rscr=1866&rrl=430

@@ -189,9 +189,9 @@ interface ActionPalletteImage {
   isDragged?: boolean
 }
 const ActionPalletteImage = styled.img`
-  transition: transform 0.5s;
   cursor: pointer;
   transition: transform 0.2s;
+  touch-action: none;
   ${({ isDragged }: DraggedImageProps) => isDragged && css`
     &, &:active {
       transition: transform 0.1s;
@@ -601,6 +601,12 @@ const SimComponent = (props: RouteComponentProps) => {
     set_actions(newActions);
   };
 
+  const addNewActionAtIndex = (action: CraftingAction, indexTo: number) => {
+    const newActions = [...actions];
+    newActions.splice(indexTo, 0, action);
+    set_actions(newActions);
+  };
+
   const [newActionDrag, set_newActionDrag] = useState(undefined as undefined | CraftingAction);
   const OnActionDragEnd = () => {
     set_newActionDrag(undefined);
@@ -625,10 +631,7 @@ const SimComponent = (props: RouteComponentProps) => {
       set_draggedOverIndex(undefined);
       set_draggingIndex(undefined);
       if (newActionDrag) {
-        const newActions = [...actions];
-        const targetIndex = index;
-        newActions.splice(targetIndex, 0, newActionDrag);
-        set_actions(newActions);
+        addNewActionAtIndex(newActionDrag, index);
         return;
       }
       if (typeof draggingIndex === 'undefined' || draggingIndex === index) {
@@ -652,7 +655,6 @@ const SimComponent = (props: RouteComponentProps) => {
   const colWidth = 40;
 
   // mobile stuff
-  const [touchDragAction, set_touchDragAction] = useState(-1);
   const OnActionTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     if (e.touches.length < 1) {
@@ -691,6 +693,41 @@ const SimComponent = (props: RouteComponentProps) => {
     e.preventDefault();
   };
 
+  const actionBarRef = useRef(null as null | HTMLDivElement);
+  const onAllTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length < 1 || !actionBarRef.current || !newActionDrag) {
+      return;
+    }
+    const { clientX, clientY } = e.touches[0];
+    const rect = actionBarRef.current.getBoundingClientRect();
+    if (clientY < rect.top || clientY > rect.top + rect.height) {
+      return;
+    }
+    const x = clientX - rect.left;
+    const actionIndex = Math.floor(x / colWidth);
+    set_draggedOverIndex(actionIndex);
+  };
+  const OnNewActionTouchStart = (act: CraftingAction) => {
+    return (e: React.TouchEvent<HTMLDivElement>) => {
+      set_newActionDrag(act);
+    };
+  };
+  const OnNewActionTouchEnd = (e: React.TouchEvent<HTMLImageElement>) => {
+    if (newActionDrag) {
+      if (draggedOverIndex !== undefined) {
+        addNewActionAtIndex(newActionDrag, draggedOverIndex);
+      } else {
+        addNewActionAtIndex(newActionDrag, actions.length);
+      }
+    }
+    set_newActionDrag(undefined);
+    set_draggedOverIndex(undefined);
+    set_draggingIndex(undefined);
+    e.preventDefault();
+    return false;
+  }
+
+  // share stuff
   const [shareUrl, set_shareUrl] = useState('');
   const showShareUrl = () => {
     const url = window.location.href.split('?')[0];
@@ -782,7 +819,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const latestState = states[states.length - 1];
   const showTraditionalBars = false;
 
-  return <div>
+  return <div onTouchMove={onAllTouchMove}>
     {showTraditionalBars && <Bars
       currentProgress={latestState.progress}
       maxProgress={testRecipe.progress}
@@ -822,6 +859,7 @@ const SimComponent = (props: RouteComponentProps) => {
         onTouchStart={OnActionTouchStart}
         onTouchMove={OnActionTouchMove}
         onTouchEnd={OnActionTouchEnd}
+        ref={actionBarRef}
       >
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;
@@ -896,6 +934,9 @@ const SimComponent = (props: RouteComponentProps) => {
           src={process.env.PUBLIC_URL + (Icons as any)[i.getId(jobId)]}
           onClick={clickAction(i)}
           isDragged={i === newActionDrag}
+          onContextMenu={OnActionContextMenu}
+          onTouchStart={OnNewActionTouchStart(i)}
+          onTouchEnd={OnNewActionTouchEnd}
         />)}
       </ActionTypeSet>)}
     </div>

@@ -278,8 +278,8 @@ const SimComponent = (props: RouteComponentProps) => {
     rlvl: recipeRLvl,
     materialQualityFactor: 75,
     id: '0',
-    suggestedControl: 1733,
-    suggestedCraftsmanship: 1866,
+    suggestedControl: recipeSugControl,
+    suggestedCraftsmanship: recipeSugCraft,
     quickSynth: 1,
     ingredients: [],
     hq: 1,
@@ -386,6 +386,8 @@ const SimComponent = (props: RouteComponentProps) => {
         progress: recipeProg,
         quality: recipeQual,
         rlvl: recipeRLvl,
+        suggestedControl: recipeSugControl,
+        suggestedCraftsmanship: recipeSugCraft,
       };
     });
   }, [
@@ -394,6 +396,8 @@ const SimComponent = (props: RouteComponentProps) => {
     recipeQual,
     recipeLvl,
     recipeRLvl,
+    recipeSugControl,
+    recipeSugCraft,
     jobId,
     jobLvl,
   ])
@@ -793,7 +797,7 @@ const SimComponent = (props: RouteComponentProps) => {
       </label>
       <label>
         <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeProg(parseInt(e.currentTarget.value) || 0)}/>
-        Recipe progress
+        Recipe Difficulty
       </label>
       <label>
         <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeQual(parseInt(e.currentTarget.value) || 0)}/>
@@ -806,6 +810,14 @@ const SimComponent = (props: RouteComponentProps) => {
       <label>
         <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}/>
         Recipe Level
+      </label>
+      <label>
+        <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}/>
+        Craftsmanship Recommended
+      </label>
+      <label>
+        <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}/>
+        Control Recommended
       </label>
     </LazyStats>
     <JobButton onClick={clearActions} active={true}>Clear</JobButton>
@@ -831,5 +843,7 @@ const didRecipeChange = (recipe1: Craft, recipe2: Craft) => {
   return recipe1.progress !== recipe2.progress
     || recipe1.quality !== recipe2.quality
     || recipe1.rlvl !== recipe2.rlvl
-    || recipe1.durability !== recipe2.durability;
+    || recipe1.durability !== recipe2.durability
+    || recipe1.suggestedControl !== recipe2.suggestedControl
+    || recipe1.suggestedCraftsmanship !== recipe2.suggestedCraftsmanship;
 };

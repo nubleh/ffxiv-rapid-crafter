@@ -20,6 +20,7 @@ import Chart, { ChartMode } from './Chart';
 import IQBed from './IQBed';
 import BuffTimeline from './BuffTimeline';
 
+const LOCALSTORAGECACHE_KEY = 'rapidCraftCache';
 const jobs = [
   '', '', '', '', '', '', '', '',
   'CRP',
@@ -240,25 +241,53 @@ export interface CraftState {
   recipe: Craft
 }
 
+interface localStorageCache {
+  recipeRLvl: number
+  recipeLvl: number
+  recipeProg: number
+  recipeQual: number
+  recipeDur: number
+  recipeSugCraft: number
+  recipeSugControl: number
+  jobId: number
+  jobCraftsmanship: number
+  jobControl: number
+  jobCP: number
+  jobLvl: number
+  jobIsSpecialist: boolean
+  actionsString: string
+}
+
 const SimComponent = (props: RouteComponentProps) => {
   const { location } = props;
 
+  const cache = useRef({} as localStorageCache);
+  // try and read from localStorage first, but only read it once (at page load)
+  try {
+    if (JSON.stringify(cache.current) === '{}') {
+      const cachedData = JSON.parse(localStorage.getItem(LOCALSTORAGECACHE_KEY) + '');
+      if (cachedData) {
+        cache.current = cachedData;
+      }
+    }
+  } catch (e) {}
+
   // recipe parameters
-  const [recipeRLvl, set_recipeRLvl] = useState(430);
-  const [recipeLvl, set_recipeLvl] = useState(80);
-  const [recipeProg, set_recipeProg] = useState(1900);
-  const [recipeQual, set_recipeQual] = useState(15000);
-  const [recipeDur, set_recipeDur] = useState(80);
-  const [recipeSugCraft, set_recipeSugCraft] = useState(1866);
-  const [recipeSugControl, set_recipeSugControl] = useState(1733);
+  const [recipeRLvl, set_recipeRLvl] = useState(cache.current.recipeRLvl || 430);
+  const [recipeLvl, set_recipeLvl] = useState(cache.current.recipeLvl || 80);
+  const [recipeProg, set_recipeProg] = useState(cache.current.recipeProg || 1900);
+  const [recipeQual, set_recipeQual] = useState(cache.current.recipeQual || 15000);
+  const [recipeDur, set_recipeDur] = useState(cache.current.recipeDur || 80);
+  const [recipeSugCraft, set_recipeSugCraft] = useState(cache.current.recipeSugCraft || 1866);
+  const [recipeSugControl, set_recipeSugControl] = useState(cache.current.recipeSugControl || 1733);
 
   // player parameters
-  const [jobId, set_jobId] = useState(8);
-  const [jobCraftsmanship, set_jobCraftsmanship] = useState(1800);
-  const [jobControl, set_jobControl] = useState(1800);
-  const [jobCP, set_jobCP] = useState(489);
-  const [jobLvl, set_jobLvl] = useState(80);
-  const [jobIsSpecialist, set_jobIsSpecialist] = useState(true);
+  const [jobId, set_jobId] = useState(cache.current.jobId || 8);
+  const [jobCraftsmanship, set_jobCraftsmanship] = useState(cache.current.jobCraftsmanship || 1800);
+  const [jobControl, set_jobControl] = useState(cache.current.jobControl || 1800);
+  const [jobCP, set_jobCP] = useState(cache.current.jobCP || 489);
+  const [jobLvl, set_jobLvl] = useState(cache.current.jobLvl || 80);
+  const [jobIsSpecialist, set_jobIsSpecialist] = useState(cache.current.jobIsSpecialist === undefined ? true : cache.current.jobIsSpecialist);
   const stats = new CrafterStats(
     jobId,
     jobCraftsmanship,
@@ -285,7 +314,7 @@ const SimComponent = (props: RouteComponentProps) => {
     hq: 1,
   } as Craft);
 
-  const [defaultState, set_defaultState] = useState({
+  const defaultState = useRef({
     progress: 0,
     quality: 0,
     cp: jobCP,
@@ -294,12 +323,31 @@ const SimComponent = (props: RouteComponentProps) => {
     stats: stats,
     recipe: testRecipe
   } as CraftState);
+  useEffect(() => {
+    defaultState.current = {
+      ...defaultState.current,
+      cp: jobCP,
+      durability: recipeDur,
+      stats,
+      recipe: testRecipe
+    };
+  }, [
+    jobCP,
+    recipeDur,
+    stats,
+    testRecipe
+  ]);
 
-  const [actions, set_actions] = useState([] as CraftingAction[]);
+  let cachedActions = [] as CraftingAction[];
+  try {
+    cachedActions = CraftingActionsRegistry.importFromCraftOpt(JSON.parse(cache.current.actionsString) as string[]);
+  } catch(e) {}
+  const [actions, set_actions] = useState(cachedActions);
 
   const scrollingBarRef = useRef(undefined as undefined | HTMLDivElement);
 
   useEffect(() => {
+
     const values = queryString.parse(location.search, {
       arrayFormat: 'comma'
     });
@@ -324,12 +372,6 @@ const SimComponent = (props: RouteComponentProps) => {
     const rd = parseInt(values.rd + '');
     if (!isNaN(rd)) {
       set_recipeDur(rd);
-      set_defaultState(df => {
-        return {
-          ...df,
-          durability: rd
-        };
-      });
     }
     const rscr = parseInt(values.rscr + '');
     if (!isNaN(rscr)) {
@@ -375,7 +417,44 @@ const SimComponent = (props: RouteComponentProps) => {
       const passedActions = CraftingActionsRegistry.createFromIds(acts.map(act => parseInt(act)));
       set_actions(passedActions);
     }
-  }, [location.search]);
+  }, []);
+
+  // store these in localStorage... good idea?
+  useEffect(() => {
+    const localStorageCache = {
+      recipeRLvl,
+      recipeLvl,
+      recipeProg,
+      recipeQual,
+      recipeDur,
+      recipeSugCraft,
+      recipeSugControl,
+      jobId,
+      jobCraftsmanship,
+      jobControl,
+      jobCP,
+      jobLvl,
+      jobIsSpecialist,
+      actionsString: CraftingActionsRegistry.exportToCraftOpt(CraftingActionsRegistry.serializeRotation(actions)),
+    };
+
+    localStorage.setItem(LOCALSTORAGECACHE_KEY, JSON.stringify(localStorageCache));
+  }, [
+    recipeProg,
+    recipeRLvl,
+    recipeLvl,
+    recipeQual,
+    recipeDur,
+    recipeSugCraft,
+    recipeSugControl,
+    jobId,
+    jobCraftsmanship,
+    jobControl,
+    jobCP,
+    jobLvl,
+    jobIsSpecialist,
+    actions
+  ]);
   useEffect(() => {
     set_testRecipe(tr => {
       return {
@@ -402,7 +481,7 @@ const SimComponent = (props: RouteComponentProps) => {
     jobLvl,
   ])
 
-  const [states, set_states] = useState([defaultState]);
+  const [states, set_states] = useState([defaultState.current]);
   const [statedActions, set_statedActions] = useState([] as CraftingAction[]);
   const [successStates, set_successStates] = useState([] as boolean[]);
 
@@ -411,8 +490,8 @@ const SimComponent = (props: RouteComponentProps) => {
       if (statedActions.length > 0) {
         set_statedActions([]);
       }
-      if (states.length !== 1 && states[0] !== defaultState) {
-        set_states([defaultState]);
+      if (states.length !== 1 && states[0] !== defaultState.current) {
+        set_states([defaultState.current]);
       }
       return;
     }
@@ -435,7 +514,7 @@ const SimComponent = (props: RouteComponentProps) => {
     const newStatedActions = statedActions.slice(0, x);
     const newStates = states.slice(0, x + 1);
     newStates[0] = {
-      ...defaultState,
+      ...defaultState.current,
       cp: jobCP,
       stats,
       recipe: testRecipe
@@ -470,7 +549,6 @@ const SimComponent = (props: RouteComponentProps) => {
     set_states(newStates);
   }, [
     actions,
-    defaultState,
     statedActions,
     states,
     stats,
@@ -513,8 +591,6 @@ const SimComponent = (props: RouteComponentProps) => {
   const clearActions = () => {
     set_actions([]);
   };
-
-  const latestState = states[states.length - 1];
 
   const [newActionDrag, set_newActionDrag] = useState(undefined as undefined | CraftingAction);
   const OnActionDragEnd = () => {
@@ -658,8 +734,11 @@ const SimComponent = (props: RouteComponentProps) => {
 
   const colWidth = 40;
 
+  const latestState = states[states.length - 1];
+  const showTraditionalBars = false;
+
   return <div>
-    {/* <Bars
+    {showTraditionalBars && <Bars
       currentProgress={latestState.progress}
       maxProgress={testRecipe.progress}
       currentQuality={latestState.quality}
@@ -668,7 +747,7 @@ const SimComponent = (props: RouteComponentProps) => {
       maxDurability={testRecipe.durability}
       currentCP={latestState.cp}
       maxCP={jobCP}
-    /> */}
+    />}
 
     <ScrollingBar ref={setScrollingBarRef}>
       <Chart

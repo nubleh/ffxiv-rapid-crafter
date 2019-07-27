@@ -71,6 +71,7 @@ const IQBed = (props: IQBedProps) => {
   return <IQLine>
     {IQStacks.map((IQStack, IQStackIndex) => {
       return IQStack > 0 && <StackNumber
+        key={IQStackIndex}
         style={{
           top: 20 - IQStack * (leafHeight / 2),
           left: colWidth + IQStackIndex * colWidth

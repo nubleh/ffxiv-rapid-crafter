@@ -18,6 +18,7 @@ const Book = styled.div`
     text-align: center;
     margin: 0 16px;
     border-bottom: solid 1px transparent;
+    display: inline-block;
     &:hover {
       border-bottom: solid 1px #eee;
     };
@@ -25,6 +26,10 @@ const Book = styled.div`
       outline: none;
     }
   }
+`;
+
+const SearchContainer = styled.div`
+  text-align: center;
 `;
 
 const RecipeList = styled.ul`
@@ -97,8 +102,6 @@ const Wrapper = styled.div`
         border-bottom: solid 1px #ccc;
         border-radius: 2px;
         cursor: text;
-        margin: 0 auto;
-        display: block;
       }
     }
   }
@@ -182,7 +185,7 @@ const RecipeBook = (props: RecipeBookProps) => {
           <span>{item.name}</span>
         </RecipeItem>)}
       </RecipeList>
-      <div>
+      <SearchContainer>
         <input
           placeholder={'Recipe'}
           type="text"
@@ -190,7 +193,7 @@ const RecipeBook = (props: RecipeBookProps) => {
           onChange={change_searchQuery}
           onKeyDown={onSearchKeyDown}
         />
-      </div>
+      </SearchContainer>
     </Book>
   </Wrapper>
 };

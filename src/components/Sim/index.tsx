@@ -20,6 +20,7 @@ import Chart, { ChartMode, ChartIcon } from './Chart';
 import IQBed from './IQBed';
 import BuffTimeline from './BuffTimeline';
 import RecipeBook from './RecipeBook';
+import MacroBook from './MacroBook';
 
 const LOCALSTORAGECACHE_KEY = 'rapidCraftCache';
 const jobs = [
@@ -1086,6 +1087,9 @@ const SimComponent = (props: RouteComponentProps) => {
     />
     <RecipeBook
       onRecipeChosen={updateRecipe}
+    />
+    <MacroBook
+      actions={actions}
     />
   </div>;
 };

@@ -6,7 +6,7 @@ import {
   Craft,
 } from '@ffxiv-teamcraft/simulator';
 
-import items, { ItemData } from './data/items';
+import items, { Item } from './data/items';
 
 const Book = styled.div`
   transition: transform 0.2s;
@@ -118,12 +118,12 @@ const RecipeBook = (props: RecipeBookProps) => {
     set_searchQuery(e.currentTarget.value);
   };
 
-  const [results, set_results] = useState([] as ItemData[]);
+  const [results, set_results] = useState([] as Item[]);
   useEffect(() => {
     if (!searchQuery) {
       return;
     }
-    const newResults: ItemData[] = [];
+    const newResults: Item[] = [];
     const resultLimit = 10;
 
     const searchWords = searchQuery.split(',').map(w => w.trim());
@@ -140,7 +140,7 @@ const RecipeBook = (props: RecipeBookProps) => {
   }, [searchQuery]);
 
   const [chosenItem, set_chosenItem] = useState(-1);
-  const applyRecipe = (targetItem: ItemData) => {
+  const applyRecipe = (targetItem: Item) => {
     return () => {
       set_chosenItem(targetItem.id);
       const r = targetItem.recipes[0];
@@ -161,6 +161,15 @@ const RecipeBook = (props: RecipeBookProps) => {
     };
   };
 
+  const onSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      // enter
+      if (results.length > 0) {
+        applyRecipe(results[0])();
+      }
+    }
+  };
+
   return <Wrapper tabIndex={1}>
     <Book>
       <RecipeList>
@@ -174,7 +183,13 @@ const RecipeBook = (props: RecipeBookProps) => {
         </RecipeItem>)}
       </RecipeList>
       <div>
-        <input placeholder={'Recipe'} type="text" value={searchQuery} onChange={change_searchQuery}/>
+        <input
+          placeholder={'Recipe'}
+          type="text"
+          value={searchQuery}
+          onChange={change_searchQuery}
+          onKeyDown={onSearchKeyDown}
+        />
       </div>
     </Book>
   </Wrapper>

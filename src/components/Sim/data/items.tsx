@@ -171385,7 +171385,7 @@ const items = [
   }
 ];
 
-export interface ItemData {
+export interface Item {
   id: number,
   name: string,
   recipes: Array<{
@@ -171408,4 +171408,4 @@ export interface ItemData {
   }>
 }
 
-export default items as ItemData[];
+export default items as Item[];

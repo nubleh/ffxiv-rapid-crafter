@@ -55,6 +55,17 @@ const RecipeItem = styled.li`
       background: #ddd;
     }
   `}
+
+  > span {
+    vertical-align: middle;
+    margin: 0 4px;
+    display: inline-block;
+    min-width: 24px;
+
+    &:first-child {
+      opacity: 0.8;
+    }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -86,6 +97,8 @@ const Wrapper = styled.div`
         border-bottom: solid 1px #ccc;
         border-radius: 2px;
         cursor: text;
+        margin: 0 auto;
+        display: block;
       }
     }
   }
@@ -155,7 +168,10 @@ const RecipeBook = (props: RecipeBookProps) => {
           key={item.id}
           onClick={applyRecipe(item)}
           selected={item.id === chosenItem}
-        >{item.name}</RecipeItem>)}
+        >
+          <span>lv{item.recipes[0].lvl}</span>
+          <span>{item.name}</span>
+        </RecipeItem>)}
       </RecipeList>
       <div>
         <input placeholder={'Recipe'} type="text" value={searchQuery} onChange={change_searchQuery}/>

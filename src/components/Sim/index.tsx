@@ -1029,15 +1029,15 @@ const SimComponent = (props: RouteComponentProps) => {
     </div>
     <LazyStats>
       <label>
-        <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}}/>
         Craftsmanship
       </label>
       <label>
-        <input type="text" value={jobControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobControl(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={jobControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobControl(parseInt(e.currentTarget.value) || 0)}}/>
         Control
       </label>
       <label>
-        <input type="text" value={jobCP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobCP(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={jobCP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCP(parseInt(e.currentTarget.value) || 0)}}/>
         CP
       </label>
       <label>
@@ -1045,31 +1045,31 @@ const SimComponent = (props: RouteComponentProps) => {
         Specialist
       </label>
       <label>
-        <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeProg(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeProg(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Difficulty
       </label>
       <label>
-        <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeQual(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeQual(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Quality
       </label>
       <label>
-        <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeDur(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeDur(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Durability
       </label>
       <label>
-        <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Level
       </label>
       <label>
-        <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeLvl(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeLvl(parseInt(e.currentTarget.value) || 0)}}/>
         Craft Level
       </label>
       <label>
-        <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}}/>
         Craftsmanship Recommended
       </label>
       <label>
-        <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}/>
+        <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}}/>
         Control Recommended
       </label>
     </LazyStats>

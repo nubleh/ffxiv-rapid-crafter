@@ -266,8 +266,8 @@ const SuccessRateIndicator = styled.div`
   color: #fff;
   background: #a00;
   position: absolute;
-  right: 1px;
-  bottom: 1px;
+  left: 2px;
+  bottom: 2px;
   width: 14px;
   height: 14px;
   border-radius: 14px;
@@ -291,6 +291,7 @@ const ReportNumber = styled.div`
   padding: 2px 0;
   text-align: center;
   height: 12px;
+  line-height: 12px;
   opacity: 0;
   ${({ color }: ReportNumberProps) => css`
     background: ${color};

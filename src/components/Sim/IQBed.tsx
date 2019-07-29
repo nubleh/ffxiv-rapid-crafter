@@ -8,6 +8,7 @@ const IQLine = styled.div`
   padding: 0 10px;
   position: relative;
   margin-bottom: -45px;
+  margin-top: 4px;
 
   > svg {
     display: block;
@@ -69,7 +70,7 @@ const IQBed = (props: IQBedProps) => {
   const altitude = 71;
   const groundLevel = 40 - lineSpacing;
 
-  return <IQLine>
+  return <IQLine title="Inner Quiet stacks">
     {IQStacks.map((IQStack, IQStackIndex) => {
       return IQStack > 0 && <StackNumber
         key={IQStackIndex}

@@ -7,7 +7,7 @@ import { CraftState } from './index';
 const IQLine = styled.div`
   padding: 0 10px;
   position: relative;
-  bottom: -45px;
+  margin-bottom: -45px;
 
   > svg {
     display: block;

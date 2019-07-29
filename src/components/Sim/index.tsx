@@ -137,7 +137,7 @@ const ActionBar = styled.div`
 const BuffLines = styled.div`
   padding: 0 10px;
   position: relative;
-  top: -11px;
+  margin-top: -11px;
 `;
 const BuffLineTooltip = styled.div`
   background: #fff;
@@ -179,14 +179,14 @@ const ScrollingBar = styled.div`
   overflow: auto;
   overflow-y: hidden;
   overflow-x: auto;
-  padding: 1vw;
-  padding-top: 12px;
   position: sticky;
   top: 0;
   background: #fff;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
   z-index: 3;
-  margin-bottom: 20px;
+  margin: 8px;
+  border-radius: 4px;
+  padding: 20px 10px;
+  border: solid 1px #333;
 `;
 
 const ActionTypeSet = styled.div`

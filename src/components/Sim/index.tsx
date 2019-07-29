@@ -137,7 +137,7 @@ const ActionBar = styled.div`
 const BuffLines = styled.div`
   padding: 0 10px;
   position: relative;
-  top: -10px;
+  top: -11px;
 `;
 const BuffLineTooltip = styled.div`
   background: #fff;
@@ -149,12 +149,23 @@ const BuffLineTooltip = styled.div`
   z-index: 2;
 `;
 
+const ActionBarAction = styled.div`
+  display: inline-block;
+  position: relative;
+
+  > span {
+    position: relative;
+    display: block;
+  }
+`;
+
 interface DraggedImageProps {
   isDragged?: boolean
   isFailed?: boolean
 }
 const DraggedImage = styled.img`
   border: solid 0px transparent;
+  display: block;
   ${({ isDragged }: DraggedImageProps) => isDragged && css`
     animation: ${rotate} 1s infinite alternate;
     opacity: 0.6;
@@ -250,6 +261,45 @@ const TouchGhost = styled.img`
   `}
 `;
 
+const SuccessRateIndicator = styled.div`
+  font-size: 10px;
+  color: #fff;
+  background: #a00;
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 14px;
+  line-height: 11px;
+  text-align: center;
+  box-sizing: border-box;
+  border: solid 1px #fff;
+  cursor: pointer;
+`;
+
+interface ReportNumberProps {
+  color?: string
+  active?: boolean | number
+}
+const ReportNumber = styled.div`
+  margin: 1px;
+  border-radius: 2px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 0;
+  text-align: center;
+  height: 12px;
+  opacity: 0;
+  ${({ color }: ReportNumberProps) => css`
+    background: ${color};
+  `}
+  ${({ active }: ReportNumberProps) => active && css`
+    opacity: 1;
+  `}
+`;
+
 export interface CraftState {
   progress: number
   quality: number
@@ -258,6 +308,7 @@ export interface CraftState {
   buffs: EffectiveBuff[]
   stats: CrafterStats
   recipe: Craft
+  sim: Simulation
 }
 
 interface localStorageCache {
@@ -340,7 +391,8 @@ const SimComponent = (props: RouteComponentProps) => {
     durability: recipeDur,
     buffs: [] as EffectiveBuff[],
     stats: stats,
-    recipe: testRecipe
+    recipe: testRecipe,
+    sim: new Simulation(testRecipe, [], stats),
   } as CraftState);
   useEffect(() => {
     defaultState.current = {
@@ -556,7 +608,8 @@ const SimComponent = (props: RouteComponentProps) => {
         durability: sim.durability,
         buffs: [...sim.buffs],
         stats,
-        recipe: testRecipe
+        recipe: testRecipe,
+        sim,
       };
 
       if (y === actions.length - 1) {
@@ -892,6 +945,11 @@ const SimComponent = (props: RouteComponentProps) => {
   const latestState = states[states.length - 1];
   const showTraditionalBars = false;
 
+  const progressColor = '#6e9a1b';
+  const qualityColor = '#50a1bf';
+  const durColor = '#999';
+  const cpColor = '#bf7ed9';
+
   return <div onTouchMove={onAllTouchMove}>
     {showTraditionalBars && <Bars
       currentProgress={latestState.progress}
@@ -911,7 +969,7 @@ const SimComponent = (props: RouteComponentProps) => {
         domain={[0, testRecipe.progress]}
         data={states.map(state => state.progress)}
         mode={ChartMode.UPWARDS}
-        color="#6e9a1b"
+        color={progressColor}
         bgColor="#9eca4b"
         label="Progress"
         fullIcon={ChartIcon.CHECKMARK}
@@ -922,7 +980,7 @@ const SimComponent = (props: RouteComponentProps) => {
         domain={[0, testRecipe.quality]}
         data={states.map(state => state.quality)}
         mode={ChartMode.DOWNWARDS}
-        color="#50a1bf"
+        color={qualityColor}
         bgColor="#80d1ef"
         label="Quality"
         fullIcon={ChartIcon.CHECKMARK}
@@ -939,27 +997,59 @@ const SimComponent = (props: RouteComponentProps) => {
         {actions.map((action, index) => {
           const isDragged = draggingIndex === index;
           const isFailed = successStates[index] === false;
+          const actionName = CraftingActionsRegistry.serializeRotation([action]).join('');
+
+          const simAtAction = states[index] && states[index].sim;
+          const successRate = simAtAction ? action.getSuccessRate(simAtAction) : 100;
           const hasBorderLeft = (index === draggedOverIndex) && ((newActionDrag !== undefined) || (draggingIndex !== undefined && draggedOverIndex < draggingIndex));
-          return <DraggedImage
-            alt={CraftingActionsRegistry.serializeRotation([action]).join('')}
-            title={CraftingActionsRegistry.serializeRotation([action]).join('')}
+
+          const stepProgress = states[index] && states[index + 1] && states[index + 1].progress - states[index].progress;
+          const stepQuality = states[index] && states[index + 1] && states[index + 1].quality - states[index].quality;
+          const stepDur = states[index] && states[index + 1] && states[index + 1].durability - states[index].durability;
+          const stepCP = states[index] && states[index + 1] && states[index + 1].cp - states[index].cp;
+          return <ActionBarAction
             key={`${index} ${action.getId(jobId)}`}
-            draggable={true}
-            onDragStart={OnActionDragStart(index)}
-            onDragOver={OnActionDragOver(index)}
-            onDragEnd={OnActionDragEnd}
-            onDrop={OnActionDrop(index)}
-            src={process.env.PUBLIC_URL + Icons[action.getId(jobId)]}
-            onClick={clickJobAction(index)}
             style={{
-              width: `${colWidth}px`,
               borderLeft: hasBorderLeft ? 'solid 10px transparent' : '',
               borderRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? 'solid 10px transparent' : '',
             }}
-            isDragged={isDragged}
-            isFailed={isFailed}
-            onContextMenu={OnActionContextMenu}
-          />
+          >
+            <ReportNumber active={stepProgress} color={progressColor}>
+              {stepProgress}
+            </ReportNumber>
+            <ReportNumber active={stepQuality} color={qualityColor}>
+              {stepQuality}
+            </ReportNumber>
+
+            <span>
+              <DraggedImage
+                alt={actionName}
+                title={actionName}
+                draggable={true}
+                onDragOver={OnActionDragOver(index)}
+                onDragStart={OnActionDragStart(index)}
+                onDragEnd={OnActionDragEnd}
+                onDrop={OnActionDrop(index)}
+                src={process.env.PUBLIC_URL + Icons[action.getId(jobId)]}
+                onClick={clickJobAction(index)}
+                style={{
+                  width: `${colWidth}px`,
+                }}
+                isDragged={isDragged}
+                isFailed={isFailed}
+                onContextMenu={OnActionContextMenu}
+              />
+              {successRate < 100 && <SuccessRateIndicator title={`${successRate}% success rate`}>!</SuccessRateIndicator>}
+            </span>
+
+            <ReportNumber active={stepDur} color={durColor}>
+              {stepDur}
+            </ReportNumber>
+            <ReportNumber active={stepCP} color={cpColor}>
+              {stepCP}
+            </ReportNumber>
+
+          </ActionBarAction>
         })}
       </ActionBar>
       <BuffLines onMouseMove={updateBuffLineTooltipPosition}>
@@ -982,7 +1072,7 @@ const SimComponent = (props: RouteComponentProps) => {
         domain={[0, testRecipe.durability]}
         data={states.map(state => state.durability)}
         mode={ChartMode.UPWARDS}
-        color="#ccc"
+        color={durColor}
         bgColor="#eee"
         label="Durability"
         emptyIcon={ChartIcon.EXCLAMATION_MARK}
@@ -993,7 +1083,7 @@ const SimComponent = (props: RouteComponentProps) => {
         domain={[0, jobCP]}
         data={states.map(state => state.cp)}
         mode={ChartMode.DOWNWARDS}
-        color="#bf7ed9"
+        color={cpColor}
         bgColor="#efaeff"
         label="CP"
         emptyIcon={ChartIcon.EXCLAMATION_MARK}

@@ -7,10 +7,9 @@ import { CraftState } from './index';
 const IQLine = styled.div`
   padding: 0 10px;
   position: relative;
-  bottom: -10px;
+  bottom: -45px;
 
   > svg {
-    height: 40px;
     display: block;
 
     > path {
@@ -67,6 +66,8 @@ const IQBed = (props: IQBedProps) => {
   });
   const leafWidth = 6;
   const leafHeight = 4;
+  const altitude = 71;
+  const groundLevel = 40 - lineSpacing;
 
   return <IQLine>
     {IQStacks.map((IQStack, IQStackIndex) => {
@@ -81,6 +82,7 @@ const IQBed = (props: IQBedProps) => {
     })}
     <svg style={{
       width: `${(states.length - 1) * colWidth}px`,
+      height: `${altitude}px`
     }}>
       {IQStacks.map((IQStack, IQStackIndex) => {
         const leaves: number[] = [];
@@ -149,17 +151,19 @@ const IQBed = (props: IQBedProps) => {
         return <path
           key={IQLineIndex}
           d={`
-            M ${start} 40
-            C ${start} ${40 - gap / 2}
-              ${start + gap / 2} ${40 - gap}
-              ${start + gap} ${40 - gap}
+            M ${start} ${altitude}
+            L ${start} ${groundLevel + 6}
+            C ${start} ${groundLevel + 3}
+              ${start + gap / 2} ${groundLevel}
+              ${start + gap} ${groundLevel}
             ${IQLine.end < 0 ? `
-              L ${end} ${40 - gap}
+              L ${end} ${groundLevel}
             ` : `
-              L ${end + gap} ${40 - gap}
-              C ${end + gap * 1.5} ${40 - gap}
-                ${end + gap * 2} ${40 - gap / 2}
-                ${end + gap * 2} 40
+              L ${end + gap} ${groundLevel}
+              C ${end + gap * 1.5} ${groundLevel}
+                ${end + gap * 2} ${groundLevel + 3}
+                ${end + gap * 2} ${groundLevel + 6}
+              L ${end + gap * 2} ${altitude}
             `}
           `}
           fill="transparent"

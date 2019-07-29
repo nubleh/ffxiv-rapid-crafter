@@ -834,15 +834,9 @@ const SimComponent = (props: RouteComponentProps) => {
 
   // share stuff
   const [shareUrl, set_shareUrl] = useState('');
+  const actionSequenceString = getShareActionIdSequence(actions, jobId);
   const showShareUrl = () => {
     const url = window.location.href.split('?')[0];
-
-    const yacts = actions.filter(a => a).map(a => {
-      const matchingAction = allActions.find(ac => {
-        return a.getId(jobId) === ac.getId(jobId);
-      })
-      return matchingAction ? allActions.indexOf(matchingAction) : -1;
-    });
 
     const newShareUrl = `${url}?${queryString.stringify({
       rl: recipeLvl,
@@ -857,7 +851,7 @@ const SimComponent = (props: RouteComponentProps) => {
       jcp: jobCP,
       jl: jobLvl,
       jis: jobIsSpecialist ? '1' : '0',
-      yact: yacts,
+      yact: actionSequenceString,
     }, {
       arrayFormat: 'comma'
     })}`
@@ -1008,7 +1002,7 @@ const SimComponent = (props: RouteComponentProps) => {
           const stepDur = states[index] && states[index + 1] && states[index + 1].durability - states[index].durability;
           const stepCP = states[index] && states[index + 1] && states[index + 1].cp - states[index].cp;
           return <ActionBarAction
-            key={`${index} ${action.getId(jobId)}`}
+            key={`${index} ${actionSequenceString}`}
             style={{
               borderLeft: hasBorderLeft ? 'solid 10px transparent' : '',
               borderRight: draggingIndex !== undefined && index === draggedOverIndex && draggedOverIndex > draggingIndex ? 'solid 10px transparent' : '',
@@ -1202,4 +1196,13 @@ const didRecipeChange = (recipe1: Craft, recipe2: Craft) => {
     || recipe1.durability !== recipe2.durability
     || recipe1.suggestedControl !== recipe2.suggestedControl
     || recipe1.suggestedCraftsmanship !== recipe2.suggestedCraftsmanship;
+};
+
+const getShareActionIdSequence = (actions: CraftingAction[], jobId: number) => {
+  return actions.filter(a => a).map(a => {
+    const matchingAction = allActions.find(ac => {
+      return a.getId(jobId) === ac.getId(jobId);
+    })
+    return matchingAction ? allActions.indexOf(matchingAction) : -1;
+  });
 };

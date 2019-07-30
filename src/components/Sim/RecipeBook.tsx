@@ -35,6 +35,8 @@ const SearchContainer = styled.div`
 const RecipeList = styled.ul`
   margin: 0;
   padding: 0;
+  max-height: 80vh;
+  overflow: auto;
 
   > li {
     list-style: none;
@@ -127,7 +129,7 @@ const RecipeBook = (props: RecipeBookProps) => {
       return;
     }
     const newResults: Item[] = [];
-    const resultLimit = 10;
+    const resultLimit = 20;
 
     const searchWords = searchQuery.split(',').map(w => w.trim());
     items.forEach(item => {

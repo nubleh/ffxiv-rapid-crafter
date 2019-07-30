@@ -1659,6 +1659,27 @@ const items = [
     ]
   },
   {
+    "id": 33497,
+    "name": "Adventurer's Hooded Vest",
+    "recipes": [
+      {
+        "id": 33497,
+        "job": 10,
+        "rlvl": 440,
+        "durability": 70,
+        "progress": 4343,
+        "quality": 23395,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2000,
+        "craftsmanshipReq": 2000,
+        "suggestedControl": 1860,
+        "materialQualityFactor": 100,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 21937,
     "name": "Adventuring Sweater",
     "recipes": [
@@ -2921,6 +2942,27 @@ const items = [
           "nq": 2484,
           "hq": 2504
         }
+      }
+    ]
+  },
+  {
+    "id": 33362,
+    "name": "Alastor",
+    "recipes": [
+      {
+        "id": 33362,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -11674,6 +11716,27 @@ const items = [
           "nq": 615,
           "hq": 635
         }
+      }
+    ]
+  },
+  {
+    "id": 33376,
+    "name": "Barathrum",
+    "recipes": [
+      {
+        "id": 33376,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -20890,6 +20953,27 @@ const items = [
     ]
   },
   {
+    "id": 33361,
+    "name": "Burattinaios",
+    "recipes": [
+      {
+        "id": 33361,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 4693,
     "name": "Button Mushroom Saute",
     "recipes": [
@@ -22963,6 +23047,27 @@ const items = [
     ]
   },
   {
+    "id": 33369,
+    "name": "Catalyst",
+    "recipes": [
+      {
+        "id": 33369,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 22730,
     "name": "Catfish Lure Components",
     "recipes": [
@@ -23793,6 +23898,27 @@ const items = [
           "nq": 27,
           "hq": 47
         }
+      }
+    ]
+  },
+  {
+    "id": 33330,
+    "name": "Chalicotherium Leather",
+    "recipes": [
+      {
+        "id": 33330,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -26378,6 +26504,27 @@ const items = [
           "nq": 50,
           "hq": 70
         }
+      }
+    ]
+  },
+  {
+    "id": 33368,
+    "name": "Clearpath",
+    "recipes": [
+      {
+        "id": 33368,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -31730,6 +31877,27 @@ const items = [
     ]
   },
   {
+    "id": 33342,
+    "name": "Creamy Salmon Pasta",
+    "recipes": [
+      {
+        "id": 33342,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 12848,
     "name": "Creme Brulee",
     "recipes": [
@@ -31961,6 +32129,27 @@ const items = [
     ]
   },
   {
+    "id": 33354,
+    "name": "Cropped Fireglass Leather Slops",
+    "recipes": [
+      {
+        "id": 33354,
+        "job": 10,
+        "rlvl": 440,
+        "durability": 70,
+        "progress": 4343,
+        "quality": 23395,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2000,
+        "craftsmanshipReq": 2000,
+        "suggestedControl": 1860,
+        "materialQualityFactor": 100,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 17468,
     "name": "Cropped Flannel Slops",
     "recipes": [
@@ -32158,6 +32347,27 @@ const items = [
           "nq": 91,
           "hq": 111
         }
+      }
+    ]
+  },
+  {
+    "id": 33492,
+    "name": "Cryptomeria Lumber",
+    "recipes": [
+      {
+        "id": 33492,
+        "job": 10,
+        "rlvl": 300,
+        "durability": 70,
+        "progress": 4343,
+        "quality": 23395,
+        "lvl": 80,
+        "suggestedCraftsmanship": 0,
+        "craftsmanshipReq": 0,
+        "suggestedControl": 0,
+        "materialQualityFactor": 100,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -40248,6 +40458,27 @@ const items = [
           "nq": 100045,
           "hq": 100065
         }
+      }
+    ]
+  },
+  {
+    "id": 33377,
+    "name": "Dominus Shield",
+    "recipes": [
+      {
+        "id": 33377,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -48432,6 +48663,27 @@ const items = [
     ]
   },
   {
+    "id": 33331,
+    "name": "Ethereal Silk",
+    "recipes": [
+      {
+        "id": 33331,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 24251,
     "name": "Evergleam Ingot",
     "recipes": [
@@ -49006,6 +49258,27 @@ const items = [
     ]
   },
   {
+    "id": 33351,
+    "name": "Exquisite Beef Stew",
+    "recipes": [
+      {
+        "id": 33351,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 15476,
     "name": "Extreme Survival Shirt",
     "recipes": [
@@ -49200,6 +49473,1308 @@ const items = [
           "nq": 34,
           "hq": 54
         }
+      }
+    ]
+  },
+  {
+    "id": 33400,
+    "name": "Facet Boots of Aiming",
+    "recipes": [
+      {
+        "id": 33400,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33418,
+    "name": "Facet Boots of Casting",
+    "recipes": [
+      {
+        "id": 33418,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33412,
+    "name": "Facet Boots of Healing",
+    "recipes": [
+      {
+        "id": 33412,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33417,
+    "name": "Facet Bottoms of Casting",
+    "recipes": [
+      {
+        "id": 33417,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33387,
+    "name": "Facet Bottoms of Maiming",
+    "recipes": [
+      {
+        "id": 33387,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33405,
+    "name": "Facet Bottoms of Scouting",
+    "recipes": [
+      {
+        "id": 33405,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33432,
+    "name": "Facet Bracelet of Aiming",
+    "recipes": [
+      {
+        "id": 33432,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33434,
+    "name": "Facet Bracelet of Casting",
+    "recipes": [
+      {
+        "id": 33434,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33430,
+    "name": "Facet Bracelet of Fending",
+    "recipes": [
+      {
+        "id": 33430,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33433,
+    "name": "Facet Bracelet of Healing",
+    "recipes": [
+      {
+        "id": 33433,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33431,
+    "name": "Facet Bracelet of Slaying",
+    "recipes": [
+      {
+        "id": 33431,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33399,
+    "name": "Facet Brais of Aiming",
+    "recipes": [
+      {
+        "id": 33399,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33381,
+    "name": "Facet Chain Hose of Fending",
+    "recipes": [
+      {
+        "id": 33381,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33427,
+    "name": "Facet Choker of Aiming",
+    "recipes": [
+      {
+        "id": 33427,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33429,
+    "name": "Facet Choker of Casting",
+    "recipes": [
+      {
+        "id": 33429,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33425,
+    "name": "Facet Choker of Fending",
+    "recipes": [
+      {
+        "id": 33425,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33428,
+    "name": "Facet Choker of Healing",
+    "recipes": [
+      {
+        "id": 33428,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33426,
+    "name": "Facet Choker of Slaying",
+    "recipes": [
+      {
+        "id": 33426,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33378,
+    "name": "Facet Circlet of Fending",
+    "recipes": [
+      {
+        "id": 33378,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33384,
+    "name": "Facet Circlet of Maiming",
+    "recipes": [
+      {
+        "id": 33384,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33390,
+    "name": "Facet Circlet of Striking",
+    "recipes": [
+      {
+        "id": 33390,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33415,
+    "name": "Facet Coat of Casting",
+    "recipes": [
+      {
+        "id": 33415,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33409,
+    "name": "Facet Coat of Healing",
+    "recipes": [
+      {
+        "id": 33409,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33391,
+    "name": "Facet Cyclas of Striking",
+    "recipes": [
+      {
+        "id": 33391,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33403,
+    "name": "Facet Dolman of Scouting",
+    "recipes": [
+      {
+        "id": 33403,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33410,
+    "name": "Facet Dress Gloves of Healing",
+    "recipes": [
+      {
+        "id": 33410,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33422,
+    "name": "Facet Earrings of Aiming",
+    "recipes": [
+      {
+        "id": 33422,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33424,
+    "name": "Facet Earrings of Casting",
+    "recipes": [
+      {
+        "id": 33424,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33420,
+    "name": "Facet Earrings of Fending",
+    "recipes": [
+      {
+        "id": 33420,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33423,
+    "name": "Facet Earrings of Healing",
+    "recipes": [
+      {
+        "id": 33423,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33421,
+    "name": "Facet Earrings of Slaying",
+    "recipes": [
+      {
+        "id": 33421,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33393,
+    "name": "Facet Gaskins of Striking",
+    "recipes": [
+      {
+        "id": 33393,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33380,
+    "name": "Facet Gauntlets of Fending",
+    "recipes": [
+      {
+        "id": 33380,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33386,
+    "name": "Facet Gauntlets of Maiming",
+    "recipes": [
+      {
+        "id": 33386,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33404,
+    "name": "Facet Gloves of Scouting",
+    "recipes": [
+      {
+        "id": 33404,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33392,
+    "name": "Facet Gloves of Striking",
+    "recipes": [
+      {
+        "id": 33392,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33398,
+    "name": "Facet Halfgloves of Aiming",
+    "recipes": [
+      {
+        "id": 33398,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33416,
+    "name": "Facet Halfgloves of Casting",
+    "recipes": [
+      {
+        "id": 33416,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33414,
+    "name": "Facet Hat of Casting",
+    "recipes": [
+      {
+        "id": 33414,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33408,
+    "name": "Facet Hat of Healing",
+    "recipes": [
+      {
+        "id": 33408,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33379,
+    "name": "Facet Mail of Fending",
+    "recipes": [
+      {
+        "id": 33379,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33385,
+    "name": "Facet Mail of Maiming",
+    "recipes": [
+      {
+        "id": 33385,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33401,
+    "name": "Facet Plate Belt of Aiming",
+    "recipes": [
+      {
+        "id": 33401,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33419,
+    "name": "Facet Plate Belt of Casting",
+    "recipes": [
+      {
+        "id": 33419,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33383,
+    "name": "Facet Plate Belt of Fending",
+    "recipes": [
+      {
+        "id": 33383,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33413,
+    "name": "Facet Plate Belt of Healing",
+    "recipes": [
+      {
+        "id": 33413,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33389,
+    "name": "Facet Plate Belt of Maiming",
+    "recipes": [
+      {
+        "id": 33389,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33407,
+    "name": "Facet Plate Belt of Scouting",
+    "recipes": [
+      {
+        "id": 33407,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33395,
+    "name": "Facet Plate Belt of Striking",
+    "recipes": [
+      {
+        "id": 33395,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33437,
+    "name": "Facet Ring of Aiming",
+    "recipes": [
+      {
+        "id": 33437,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33439,
+    "name": "Facet Ring of Casting",
+    "recipes": [
+      {
+        "id": 33439,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33435,
+    "name": "Facet Ring of Fending",
+    "recipes": [
+      {
+        "id": 33435,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33438,
+    "name": "Facet Ring of Healing",
+    "recipes": [
+      {
+        "id": 33438,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33436,
+    "name": "Facet Ring of Slaying",
+    "recipes": [
+      {
+        "id": 33436,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33382,
+    "name": "Facet Sabatons of Fending",
+    "recipes": [
+      {
+        "id": 33382,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33388,
+    "name": "Facet Sabatons of Maiming",
+    "recipes": [
+      {
+        "id": 33388,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33394,
+    "name": "Facet Sandals of Striking",
+    "recipes": [
+      {
+        "id": 33394,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33397,
+    "name": "Facet Tabard of Aiming",
+    "recipes": [
+      {
+        "id": 33397,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33406,
+    "name": "Facet Thighboots of Scouting",
+    "recipes": [
+      {
+        "id": 33406,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33411,
+    "name": "Facet Trousers of Healing",
+    "recipes": [
+      {
+        "id": 33411,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33396,
+    "name": "Facet Turban of Aiming",
+    "recipes": [
+      {
+        "id": 33396,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33402,
+    "name": "Facet Turban of Scouting",
+    "recipes": [
+      {
+        "id": 33402,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -53600,6 +55175,27 @@ const items = [
     ]
   },
   {
+    "id": 33370,
+    "name": "Galdrabok",
+    "recipes": [
+      {
+        "id": 33370,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 8043,
     "name": "Gallant Armor Augmentation",
     "recipes": [
@@ -55228,6 +56824,27 @@ const items = [
           "nq": 115,
           "hq": 135
         }
+      }
+    ]
+  },
+  {
+    "id": 33364,
+    "name": "Gendawa",
+    "recipes": [
+      {
+        "id": 33364,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -60292,6 +61909,27 @@ const items = [
     ]
   },
   {
+    "id": 33333,
+    "name": "Grade 2 Dexterity Alkahest",
+    "recipes": [
+      {
+        "id": 33333,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 12618,
     "name": "Grade 2 Dexterity Dissolvent",
     "recipes": [
@@ -60556,6 +62194,27 @@ const items = [
     ]
   },
   {
+    "id": 33335,
+    "name": "Grade 2 Intelligence Alkahest",
+    "recipes": [
+      {
+        "id": 33335,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 12620,
     "name": "Grade 2 Intelligence Dissolvent",
     "recipes": [
@@ -60576,6 +62235,27 @@ const items = [
           "nq": 415,
           "hq": 435
         }
+      }
+    ]
+  },
+  {
+    "id": 33336,
+    "name": "Grade 2 Mind Alkahest",
+    "recipes": [
+      {
+        "id": 33336,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -60746,6 +62426,27 @@ const items = [
     ]
   },
   {
+    "id": 33332,
+    "name": "Grade 2 Strength Alkahest",
+    "recipes": [
+      {
+        "id": 33332,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 12617,
     "name": "Grade 2 Strength Dissolvent",
     "recipes": [
@@ -60766,6 +62467,132 @@ const items = [
           "nq": 415,
           "hq": 435
         }
+      }
+    ]
+  },
+  {
+    "id": 33338,
+    "name": "Grade 2 Tincture of Dexterity",
+    "recipes": [
+      {
+        "id": 33338,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33340,
+    "name": "Grade 2 Tincture of Intelligence",
+    "recipes": [
+      {
+        "id": 33340,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33341,
+    "name": "Grade 2 Tincture of Mind",
+    "recipes": [
+      {
+        "id": 33341,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33337,
+    "name": "Grade 2 Tincture of Strength",
+    "recipes": [
+      {
+        "id": 33337,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33339,
+    "name": "Grade 2 Tincture of Vitality",
+    "recipes": [
+      {
+        "id": 33339,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33334,
+    "name": "Grade 2 Vitality Alkahest",
+    "recipes": [
+      {
+        "id": 33334,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -64132,6 +65959,27 @@ const items = [
           "nq": 320,
           "hq": 340
         }
+      }
+    ]
+  },
+  {
+    "id": 33366,
+    "name": "Gust Tongue",
+    "recipes": [
+      {
+        "id": 33366,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -76479,6 +78327,27 @@ const items = [
     ]
   },
   {
+    "id": 33353,
+    "name": "Hooded Fireglass Leather Vest",
+    "recipes": [
+      {
+        "id": 33353,
+        "job": 10,
+        "rlvl": 440,
+        "durability": 70,
+        "progress": 4343,
+        "quality": 23395,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2000,
+        "craftsmanshipReq": 2000,
+        "suggestedControl": 1860,
+        "materialQualityFactor": 100,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 15427,
     "name": "Horde Barding",
     "recipes": [
@@ -84240,6 +86109,27 @@ const items = [
     ]
   },
   {
+    "id": 33343,
+    "name": "King Salmon Meuniere",
+    "recipes": [
+      {
+        "id": 33343,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 13595,
     "name": "Kingcake",
     "recipes": [
@@ -86471,6 +88361,27 @@ const items = [
           "nq": 26,
           "hq": 46
         }
+      }
+    ]
+  },
+  {
+    "id": 33348,
+    "name": "Kukuru Rusk",
+    "recipes": [
+      {
+        "id": 33348,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -88827,6 +90738,27 @@ const items = [
           "nq": 1410,
           "hq": 1430
         }
+      }
+    ]
+  },
+  {
+    "id": 33349,
+    "name": "Lemon Curd Sachertorte",
+    "recipes": [
+      {
+        "id": 33349,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -91522,6 +93454,27 @@ const items = [
           "nq": 1231,
           "hq": 1251
         }
+      }
+    ]
+  },
+  {
+    "id": 33352,
+    "name": "Magicked Bed",
+    "recipes": [
+      {
+        "id": 33352,
+        "job": 10,
+        "rlvl": 440,
+        "durability": 70,
+        "progress": 7817,
+        "quality": 11697,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2000,
+        "craftsmanshipReq": 2000,
+        "suggestedControl": 1860,
+        "materialQualityFactor": 50,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -94832,6 +96785,27 @@ const items = [
           "nq": 3755,
           "hq": 3775
         }
+      }
+    ]
+  },
+  {
+    "id": 33374,
+    "name": "Merveilleuse",
+    "recipes": [
+      {
+        "id": 33374,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -99834,6 +101808,27 @@ const items = [
           "nq": 304514,
           "hq": 304534
         }
+      }
+    ]
+  },
+  {
+    "id": 33367,
+    "name": "Murderer",
+    "recipes": [
+      {
+        "id": 33367,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -105158,6 +107153,27 @@ const items = [
           "nq": 309,
           "hq": 329
         }
+      }
+    ]
+  },
+  {
+    "id": 33481,
+    "name": "Nutrient-rich Porridge",
+    "recipes": [
+      {
+        "id": 33481,
+        "job": 10,
+        "rlvl": 400,
+        "durability": 70,
+        "progress": 3040,
+        "quality": 12867,
+        "lvl": 80,
+        "suggestedCraftsmanship": 0,
+        "craftsmanshipReq": 0,
+        "suggestedControl": 0,
+        "materialQualityFactor": 55,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -113853,6 +115869,48 @@ const items = [
     ]
   },
   {
+    "id": 33347,
+    "name": "Pixieberry Cheesecake",
+    "recipes": [
+      {
+        "id": 33347,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
+    "id": 33346,
+    "name": "Pixieberry Tea",
+    "recipes": [
+      {
+        "id": 33346,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 9289,
     "name": "Plain Long Skirt",
     "recipes": [
@@ -115061,6 +117119,27 @@ const items = [
     ]
   },
   {
+    "id": 33372,
+    "name": "Pollux",
+    "recipes": [
+      {
+        "id": 33372,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 7571,
     "name": "Popoto Pancakes",
     "recipes": [
@@ -115081,6 +117160,27 @@ const items = [
           "nq": 233,
           "hq": 253
         }
+      }
+    ]
+  },
+  {
+    "id": 33344,
+    "name": "Popoto Salad",
+    "recipes": [
+      {
+        "id": 33344,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -115715,6 +117815,27 @@ const items = [
     ]
   },
   {
+    "id": 33371,
+    "name": "Pragmatism",
+    "recipes": [
+      {
+        "id": 33371,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 17904,
     "name": "Precision Spectacles",
     "recipes": [
@@ -115803,6 +117924,27 @@ const items = [
           "nq": 176,
           "hq": 196
         }
+      }
+    ]
+  },
+  {
+    "id": 33329,
+    "name": "Prismatic Ingot",
+    "recipes": [
+      {
+        "id": 33329,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -116466,6 +118608,27 @@ const items = [
           "nq": 450,
           "hq": 470
         }
+      }
+    ]
+  },
+  {
+    "id": 33493,
+    "name": "Pure Titanium Plate",
+    "recipes": [
+      {
+        "id": 33493,
+        "job": 10,
+        "rlvl": 300,
+        "durability": 70,
+        "progress": 4343,
+        "quality": 23395,
+        "lvl": 80,
+        "suggestedCraftsmanship": 0,
+        "craftsmanshipReq": 0,
+        "suggestedControl": 0,
+        "materialQualityFactor": 100,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -121360,6 +123523,27 @@ const items = [
           "nq": 250,
           "hq": 270
         }
+      }
+    ]
+  },
+  {
+    "id": 33350,
+    "name": "Rare Roast Beef",
+    "recipes": [
+      {
+        "id": 33350,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -128007,6 +130191,27 @@ const items = [
     ]
   },
   {
+    "id": 33345,
+    "name": "Robe Lettuce Salad",
+    "recipes": [
+      {
+        "id": 33345,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 4757,
     "name": "Rolanberry Cheese",
     "recipes": [
@@ -129829,6 +132034,27 @@ const items = [
     ]
   },
   {
+    "id": 33326,
+    "name": "Sandalwood Lumber",
+    "recipes": [
+      {
+        "id": 33326,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 26116,
     "name": "Sandteak Cane",
     "recipes": [
@@ -130068,6 +132294,27 @@ const items = [
           "nq": 293,
           "hq": 313
         }
+      }
+    ]
+  },
+  {
+    "id": 33373,
+    "name": "Sankhara",
+    "recipes": [
+      {
+        "id": 33373,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -134322,6 +136569,27 @@ const items = [
     ]
   },
   {
+    "id": 33365,
+    "name": "Silktones",
+    "recipes": [
+      {
+        "id": 33365,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 2411,
     "name": "Siltstone Grinding Wheel",
     "recipes": [
@@ -135506,6 +137774,27 @@ const items = [
           "nq": 77,
           "hq": 97
         }
+      }
+    ]
+  },
+  {
+    "id": 33360,
+    "name": "Sinfender",
+    "recipes": [
+      {
+        "id": 33360,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -137252,6 +139541,27 @@ const items = [
           "nq": 100589,
           "hq": 100609
         }
+      }
+    ]
+  },
+  {
+    "id": 33363,
+    "name": "Skystrider",
+    "recipes": [
+      {
+        "id": 33363,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },
@@ -157855,6 +160165,27 @@ const items = [
     ]
   },
   {
+    "id": 33327,
+    "name": "Tungsten Steel Ingot",
+    "recipes": [
+      {
+        "id": 33327,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 35,
+        "progress": 4777,
+        "quality": 32752,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 140,
+        "complexity": {},
+        "stars": 1
+      }
+    ]
+  },
+  {
     "id": 6509,
     "name": "Turnkey's Cups",
     "recipes": [
@@ -157983,6 +160314,27 @@ const items = [
           "nq": 222,
           "hq": 242
         }
+      }
+    ]
+  },
+  {
+    "id": 33375,
+    "name": "Tutelary",
+    "recipes": [
+      {
+        "id": 33375,
+        "job": 10,
+        "rlvl": 450,
+        "durability": 70,
+        "progress": 5645,
+        "quality": 37432,
+        "lvl": 80,
+        "suggestedCraftsmanship": 2140,
+        "craftsmanshipReq": 2140,
+        "suggestedControl": 1990,
+        "materialQualityFactor": 160,
+        "complexity": {},
+        "stars": 1
       }
     ]
   },

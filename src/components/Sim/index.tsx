@@ -186,7 +186,8 @@ const ScrollingBar = styled.div`
   margin: 8px;
   border-radius: 4px;
   padding: 30px 10px 20px;
-  border: solid 1px #333;
+  border: solid 1px #999;
+  border-width: 1px 1px 3px 1px;
 `;
 
 const ActionTypeSet = styled.div`
@@ -196,6 +197,7 @@ const ActionTypeSet = styled.div`
   background: #f5f5f5;
   border-radius: 4px;
   vertical-align: middle;
+  text-align: left;
 `;
 
 interface ActionPalletteImage {
@@ -232,15 +234,24 @@ const ShareInput = styled.input`
 const LazyStats = styled.div`
   padding: 20px;
   font-size: 12px;
+  display: inline-block;
   label {
     display: block;
     padding: 4px;
+    display: flex;
+    align-items: center;
 
     input {
       margin-right: 8px;
       padding: 4px 8px;
-      border: solid 1px #999;
-      border-radius: 2px;
+      border: none;
+      border-bottom: solid 1px #999;
+      text-align: right;
+
+      &:focus {
+        outline: none;
+        border-color: #333;
+      }
     }
   }
 `;
@@ -1119,7 +1130,7 @@ const SimComponent = (props: RouteComponentProps) => {
         emptyIcon={latestState.progress < testRecipe.progress ? ChartIcon.EXCLAMATION_MARK : undefined}
       />
     </ScrollingBar>
-    <div>
+    <div style={{textAlign: 'center'}}>
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
         {someActions.map((i, index) => <ActionPalletteImage
           alt={CraftingActionsRegistry.serializeRotation([i]).join('')}
@@ -1140,7 +1151,7 @@ const SimComponent = (props: RouteComponentProps) => {
         <JobButton onClick={clearActions} active={true}>Clear</JobButton>
       </ActionTypeSet>
     </div>
-    <div>
+    <div style={{textAlign: 'center'}}>
       {jobs.map((n, i) => n && <JobButton
         active={jobId === i}
         key={i}
@@ -1148,57 +1159,64 @@ const SimComponent = (props: RouteComponentProps) => {
         {n}
       </JobButton>)}
     </div>
-    <LazyStats>
-      <label>
-        <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}}/>
-        Craftsmanship
-      </label>
-      <label>
-        <input type="text" value={jobControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobControl(parseInt(e.currentTarget.value) || 0)}}/>
-        Control
-      </label>
-      <label>
-        <input type="text" value={jobCP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCP(parseInt(e.currentTarget.value) || 0)}}/>
-        CP
-      </label>
-      <label>
-        <input type="checkbox" checked={jobIsSpecialist} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobIsSpecialist(e.currentTarget.checked)}/>
-        Specialist
-      </label>
-      <label>
-        <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeProg(parseInt(e.currentTarget.value) || 0)}}/>
-        Recipe Difficulty
-      </label>
-      <label>
-        <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeQual(parseInt(e.currentTarget.value) || 0)}}/>
-        Recipe Quality
-      </label>
-      <label>
-        <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeDur(parseInt(e.currentTarget.value) || 0)}}/>
-        Recipe Durability
-      </label>
-      <label>
-        <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}}/>
-        Recipe Level
-      </label>
-      <label>
-        <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeLvl(parseInt(e.currentTarget.value) || 0)}}/>
-        Craft Level
-      </label>
-      <label>
-        <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}}/>
-        Craftsmanship Recommended
-      </label>
-      <label>
-        <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}}/>
-        Control Recommended
-      </label>
-    </LazyStats>
-    <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
-    {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
-    <JobButton onClick={showExportString} active={true}>Export</JobButton>
-    {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
-    <JobButton onClick={requestImportString} active={true}>Import</JobButton>
+    <div style={{textAlign: 'center'}}>
+      <LazyStats>
+        <label>
+          <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Craftsmanship</span>
+        </label>
+        <label>
+          <input type="text" value={jobControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobControl(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Control</span>
+        </label>
+        <label>
+          <input type="text" value={jobCP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCP(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>CP</span>
+        </label>
+        <label>
+          <input type="text" style={{opacity: 0}}/>
+          <div>
+            <input type="checkbox" checked={jobIsSpecialist} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_jobIsSpecialist(e.currentTarget.checked)}/>
+            <span>Specialist</span>
+          </div>
+        </label>
+        <label>
+          <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeProg(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Recipe Difficulty</span>
+        </label>
+        <label>
+          <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeQual(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Recipe Quality</span>
+        </label>
+        <label>
+          <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeDur(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Recipe Durability</span>
+        </label>
+        <label>
+          <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Recipe Level</span>
+        </label>
+        <label>
+          <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeLvl(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Craft Level</span>
+        </label>
+        <label>
+          <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Craftsmanship Recommended</span>
+        </label>
+        <label>
+          <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Control Recommended</span>
+        </label>
+      </LazyStats>
+      <div>
+        <JobButton onClick={showShareUrl} active={true}>Share</JobButton>
+        {shareUrl && <ShareInput onClick={focusShareField} type="text" value={shareUrl} readOnly/>}
+        <JobButton onClick={showExportString} active={true}>Export</JobButton>
+        {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
+        <JobButton onClick={requestImportString} active={true}>Import</JobButton>
+      </div>
+    </div>
 
     <TouchGhost
       src={touchGhost}

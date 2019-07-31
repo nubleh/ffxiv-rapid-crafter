@@ -1104,8 +1104,8 @@ const SimComponent = (props: RouteComponentProps) => {
         mode={ChartMode.UPWARDS}
         color={durColor}
         bgColor="#eee"
+        emptyIcon={latestState.progress < testRecipe.progress ? ChartIcon.EXCLAMATION_MARK : undefined}
         label="Durability"
-        emptyIcon={ChartIcon.EXCLAMATION_MARK}
       />
       <Chart
         colWidth={colWidth}
@@ -1116,7 +1116,7 @@ const SimComponent = (props: RouteComponentProps) => {
         color={cpColor}
         bgColor="#efaeff"
         label="CP"
-        emptyIcon={ChartIcon.EXCLAMATION_MARK}
+        emptyIcon={latestState.progress < testRecipe.progress ? ChartIcon.EXCLAMATION_MARK : undefined}
       />
     </ScrollingBar>
     <div>

@@ -185,7 +185,7 @@ const ScrollingBar = styled.div`
   z-index: 3;
   margin: 8px;
   border-radius: 4px;
-  padding: 20px 10px;
+  padding: 30px 10px 20px;
   border: solid 1px #333;
 `;
 
@@ -301,6 +301,18 @@ const ReportNumber = styled.div`
   `}
 `;
 
+const CraftStats = styled.div`
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  color: #666;
+  font-size: 10px;
+
+  > span {
+    color: #333;
+  }
+`;
+
 export interface CraftState {
   progress: number
   quality: number
@@ -313,6 +325,7 @@ export interface CraftState {
 }
 
 interface localStorageCache {
+  recipeName: string
   recipeRLvl: number
   recipeLvl: number
   recipeProg: number
@@ -344,6 +357,7 @@ const SimComponent = (props: RouteComponentProps) => {
   } catch (e) {}
 
   // recipe parameters
+  const [recipeName, set_recipeName] = useState(cache.current.recipeName || '');
   const [recipeRLvl, set_recipeRLvl] = useState(cache.current.recipeRLvl || 430);
   const [recipeLvl, set_recipeLvl] = useState(cache.current.recipeLvl || 80);
   const [recipeProg, set_recipeProg] = useState(cache.current.recipeProg || 1900);
@@ -425,33 +439,38 @@ const SimComponent = (props: RouteComponentProps) => {
     });
 
     // recipe stuff
-    const rrl = parseInt(values.rrl + '');
-    if (!isNaN(rrl)) {
-      set_recipeRLvl(rrl);
-    }
-    const rl = parseInt(values.rl + '');
-    if (!isNaN(rl)) {
-      set_recipeLvl(rl);
-    }
-    const rp = parseInt(values.rp + '');
-    if (!isNaN(rp)) {
-      set_recipeProg(rp);
-    }
-    const rq = parseInt(values.rq + '');
-    if (!isNaN(rq)) {
-      set_recipeQual(rq);
-    }
-    const rd = parseInt(values.rd + '');
-    if (!isNaN(rd)) {
-      set_recipeDur(rd);
-    }
-    const rscr = parseInt(values.rscr + '');
-    if (!isNaN(rscr)) {
-      set_recipeSugCraft(rscr);
-    }
-    const rsco = parseInt(values.rsco + '');
-    if (!isNaN(rsco)) {
-      set_recipeSugControl(rsco);
+    const rname = values.rname;
+    if (rname) {
+      set_recipeName(rname + '');
+    } else {
+      const rrl = parseInt(values.rrl + '');
+      if (!isNaN(rrl)) {
+        set_recipeRLvl(rrl);
+      }
+      const rl = parseInt(values.rl + '');
+      if (!isNaN(rl)) {
+        set_recipeLvl(rl);
+      }
+      const rp = parseInt(values.rp + '');
+      if (!isNaN(rp)) {
+        set_recipeProg(rp);
+      }
+      const rq = parseInt(values.rq + '');
+      if (!isNaN(rq)) {
+        set_recipeQual(rq);
+      }
+      const rd = parseInt(values.rd + '');
+      if (!isNaN(rd)) {
+        set_recipeDur(rd);
+      }
+      const rscr = parseInt(values.rscr + '');
+      if (!isNaN(rscr)) {
+        set_recipeSugCraft(rscr);
+      }
+      const rsco = parseInt(values.rsco + '');
+      if (!isNaN(rsco)) {
+        set_recipeSugControl(rsco);
+      }
     }
 
     // player stuff
@@ -494,6 +513,7 @@ const SimComponent = (props: RouteComponentProps) => {
   // store these in localStorage... good idea?
   useEffect(() => {
     const localStorageCache = {
+      recipeName,
       recipeRLvl,
       recipeLvl,
       recipeProg,
@@ -512,6 +532,7 @@ const SimComponent = (props: RouteComponentProps) => {
 
     localStorage.setItem(LOCALSTORAGECACHE_KEY, JSON.stringify(localStorageCache));
   }, [
+    recipeName,
     recipeProg,
     recipeRLvl,
     recipeLvl,
@@ -842,7 +863,19 @@ const SimComponent = (props: RouteComponentProps) => {
   const showShareUrl = () => {
     const url = window.location.href.split('?')[0];
 
-    const newShareUrl = `${url}?${queryString.stringify({
+    const baseParams = {
+      jcr: jobCraftsmanship,
+      jco: jobControl,
+      jcp: jobCP,
+      jl: jobLvl,
+      jis: jobIsSpecialist ? '1' : '0',
+      yact: actionSequenceString,
+    };
+    const params = recipeName ? {
+      ...baseParams,
+      rname: recipeName,
+    } : {
+      ...baseParams,
       rl: recipeLvl,
       rrl: recipeRLvl,
       rp: recipeProg,
@@ -850,13 +883,8 @@ const SimComponent = (props: RouteComponentProps) => {
       rd: recipeDur,
       rscr: recipeSugCraft,
       rsco: recipeSugControl,
-      jcr: jobCraftsmanship,
-      jco: jobControl,
-      jcp: jobCP,
-      jl: jobLvl,
-      jis: jobIsSpecialist ? '1' : '0',
-      yact: actionSequenceString,
-    }, {
+    };
+    const newShareUrl = `${url}?${queryString.stringify(params, {
       arrayFormat: 'comma'
     })}`
 
@@ -919,7 +947,7 @@ const SimComponent = (props: RouteComponentProps) => {
     }
   };
 
-  const updateRecipe = (newRecipe: Craft) => {
+  const updateRecipe = (newRecipe: Craft, name: string) => {
     const {
       durability,
       job,
@@ -930,6 +958,9 @@ const SimComponent = (props: RouteComponentProps) => {
       suggestedControl,
       suggestedCraftsmanship,
     } = newRecipe;
+    if (recipeName !== name) {
+      set_recipeName(name);
+    }
     set_recipeDur(durability);
     set_recipeLvl(lvl);
     set_recipeProg(progress);
@@ -961,6 +992,7 @@ const SimComponent = (props: RouteComponentProps) => {
     />}
 
     <ScrollingBar ref={setScrollingBarRef}>
+      <CraftStats>{jobCraftsmanship}/{jobControl}/{jobCP} {recipeName && <>crafting <span>{recipeName}</span></>}</CraftStats>
       <Chart
         colWidth={colWidth}
         rowHeight={40}
@@ -1134,31 +1166,31 @@ const SimComponent = (props: RouteComponentProps) => {
         Specialist
       </label>
       <label>
-        <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeProg(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeProg} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeProg(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Difficulty
       </label>
       <label>
-        <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeQual(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeQual(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Quality
       </label>
       <label>
-        <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeDur(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeDur(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Durability
       </label>
       <label>
-        <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeRLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeRLvl(parseInt(e.currentTarget.value) || 0)}}/>
         Recipe Level
       </label>
       <label>
-        <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeLvl(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeLvl(parseInt(e.currentTarget.value) || 0)}}/>
         Craft Level
       </label>
       <label>
-        <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeSugCraft} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeSugCraft(parseInt(e.currentTarget.value) || 0)}}/>
         Craftsmanship Recommended
       </label>
       <label>
-        <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}}/>
+        <input type="text" value={recipeSugControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeSugControl(parseInt(e.currentTarget.value) || 0)}}/>
         Control Recommended
       </label>
     </LazyStats>
@@ -1175,6 +1207,7 @@ const SimComponent = (props: RouteComponentProps) => {
     />
     <RecipeBook
       onRecipeChosen={updateRecipe}
+      recipeName={recipeName}
     />
     <MacroBook
       actions={actions}

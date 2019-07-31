@@ -110,12 +110,14 @@ const Wrapper = styled.div`
 `;
 
 interface RecipeBookProps {
-  onRecipeChosen: (recipe: Craft) => void
+  onRecipeChosen: (recipe: Craft, name: string) => void
+  recipeName: string
 }
 
 const RecipeBook = (props: RecipeBookProps) => {
   const {
-    onRecipeChosen
+    onRecipeChosen,
+    recipeName
   } = props;
 
   const [searchQuery, set_searchQuery] = useState('');
@@ -162,7 +164,7 @@ const RecipeBook = (props: RecipeBookProps) => {
         quickSynth: 1,
         ingredients: [],
         hq: 1,
-      });
+      }, targetItem.name);
     };
   };
 
@@ -174,6 +176,15 @@ const RecipeBook = (props: RecipeBookProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (recipeName) {
+      const recipe = items.find(i => i.name.toLowerCase() === recipeName.toLowerCase());
+      if (recipe) {
+        applyRecipe(recipe)();
+      }
+    }
+  }, [recipeName]);
 
   return <Wrapper tabIndex={1}>
     <Book>

@@ -117,7 +117,7 @@ const ActionBar = styled.div`
     content: '';
     display: inline-block;
     vertical-align: middle;
-    height: 40px;
+    height: 110px;
   }
 
   > img {

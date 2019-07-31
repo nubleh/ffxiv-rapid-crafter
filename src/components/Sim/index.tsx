@@ -990,6 +990,14 @@ const SimComponent = (props: RouteComponentProps) => {
   const durColor = '#999';
   const cpColor = '#bf7ed9';
 
+  const [darkMode, set_darkMode] = useState(false);
+  const toggleDarkMode = () => {
+    set_darkMode(!darkMode);
+  };
+  useEffect(() => {
+    document.body.style.background = darkMode ? '#333' : '';
+  }, [darkMode]);
+
   return <div onTouchMove={onAllTouchMove}>
     {showTraditionalBars && <Bars
       currentProgress={latestState.progress}
@@ -1215,6 +1223,7 @@ const SimComponent = (props: RouteComponentProps) => {
         <JobButton onClick={showExportString} active={true}>Export</JobButton>
         {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
         <JobButton onClick={requestImportString} active={true}>Import</JobButton>
+        {/* <JobButton onClick={toggleDarkMode} active={true}>Dark Mode</JobButton> */}
       </div>
     </div>
 

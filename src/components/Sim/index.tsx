@@ -337,6 +337,17 @@ const CraftStats = styled.div`
   }
 `;
 
+const BottomBar = styled.div`
+  display: flex;
+  position: sticky;
+  bottom: 4px;
+  padding: 0 4px;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 0;
+  z-index: 5;
+`;
+
 export interface CraftState {
   progress: number
   quality: number
@@ -1249,13 +1260,15 @@ const SimComponent = (props: RouteComponentProps) => {
       ref={touchGhostRef}
       hidden={touchGhost === ''}
     />
-    <RecipeBook
-      onRecipeChosen={updateRecipe}
-      recipeName={recipeName}
-    />
-    <MacroBook
-      actions={actions}
-    />
+    <BottomBar>
+      <MacroBook
+        actions={actions}
+      />
+      <RecipeBook
+        onRecipeChosen={updateRecipe}
+        recipeName={recipeName}
+      />
+    </BottomBar>
   </MainWrapper>;
 };
 

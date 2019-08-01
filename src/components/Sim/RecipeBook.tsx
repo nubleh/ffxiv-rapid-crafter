@@ -79,10 +79,7 @@ const Wrapper = styled.div`
   background: #fff;
   padding: 4px 0;
   border-radius: 4px;
-  position: fixed;
   z-index: 5;
-  right: 4px;
-  bottom: 4px;
   border: solid 1px silver;
   color: #666;
   font-size: 11px;

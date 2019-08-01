@@ -32,10 +32,7 @@ const MacroOutput = styled.textarea`
 const Wrapper = styled.div`
   background: #fff;
   border-radius: 4px;
-  position: fixed;
   z-index: 5;
-  left: 4px;
-  bottom: 4px;
   border: solid 1px silver;
   color: #666;
   font-size: 11px;

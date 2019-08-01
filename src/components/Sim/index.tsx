@@ -68,6 +68,17 @@ const actionsByType = [
 ].map(type => CraftingActionsRegistry.getActionsByType(type));
 const allActions = CraftingActionsRegistry.ALL_ACTIONS.map(act => act.action);
 
+interface MainWrapperProps {
+  darkMode?: boolean
+}
+const MainWrapper = styled.div`
+  ${({ darkMode }: MainWrapperProps) => darkMode && css`
+    img {
+      filter: invert(1);
+    }
+  `}
+`;
+
 interface JobButtonProps {
   active?: boolean
 }
@@ -152,6 +163,8 @@ const BuffLineTooltip = styled.div`
 const ActionBarAction = styled.div`
   display: inline-block;
   position: relative;
+  border: solid 0 transparent;
+  transition: border 0.1s ease-in-out;
 
   > span {
     position: relative;
@@ -351,6 +364,7 @@ interface localStorageCache {
   jobLvl: number
   jobIsSpecialist: boolean
   actionsString: string
+  darkMode: boolean
 }
 
 const SimComponent = (props: RouteComponentProps) => {
@@ -366,6 +380,15 @@ const SimComponent = (props: RouteComponentProps) => {
       }
     }
   } catch (e) {}
+
+  const [darkMode, set_darkMode] = useState(cache.current.darkMode ||false);
+  const toggleDarkMode = () => {
+    set_darkMode(!darkMode);
+  };
+  useEffect(() => {
+    document.body.style.background = darkMode ? '#333' : '';
+    document.body.style.filter = darkMode ? 'invert(1)' : '';
+  }, [darkMode]);
 
   // recipe parameters
   const [recipeName, set_recipeName] = useState(cache.current.recipeName || '');
@@ -539,6 +562,7 @@ const SimComponent = (props: RouteComponentProps) => {
       jobLvl,
       jobIsSpecialist,
       actionsString: CraftingActionsRegistry.exportToCraftOpt(CraftingActionsRegistry.serializeRotation(actions)),
+      darkMode
     };
 
     localStorage.setItem(LOCALSTORAGECACHE_KEY, JSON.stringify(localStorageCache));
@@ -557,7 +581,8 @@ const SimComponent = (props: RouteComponentProps) => {
     jobCP,
     jobLvl,
     jobIsSpecialist,
-    actions
+    actions,
+    darkMode,
   ]);
   useEffect(() => {
     set_testRecipe(tr => {
@@ -990,15 +1015,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const durColor = '#999';
   const cpColor = '#bf7ed9';
 
-  const [darkMode, set_darkMode] = useState(false);
-  const toggleDarkMode = () => {
-    set_darkMode(!darkMode);
-  };
-  useEffect(() => {
-    document.body.style.background = darkMode ? '#333' : '';
-  }, [darkMode]);
-
-  return <div onTouchMove={onAllTouchMove}>
+  return <MainWrapper darkMode={darkMode} onTouchMove={onAllTouchMove}>
     {showTraditionalBars && <Bars
       currentProgress={latestState.progress}
       maxProgress={testRecipe.progress}
@@ -1223,7 +1240,7 @@ const SimComponent = (props: RouteComponentProps) => {
         <JobButton onClick={showExportString} active={true}>Export</JobButton>
         {exportString && <ShareInput onClick={focusShareField} type="text" value={exportString} readOnly/>}
         <JobButton onClick={requestImportString} active={true}>Import</JobButton>
-        {/* <JobButton onClick={toggleDarkMode} active={true}>Dark Mode</JobButton> */}
+        <JobButton onClick={toggleDarkMode} active={true}>Dark Mode</JobButton>
       </div>
     </div>
 
@@ -1239,7 +1256,7 @@ const SimComponent = (props: RouteComponentProps) => {
     <MacroBook
       actions={actions}
     />
-  </div>;
+  </MainWrapper>;
 };
 
 export default SimComponent;

@@ -365,6 +365,7 @@ interface localStorageCache {
   recipeLvl: number
   recipeProg: number
   recipeQual: number
+  recipeInitialQual: number
   recipeDur: number
   recipeSugCraft: number
   recipeSugControl: number
@@ -407,6 +408,7 @@ const SimComponent = (props: RouteComponentProps) => {
   const [recipeLvl, set_recipeLvl] = useState(cache.current.recipeLvl || 80);
   const [recipeProg, set_recipeProg] = useState(cache.current.recipeProg || 1900);
   const [recipeQual, set_recipeQual] = useState(cache.current.recipeQual || 15000);
+  const [recipeInitialQual, set_recipeInitialQual] = useState(cache.current.recipeInitialQual || 0);
   const [recipeDur, set_recipeDur] = useState(cache.current.recipeDur || 80);
   const [recipeSugCraft, set_recipeSugCraft] = useState(cache.current.recipeSugCraft || 1866);
   const [recipeSugControl, set_recipeSugControl] = useState(cache.current.recipeSugControl || 1733);
@@ -433,7 +435,7 @@ const SimComponent = (props: RouteComponentProps) => {
     lvl: recipeLvl,
     durability: recipeDur,
     progress: recipeProg,
-    quality: recipeQual,
+    quality: recipeQual - recipeInitialQual,
     rlvl: recipeRLvl,
     materialQualityFactor: 75,
     id: '0',
@@ -563,6 +565,7 @@ const SimComponent = (props: RouteComponentProps) => {
       recipeLvl,
       recipeProg,
       recipeQual,
+      recipeInitialQual,
       recipeDur,
       recipeSugCraft,
       recipeSugControl,
@@ -583,6 +586,7 @@ const SimComponent = (props: RouteComponentProps) => {
     recipeRLvl,
     recipeLvl,
     recipeQual,
+    recipeInitialQual,
     recipeDur,
     recipeSugCraft,
     recipeSugControl,
@@ -603,7 +607,7 @@ const SimComponent = (props: RouteComponentProps) => {
         lvl: recipeLvl,
         durability: recipeDur,
         progress: recipeProg,
-        quality: recipeQual,
+        quality: recipeQual - recipeInitialQual,
         rlvl: recipeRLvl,
         suggestedControl: recipeSugControl,
         suggestedCraftsmanship: recipeSugCraft,
@@ -613,6 +617,7 @@ const SimComponent = (props: RouteComponentProps) => {
     recipeDur,
     recipeProg,
     recipeQual,
+    recipeInitialQual,
     recipeLvl,
     recipeRLvl,
     recipeSugControl,
@@ -1223,6 +1228,10 @@ const SimComponent = (props: RouteComponentProps) => {
         <label>
           <input type="text" value={recipeQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeQual(parseInt(e.currentTarget.value) || 0)}}/>
           <span>Recipe Quality</span>
+        </label>
+        <label>
+          <input type="text" value={recipeInitialQual} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeInitialQual(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Initial Quality (from HQ mats)</span>
         </label>
         <label>
           <input type="text" value={recipeDur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_recipeName(''); set_recipeDur(parseInt(e.currentTarget.value) || 0)}}/>

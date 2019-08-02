@@ -70,9 +70,17 @@ const MacroBook = (props: MacroBookProps) => {
     const name = (actionNames[id] || { en: 'Unknown Action' })['en'];
     return `/ac "${name}" <wait.${act.getWaitDuration()}>`;
   });
-  const macros = [];
-  while(macro.length > 0) {
-    macros.push(macro.splice(0, 15));
+  let macros = [];
+  if (macro.length > 15) {
+    while(macro.length > 0) {
+      const macroBlock = macro.splice(0, 14);
+      if (macro.length > 0) {
+        macroBlock.push('/echo <se.1>');
+      }
+      macros.push(macroBlock);
+    }
+  } else {
+    macros = [macro];
   }
 
   const clickOutput = (e: React.MouseEvent<HTMLTextAreaElement>) => {

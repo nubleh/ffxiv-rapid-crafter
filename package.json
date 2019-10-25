@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://nubleh.github.io/ffxiv/craft",
   "dependencies": {
-    "@ffxiv-teamcraft/simulator": "^1.2.11",
+    "@ffxiv-teamcraft/simulator": "https://github.com/ffxiv-teamcraft/simulator.git#5.1-prelim-changes",
     "@types/jest": "24.0.15",
     "@types/node": "12.6.8",
     "@types/query-string": "^6.3.0",

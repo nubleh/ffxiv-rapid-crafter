@@ -2,7 +2,7 @@
   "name": "derp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://nubleh.github.io/ffxiv/craft",
+  "homepage": "https://nubleh.github.io/ffxiv/craft2",
   "dependencies": {
     "@ffxiv-teamcraft/simulator": "https://github.com/ffxiv-teamcraft/simulator.git#5.1-prelim-changes",
     "@types/jest": "24.0.15",

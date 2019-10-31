@@ -952,10 +952,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.4.tgz#a87b4b04e5ae14a88d48ebef15015f6b7d1f5677"
   integrity sha512-kBa+cDHOR9jpRJ+kcGMsysrls0leukrm68DmFQoMIWQcXdr2cZvyvypWuGYT7U+9kAExUE7+T7r6G3C3A6L8MQ==
 
-"@ffxiv-teamcraft/simulator@2.0.7":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@ffxiv-teamcraft/simulator/-/simulator-2.0.7.tgz#d227f9adfdfe981a5982fe5fbac6d78efdd5567b"
-  integrity sha512-N6c6WB+CTQ//8997N0LS+3OpRSYCI9pghiq5ls4kfdmf5jjSk+j2VWV2wveHW//ko/C2nJEVknW09+dBMys2VA==
+"@ffxiv-teamcraft/simulator@2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@ffxiv-teamcraft/simulator/-/simulator-2.0.8.tgz#b766212dd77c42551cf8b6d0d0d163cea3723f42"
+  integrity sha512-17VGbqsXNu3exARrAVYaWMNmJH6GjHwLOvPcgge04o0d16KpfpchH/0APEhSgRwSDmZRas7bdG6FrT/ZsE5umg==
   dependencies:
     "@kaiu/serializer" "^1.4.0"
 

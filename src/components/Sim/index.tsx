@@ -1174,7 +1174,7 @@ const SimComponent = (props: RouteComponentProps) => {
     <div style={{textAlign: 'center'}}>
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
         {someActions.map((i, index) => <ActionPalletteImage
-          alt={CraftingActionsRegistry.serializeRotation([i]).join('')}
+          alt={CraftingActionsRegistry.serializeRotation([i]).join('') + ' ' + i.getId(jobId)}
           title={CraftingActionsRegistry.serializeRotation([i]).join('')}
           key={index}
           draggable={true}

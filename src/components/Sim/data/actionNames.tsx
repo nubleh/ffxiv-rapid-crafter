@@ -72,10 +72,10 @@ const actionNames = {
     "fr": "Récupération"
   },
   "4574": {
-    "en": "Manipulation II",
-    "de": "Manipulation II",
-    "ja": "マニピュレーションII",
-    "fr": "Manipulation II"
+    "en": "Manipulation",
+    "de": "Manipulation",
+    "ja": "マニピュレーション",
+    "fr": "Manipulation"
   },
   "4597": {
     "en": "Reuse",
@@ -252,10 +252,10 @@ const actionNames = {
     "fr": "Ouvrage hâtif II"
   },
   "100203": {
-    "en": "Careful Synthesis III",
-    "de": "Sorgfältige Bearbeitung III",
-    "ja": "模範作業III",
-    "fr": "Travail prudent III"
+    "en": "Careful Synthesis",
+    "de": "Sorgfältige Bearbeitung",
+    "ja": "模範作業",
+    "fr": "Travail prudent"
   },
   "100211": {
     "en": "Rapid Synthesis II",

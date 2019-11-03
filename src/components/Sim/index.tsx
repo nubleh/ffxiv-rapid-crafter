@@ -1177,7 +1177,7 @@ const SimComponent = (props: RouteComponentProps) => {
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
         {someActions.filter(thisAction => thisAction.getLevelRequirement().level <= jobLvl).map((i, index) => <ActionPalletteImage
           alt={CraftingActionsRegistry.serializeRotation([i]).join('') + ' ' + i.getId(jobId)}
-          title={CraftingActionsRegistry.serializeRotation([i]).join('')}
+          title={`${CraftingActionsRegistry.serializeRotation([i]).join('')} ${i.getBaseCPCost(defaultState.current.sim)}CP`}
           key={index}
           draggable={true}
           onDragStart={OnNewActionDragStart(i)}

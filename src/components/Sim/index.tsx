@@ -1173,7 +1173,7 @@ const SimComponent = (props: RouteComponentProps) => {
     </ScrollingBar>
     <div style={{textAlign: 'center'}}>
       {actionsByType.map((someActions, typeIndex) => <ActionTypeSet key={typeIndex}>
-        {someActions.map((i, index) => <ActionPalletteImage
+        {someActions.filter(thisAction => thisAction.getLevelRequirement().level <= jobLvl).map((i, index) => <ActionPalletteImage
           alt={CraftingActionsRegistry.serializeRotation([i]).join('') + ' ' + i.getId(jobId)}
           title={CraftingActionsRegistry.serializeRotation([i]).join('')}
           key={index}
@@ -1202,6 +1202,10 @@ const SimComponent = (props: RouteComponentProps) => {
     </div>
     <div style={{textAlign: 'center'}}>
       <LazyStats>
+        <label>
+          <input type="text" value={jobLvl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobLvl(parseInt(e.currentTarget.value) || 0)}}/>
+          <span>Level</span>
+        </label>
         <label>
           <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}}/>
           <span>Craftsmanship</span>

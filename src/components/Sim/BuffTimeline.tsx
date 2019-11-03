@@ -6,47 +6,29 @@ import { CraftState } from './index';
 
 const buffLineColors: { [key: number]: string } = {
   /*
-    INNER_QUIET = 0,
-    STEADY_HAND = 1,
-    STEADY_HAND_II = 2,
-    WASTE_NOT = 3,
-    WASTE_NOT_II = 4,
-    STROKE_OF_GENIUS = 5,
-    INITIAL_PREPARATIONS = 6,
-    COMFORT_ZONE = 7,
-    WHISTLE_WHILE_YOU_WORK = 8,
-    HEART_OF_CRAFTER = 9,
-    MANIPULATION = 10,
-    MANIPULATION_II = 11,
-    GREAT_STRIDES = 12,
-    INNOVATION = 13,
-    INGENUITY = 14,
-    INGENUITY_II = 15,
-    MAKERS_MARK = 16,
-    NAME_OF_THE_ELEMENTS = 17,
-    RECLAIM = 18,
-    REUSE = 19
+    1: 'Waste Not',
+    2: 'Waste Not II',
+    3: 'Manipulation',
+    4: 'Great Strides',
+    5: 'Innovation',
+    6: 'Ingenuity',
+    7: 'Maker\'s Mark',
+    8: 'Name of the Elements',
+    9: 'Reuse',
+    10: 'Muscle Memory',
+    11: 'Final Appraisal',
   */
-  0: '#deae6d',
-  1: '#ab6e59', 
-  2: '#ab6e59', 
-  3: '#6a6a69',
-  4: '#6a6a69',
-  5: '#6d7d69',
-  6: '#1777da',
-  7: '#db75ed',
-  8: '#e1be4d',
-  9: '#6ee626',
-  10: '#68ccac',
-  11: '#68ccac',
-  12: '#c35289',
-  13: '#2675c5',
-  14: '#c5a666',
-  15: '#c5a666',
-  16: '#2b7d5c',
-  17: '#3bac4a',
-  18: '#72aae7',
-  19: '#f7de63',
+  1: '#6a6a69',
+  2: '#6a6a69',
+  3: '#68ccac',
+  4: '#c35289',
+  5: '#2675c5',
+  6: '#c5a666',
+  7: '#2b7d5c',
+  8: '#3bac4a',
+  9: '#f7de63',
+  10: '#ab6e59',
+  11: '#1777da',
 };
 
 const BuffTimelineSVG = styled.svg`
@@ -60,6 +42,10 @@ const BuffTimelineSVG = styled.svg`
   }
 `;
 
+interface BuffLine {
+  buffId: number
+  points: Array<number[] | null | undefined>
+}
 interface BuffTimelineProps {
   states: CraftState[]
   colWidth: number
@@ -68,10 +54,7 @@ interface BuffTimelineProps {
 }
 const BuffTimeline = (props: BuffTimelineProps) => {
   const { states, colWidth, showBuffLineTooltip, hideBuffLineTooltip } = props;
-  const buffLines: Array<{
-    buffId: number
-    points: Array<number[] | null | undefined>
-  }> = [];
+  const buffLines: BuffLine[] = [];
   const buffLineThickness = 3;
   const buffLineGap = 3;
   const buffLineTopGap = 5;
@@ -80,16 +63,13 @@ const BuffTimeline = (props: BuffTimelineProps) => {
     const { buffs } = state;
     buffs.filter(buff => buff.buff !== 0).forEach((buff, buffIndex, filteredBuffs) => {
       const existingBuff = buffLines.find(b => b.buffId === buff.buff);
-      let thisBuff: {
-        buffId: number
-        points: Array<number[] | null | undefined>
-      };
+      let thisBuff: BuffLine;
       if (existingBuff) {
         thisBuff = existingBuff;
       } else {
         thisBuff = {
           buffId: buff.buff,
-          points: []
+          points: [],
         };
         buffLines.push(thisBuff);
       }

@@ -35,26 +35,17 @@ const jobs = [
   'CUL'
 ];
 const buffLineNames: { [key: number]: string } = {
-  0: 'Inner Quiet',
-  1: 'Steady Hand', 
-  2: 'Steady Hand II', 
-  3: 'Waste Not',
-  4: 'Waste Not II',
-  5: 'Stroke Of Genius',
-  6: 'Initial Preparations',
-  7: 'Comfort Zone',
-  8: 'Whistle While You Work',
-  9: 'Heart Of Crafter',
-  10: 'Manipulation',
-  11: 'Manipulation II',
-  12: 'Great Strides',
-  13: 'Innovation',
-  14: 'Ingenuity',
-  15: 'Ingenuity II',
-  16: 'Maker\'s Mark',
-  17: 'Name Of The Elements',
-  18: 'Reclaim',
-  19: 'Reuse',
+  1: 'Waste Not',
+  2: 'Waste Not II',
+  3: 'Manipulation',
+  4: 'Great Strides',
+  5: 'Innovation',
+  6: 'Ingenuity',
+  7: 'Maker\'s Mark',
+  8: 'Name of the Elements',
+  9: 'Reuse',
+  10: 'Muscle Memory',
+  11: 'Final Appraisal',
 };
 
 const actionsByType = [

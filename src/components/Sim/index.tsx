@@ -405,6 +405,7 @@ const SimComponent = (props: RouteComponentProps) => {
     }
   } catch (e) {}
 
+  const [getMinStats, set_getMinStats] = useState(false);
   const [darkMode, set_darkMode] = useState(cache.current.darkMode ||false);
   const toggleDarkMode = () => {
     set_darkMode(!darkMode);
@@ -647,6 +648,12 @@ const SimComponent = (props: RouteComponentProps) => {
   const [states, set_states] = useState([defaultState.current]);
   const [statedActions, set_statedActions] = useState([] as CraftingAction[]);
   const [successStates, set_successStates] = useState([] as boolean[]);
+  useEffect(() => {
+    if (getMinStats && states.length > 0) {
+      states[states.length - 1].minStats = states[states.length - 1].sim.getMinStats();
+      set_states([...states]);
+    }
+  }, [getMinStats]);
 
   useEffect(() => {
     if (actions.length < 1) {
@@ -715,7 +722,7 @@ const SimComponent = (props: RouteComponentProps) => {
         set_successStates(newSuccessStates);
       }
     }
-    if (newStates.length > 0) {
+    if (getMinStats && newStates.length > 0) {
       newStates[newStates.length - 1].minStats = newStates[newStates.length - 1].sim.getMinStats();
     }
     set_statedActions(newStatedActions);
@@ -1253,6 +1260,13 @@ const SimComponent = (props: RouteComponentProps) => {
           {states.length && states[states.length - 1].minStats.found && <span>
             ({states[states.length - 1].minStats.cp} minimum)
           </span>}
+        </label>
+        <label>
+          <input type="text" style={{opacity: 0}}/>
+          <div>
+            <input type="checkbox" checked={getMinStats} onChange={(e: React.ChangeEvent<HTMLInputElement>) => set_getMinStats(e.currentTarget.checked)}/>
+            <span>Calculate min stats required (slows down simulation)</span>
+          </div>
         </label>
         <label>
           <input type="text" style={{opacity: 0}}/>

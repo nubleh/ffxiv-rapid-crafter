@@ -363,6 +363,12 @@ export interface CraftState {
   stats: CrafterStats
   recipe: Craft
   sim: Simulation
+  minStats: {
+    craftsmanship: number
+    control: number
+    cp: number
+    found: boolean
+  }
 }
 
 interface localStorageCache {
@@ -461,6 +467,12 @@ const SimComponent = (props: RouteComponentProps) => {
     stats: stats,
     recipe: testRecipe,
     sim: new Simulation(testRecipe, [], stats),
+    minStats: {
+      craftsmanship: 0,
+      control: 0,
+      cp: 0,
+      found: false,
+    }
   } as CraftState);
   useEffect(() => {
     defaultState.current = {
@@ -690,12 +702,21 @@ const SimComponent = (props: RouteComponentProps) => {
         stats,
         recipe: testRecipe,
         sim,
+        minStats: {
+          craftsmanship: 0,
+          control: 0,
+          cp: 0,
+          found: false,
+        },
       };
 
       if (y === actions.length - 1) {
         const newSuccessStates = sim.steps.map(step => step.success === true);
         set_successStates(newSuccessStates);
       }
+    }
+    if (newStates.length > 0) {
+      newStates[newStates.length - 1].minStats = newStates[newStates.length - 1].sim.getMinStats();
     }
     set_statedActions(newStatedActions);
     set_states(newStates);
@@ -1215,14 +1236,23 @@ const SimComponent = (props: RouteComponentProps) => {
         <label>
           <input type="text" value={jobCraftsmanship} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCraftsmanship(parseInt(e.currentTarget.value) || 0)}}/>
           <span>Craftsmanship</span>
+          {states.length && states[states.length - 1].minStats.found && <span>
+            ({states[states.length - 1].minStats.craftsmanship} minimum)
+          </span>}
         </label>
         <label>
           <input type="text" value={jobControl} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobControl(parseInt(e.currentTarget.value) || 0)}}/>
           <span>Control</span>
+          {states.length && states[states.length - 1].minStats.found && <span>
+            ({states[states.length - 1].minStats.control} minimum)
+          </span>}
         </label>
         <label>
           <input type="text" value={jobCP} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {set_jobCP(parseInt(e.currentTarget.value) || 0)}}/>
           <span>CP</span>
+          {states.length && states[states.length - 1].minStats.found && <span>
+            ({states[states.length - 1].minStats.cp} minimum)
+          </span>}
         </label>
         <label>
           <input type="text" style={{opacity: 0}}/>

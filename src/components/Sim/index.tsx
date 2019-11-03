@@ -219,6 +219,8 @@ interface ActionPalletteImage {
 const ActionPalletteImage = styled.img`
   cursor: pointer;
   transition: transform 0.2s;
+  width: 40px;
+  height: 40px;
   touch-action: none;
   ${({ isDragged }: DraggedImageProps) => isDragged && css`
     &, &:active {

@@ -170,6 +170,17 @@ interface DraggedImageProps {
 const DraggedImage = styled.img`
   border: solid 0px transparent;
   display: block;
+  cursor: grab;
+  transition: transform 0.1s;
+
+  &:hover {
+    transform: scale(1.1);
+    z-index: 1;
+    position: relative;
+  }
+  &:active {
+    cursor: grabbing;
+  }
   ${({ isDragged }: DraggedImageProps) => isDragged && css`
     animation: ${rotate} 1s infinite alternate;
     opacity: 0.6;
@@ -208,7 +219,7 @@ interface ActionPalletteImage {
   isDragged?: boolean
 }
 const ActionPalletteImage = styled.img`
-  cursor: pointer;
+  cursor: grab;
   transition: transform 0.2s;
   width: 40px;
   height: 40px;
@@ -227,6 +238,7 @@ const ActionPalletteImage = styled.img`
   &:active {
     transform: scale(0.9);
     transition-duration: 0.1s;
+    cursor: grabbing;
   }
 `;
 
@@ -293,6 +305,7 @@ const SuccessRateIndicator = styled.div`
   box-sizing: border-box;
   border: solid 1px #fff;
   cursor: pointer;
+  z-index: 1;
 `;
 
 interface ReportNumberProps {
